@@ -1,10 +1,30 @@
 # -= MFFM Template v.X.xx =-
-
 - *Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung*
 - *Monospace / Bengali font / Emoji support (user dependent)*
 - *Android 12/13 ready*
 - *Flashable only in Magisk*
+
 # Usage
+- Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/releases) folder.
+- The best way is to use the template is to use it with `MT Manager` file manager.  With [MT Manager](https://m.apkpure.com/mt-manager/bin.mt.plus) you can directly edit the zip file without unpacking it
+- Eitherway you can unpack the zip file with any file manager, I recommend Mixplorer. And after editing/copying files in the template, repack the template content to `.zip` archive to make a module.
+- You are going to need 12 font style to use this template. Rename your font file as stated bellow: 
+    ```
+    Black.ttf
+    BlackItalic.ttf
+    Bold.ttf
+    BoldItalic.ttf
+    Medium.ttf
+    MediumItalic.ttf
+    Regular.ttf
+    Italic.ttf
+    Light.ttf
+    LightItalic.ttf
+    Thin.ttf
+    ThinItalic.ttf
+    ```
+- And then copy those font files to `Files` folder of the template. 
+- If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template. 
 
 ## Bengali Fonts 
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
