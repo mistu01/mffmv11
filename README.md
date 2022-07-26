@@ -5,7 +5,7 @@
 - *Flashable **only** in Magisk*
 
 # Usage
-- Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/releases) folder.
+- Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
 - The best way is to use the template is to use it with `MT Manager` file manager.  With [MT Manager](https://m.apkpure.com/mt-manager/bin.mt.plus) you can directly edit the zip file without unpacking it.
 - Eitherway you can unpack the zip file with any file manager, I recommend Mixplorer. And after editing/copying files in the template, repack the template content to `.zip` archive to make a module.
 - You are going to need 12 font style to use this template. Rename your font file as stated bellow: 
