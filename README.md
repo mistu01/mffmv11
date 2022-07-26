@@ -57,5 +57,5 @@ Beng-Bold.ttf
 - [MrCarb0n's KillGMSFont](https://github.com/MrCarb0n/killgmsfont)
 # Tributes
 - [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF)
-# Support And Discssions
+# Support And Discussions
 - [MFFM Discussion](https://t.me/MFFMDisc) | [MFFM Main](https://t.me/MFFMMain) | [Magifont](https://t.me/Magifonts_Support) (Automated Bot To Create Magisk Font Module)
