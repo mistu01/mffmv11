@@ -1,2 +1,2 @@
-# mffm_v11_public_template
+# mffm
  public template
