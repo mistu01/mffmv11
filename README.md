@@ -21,3 +21,9 @@ You can prepare all this files and put them to MFFM Folder or you can directly p
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
+
+# Magisk Hide / Zygisk Denylist Hidden App Crash
+- If you hide any of your app in your `zygisk denylist` and it crashes due to the font module you just flashed created using this template. Then: 
+- To solve this issue please follow this solution carefully. 
+- Uninstall the font module first and then: 
+- Download any of this packages from [HERE](https://github.com/mistu2020/mffm_v11_public/tree/main/Font%20Spoof%20Package) and flash in your `TWRP recovery` before flashing the font module in magisk. 
