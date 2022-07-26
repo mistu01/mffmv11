@@ -27,8 +27,9 @@
 - If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template. 
 
 ## Optional Usages:
-*You can use these options if you like. For example you want to use you favourite Emoji Font with this module, or want to use Bengali Font, then you can follow this tutorial stated bellow.*
-*Remember you can copy the files directly to the template's `Files` foler to make a permanent module, even though the tutorial says to put them in your local storage's `MFFM` folder. If you put these optional files directly in `Files` folder of the module, make sure your Local Storage's `MFFM` Folder is empty, otherwise if conflicting files are found in the `MFFM` Folder, the original module's optional content will be overwritten.*
+You can use these options if you like. For example you want to use you favourite Emoji Font with this module, or want to use Bengali Font, then you can follow this tutorial stated bellow.\
+Remember you can copy the files directly to the template's `Files` foler to make a permanent module, even though the tutorial says to put them in your local storage's `MFFM` folder.\
+If you put these optional files directly in `Files` folder of the module, make sure your Local Storage's `MFFM` Folder is empty, otherwise if conflicting files are found in the `MFFM` Folder, the original module's optional content will be overwritten.
 ## Bengali Fonts 
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
  - Rename the 3 weight (Bold/Medium/Regular) Bengali font like this:
