@@ -2,7 +2,7 @@
 - *Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung*
 - *Monospace / Bengali font / Emoji support (user dependent)*
 - *Android 12/13 ready*
-- *Flashable only in Magisk*
+- *Flashable **only** in Magisk*
 
 # Usage
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/releases) folder.
