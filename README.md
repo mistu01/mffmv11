@@ -48,4 +48,5 @@ Beng-Bold.ttf
 - If you hide any of your app in your `zygisk denylist` and it crashes due to the font module you just flashed created using this template. Then: 
 - To solve this issue please follow this solution carefully. 
 - Uninstall the font module first and then: 
-- Download any of this packages from [HERE](https://github.com/mistu2020/mffm_v11_public/tree/main/Font%20Spoof%20Package) and flash in your `TWRP recovery` before flashing the font module in magisk. 
+- Download any of this packages from [HERE](https://github.com/mistu2020/mffm_v11_public/tree/main/Font%20Spoof%20Package) and flash in your `TWRP recovery`
+- Reboot and flash your font module once again. 
