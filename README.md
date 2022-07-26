@@ -4,7 +4,8 @@
 - *Monospace / Bengali font / Emoji support (user dependent)*
 - *Android 12/13 ready*
 
-## Bengali Fonts
+## Usage
+# Bengali Fonts
  - Create a folder named MFFM in your local storage. The folder should be automatically created if you flash for the first time.
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
  - Rename the 3 weight (Bold/Medium/Regular) Bengali font like this:
