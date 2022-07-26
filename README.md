@@ -29,11 +29,11 @@
 ## Bengali Fonts 
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
  - Rename the 3 weight (Bold/Medium/Regular) Bengali font like this:
-  
-       Beng-Regular.ttf  
-       Beng-Medium.ttf  
-       Beng-Bold.ttf
-   
+```
+Beng-Regular.ttf  
+Beng-Medium.ttf  
+Beng-Bold.ttf
+ ```
  - From this point you can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip of the fonts and rename it to `Beng-FontName.zip` and then copy it to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip` 
 
 ## Emoji
