@@ -50,3 +50,11 @@ Beng-Bold.ttf
 - Uninstall the font module first and then: 
 - Download any of this packages from [HERE](https://github.com/mistu2020/mffm_v11_public/tree/main/Font%20Spoof%20Package) and flash in your `TWRP recovery`
 - Reboot and flash your font module once again. 
+
+# Credits
+- [Magisk](https://github.com/topjohnwu/Magisk)
+- [MrCarb0n's KillGMSFont](https://github.com/MrCarb0n/killgmsfont)
+# Tributes
+- [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF)
+# Support And Discssions
+- [MFFM Discussion](https://t.me/MFFMDisc) | [MFFM Main](https://t.me/MFFMMain) | [Magifont](https://t.me/Magifonts_Support) (Automated Bot To Create Magisk Font Module)
