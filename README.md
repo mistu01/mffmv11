@@ -1,8 +1,10 @@
 # -= MFFM Template v.X.xx =-
-- *Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung*
-- *Monospace / Bengali font / Emoji support (user dependent)*
-- *Android 12/13 ready*
-- *Flashable **only** in Magisk*
+- **Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung**
+- **Monospace / Bengali font / Emoji support (user dependent)***
+- **Included KillGMSFont by default
+- **Android 12/13 ready**
+- **Flashable **only** in Magisk**
+
 
 # Usage
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
