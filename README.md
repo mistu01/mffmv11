@@ -1,9 +1,9 @@
 # -= MFFM Template v.X.xx =-
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung**
-- **Monospace / Bengali font / Emoji support (user dependent)***
+- **Monospace / Bengali font / Emoji support (user dependent)**
 - **Included KillGMSFont by default
 - **Android 12/13 ready**
-- **Flashable **only** in Magisk**
+- **Flashable *only* in Magisk**
 
 
 # Usage
