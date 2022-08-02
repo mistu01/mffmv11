@@ -61,7 +61,7 @@ If your Google Apps font don't change by default then flash [KillGMSFont](https:
 
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk)
-# Tributes
+# Tributes & Acknowledgements
 - [OMF](https://gitlab.com/nongthaihoang/oh_my_font) | [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF) | [MrCarb0n's KillGMSFont](https://github.com/MrCarb0n/killgmsfont)
 # Support And Discussions
 - [MFFM Discussion](https://t.me/MFFMDisc) | [MFFM Main](https://t.me/MFFMMain) | [Magifont](https://t.me/Magifonts_Support) (Automated Bot To Create Magisk Font Module)
