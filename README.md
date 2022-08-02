@@ -57,7 +57,7 @@ Beng-Bold.ttf
 - Reboot and flash your font module once again.
 
 # GApps Font
-If your Google Apps font don't change by default then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
+- If your Google Apps font don't change by default then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk)
