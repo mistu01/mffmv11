@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/03
+## 2022/08/07
 set -xv
 
 SH=$MODPATH/customize.sh
