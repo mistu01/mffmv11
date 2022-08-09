@@ -1,6 +1,6 @@
 # -= MFFM Template v.X.xx =-
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung**
-- **Monospace / Bengali font / Emoji support (user dependent)**
+- **Monospace / Bengali font / Emoji / Serif support (user dependent)**
 - **Android 12/13 ready**
 - **Flashable *only* in Magisk**
 
@@ -41,13 +41,21 @@ Beng-Regular.ttf
 Beng-Medium.ttf  
 Beng-Bold.ttf
  ```
- - You can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip of the fonts and rename it to `Beng-FontName.zip` and then copy it to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip` 
+ - You can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip archive directly `(without putting them in a folder)` and rename it to `Beng-FontName.zip` and then copy it to `MFFM` folder to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip`
 
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
-
+## Serif
+- To use serif family you should have 4 styles of the font family. `Regular` `Italic` `Bold` & `BoldItalic`. So if you have this 4 files to use with your module, then rename the files according to this:
+```
+Serif-Regular.ttf
+Serif-Italic.ttf
+Serif-Bold.ttf
+Serif-BoldItalic.ttf
+```
+- Now you can directly put those files in `MFFM` folder or zip the four files directly `(without putting them in a folder)` and name it `Serif-NameOfYourFont.zip`, Eg: `Serif-SourceSerif.zip` and copy it to the `MFFM` folder.
 # Magisk Hide / Zygisk Denylist Hidden App Crash
 - If you hide any of your app in your `zygisk denylist` and it crashes due to the font module you just flashed created using this template. Then: 
 - To solve this issue please follow this solution carefully. 
