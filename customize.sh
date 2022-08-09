@@ -30,11 +30,9 @@ mffmex(){
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.zip $FONTDIR
     fi
-
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ -f $MFFM/Beng*.ttf ] && [ ! -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.ttf $FONTDIR
     fi   
-    #if [ ! -f $FONTDIR/Beng*.ttf ]; then cp $MFFM/Beng*.ttf $FONTDIR; fi | if [ ! -f $FONTDIR/Beng*.zip ]; then cp $MFFM/Beng*.zip $FONTDIR; fi | if [ ! -f $FONTDIR/Beng*.xml ]; then cp $MFFM/Beng*.xml $FONTDIR; fi | if [ ! -f $FONTDIR/Beng*.ttf ]; then cp $MFFM/Beng*.zip $FONTDIR; fi
     if [ ! -f $FONTDIR/Mono*.ttf ]; then cp $MFFM/Mono*.ttf $FONTDIR; fi | if [ ! -f $FONTDIR/Emoji*.ttf ]; then cp $MFFM/Emoji*.ttf $FONTDIR; fi | if [ ! -f $FONTDIR/Serif*.ttf ]; then cp $MFFM/Serif*.ttf $FONTDIR; fi | if [ ! -f $FONTDIR/Serif*.zip ]; then cp $MFFM/Serif*.zip $FONTDIR; fi
 	cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
 }
