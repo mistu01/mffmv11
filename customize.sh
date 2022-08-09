@@ -182,12 +182,12 @@ srf(){
 emojiplus(){
     [ $FONTDIR/Emoji*.ttf ] && ui_print "- Installing Custom Emoji" || ui_print "- Custom Emoji Resources Not Found."
     DEMJ="NotoColorEmoji.ttf"
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ?" || ui_print "- Replacing $DEMJ ?"
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ✅" || ui_print "- Replacing $DEMJ ❌"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ ; do
         if [ -f $SYSFONT/$DEMJ ]; then
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ?" || ui_print "- Replacing $i ?"
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ✅" || ui_print "- Replacing $i ❌"
         fi
     done
 	
