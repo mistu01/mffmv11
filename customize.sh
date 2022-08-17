@@ -191,16 +191,13 @@ emojiplus(){
     [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ✅" || ui_print "- Replacing $DEMJ ❌"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
-	for i in $SEMJ ; do
+	for i in $SEMJ; do
         if [ -f $SYSFONT/$DEMJ ]; then
 		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ✅" || ui_print "- Replacing $i ❌"
         fi
     done
 	
     [ -d /data/fonts ] && rm -f -rf /data/fonts
-    [ -d /data/data/com.google.android.inputmethod.latin ] &&
-        find /data -type d -path '*inputmethod.latin*/*cache*' -exec rm -f -rf {} + &&
-        am force-stop com.google.android.inputmethod.latin
 }
 
 {
@@ -217,19 +214,19 @@ emojiplus(){
 
 xmi(){
     #miui main
-    if [ -f $ORISYSFONT/MiLanProVF.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiLanProVF.ttf; fi
-	if [ -f $ORISYSFONT/MiSansVF.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiSansVF.ttf; fi
-	if [ -f $ORISYSFONT/RobotoVF.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/RobotoVF.ttf; fi
+	mimain='MiLanProVF.ttf MiSansVF.ttf RobotoVF.ttf MiSansVF_Overlay.ttf'
+	for i in $mimain; do
+	    if [ -f "$ORISYSFONT/$i" ]; then
+		    cp $FONTDIR/Regular.ttf $SYSFONT/$i
+		fi
+	done	
 	#miui extra
-	if [ -f $ORISYSFONT/MitypeClock.otf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MitypeClock.otf; fi
-	if [ -f $ORISYSFONT/MitypeClockMono.otf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MitypeClockMono.otf; fi
-	if [ -f $ORISYSFONT/MiClock.otf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiClock.otf; fi
-	if [ -f $ORISYSFONT/MiClockThin.otf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiClockThin.otf; fi
-	if [ -f $ORISYSFONT/MiClockMono.otf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiClockMono.otf; fi
-	if [ -f $ORISYSFONT/MiClockUyghur-Thin.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiClockUyghur-Thin.ttf; fi
-	if [ -f $ORISYSFONT/MiClockTibetan-Thin.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MiClockTibetan-Thin.ttf; fi
-	if [ -f $ORISYSFONT/MitypeVF.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MitypeVF.ttf; fi
-	if [ -f $ORISYSFONT/MitypeMonoVF.ttf ]; then cp $FONTDIR/Regular.ttf $SYSFONT/MitypeMonoVF.ttf; fi
+	miextra='MitypeClock.otf MitypeClockMono.otf MiClock.otf MiClockThin.otf MiClockMono.otf MiClockUyghur-Thin.ttf MiClockTibetan-Thin.ttf MitypeVF.ttf MitypeMonoVF.ttf'
+	for i in $miextra; do
+	    if [ -f "$ORISYSFONT/$i" ]; then
+		    cp $FONTDIR/Regular.ttf $SYSFONT/$i
+		fi
+	done
 }
 
 samsung(){
@@ -245,7 +242,7 @@ oxygen(){
     if [ -f $ORISYSETC/fonts_base.xml ]; then
 	cp $SYSXML $SYSETC/fonts_base.xml
 	fi
-	if [ -f /system/system_ext/etc/fonts_base.xml ]; then
+	if [ -f $MIRRORPATH/system/system_ext/etc/fonts_base.xml ]; then
 	cp $SYSXML $SYSEXTETC/fonts_base.xml
 	fi
 	if [ -f $ORISYSETC/fonts_slate.xml ]; then
