@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/16
+## 2022/08/19
 
 set -xv
 
@@ -29,10 +29,13 @@ MFFM=/sdcard/MFFM
 mffmex(){
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.zip $FONTDIR
-    fi
+    fi	
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ -f $MFFM/Beng*.ttf ] && [ ! -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.ttf $FONTDIR
-    fi	
+    fi
+	if [ ! -f $FONTDIR/NotoSansBengali-VF.ttf ] && [ -f $MFFM/NotoSansBengali-VF.ttf ]; then
+	    cp $MFFM/NotoSansBengali-VF.ttf $FONTDIR 
+	fi
 	if [ ! -f $FONTDIR/Serif*.ttf ] && [ ! -f $FONTDIR/Serif*.zip ] && [ ! -f $MFFM/Serif*.ttf ] && [ -f $MFFM/Serif*.zip ]; then
         cp $MFFM/Serif*.zip $FONTDIR
     fi	
