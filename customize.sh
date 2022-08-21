@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/19
+## 2022/08/21
 
 set -xv
 
@@ -29,12 +29,15 @@ MFFM=/sdcard/MFFM
 mffmex(){
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.zip $FONTDIR
-    fi	
-    if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ -f $MFFM/Beng*.ttf ] && [ ! -f $MFFM/Beng*.zip ]; then
+    fi
+	if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ -f $MFFM/Beng*.ttf ] && [ ! -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.ttf $FONTDIR
     fi
 	if [ ! -f $FONTDIR/NotoSansBengali-VF.ttf ] && [ -f $MFFM/NotoSansBengali-VF.ttf ]; then
-	    cp $MFFM/NotoSansBengali-VF.ttf $FONTDIR 
+	    cp $MFFM/NotoSansBengali-VF.ttf $FONTDIR
+	fi
+	if [ ! -f $FONTDIR/Beng*.xml ] && [ -f $MFFM/Beng*.xml ]; then
+	    cp $MFFM/Beng*.xml $FONTDIR
 	fi
 	if [ ! -f $FONTDIR/Serif*.ttf ] && [ ! -f $FONTDIR/Serif*.zip ] && [ ! -f $MFFM/Serif*.ttf ] && [ -f $MFFM/Serif*.zip ]; then
         cp $MFFM/Serif*.zip $FONTDIR
@@ -64,7 +67,8 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	
 patchsysxml(){
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML
-	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n	<family>/" $SYSXML
+	sed -i -n '/<family name=\"sans-serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
 	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
@@ -112,6 +116,12 @@ prdscrp(){
 	sed -i "s/<family customizationType=\"new-named-family\" name=\"lato\">/<family customizationType=\"new-named-family\" name=\"lato\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
 	sed -i -n '/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
 	sed -i "s/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/<family customizationType=\"new-named-family\" name=\"fluid-sans\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+}
+
+fallback(){
+    cp $FONTDIR/Roboto.ttf $SYSFONT/DroidSans.ttf
+	sed -i 's/<\/familyset>//g' $SYSXML
+	cat $FONTDIR/fallback.xml >> $SYSXML
 }
 
 bengpatch(){
@@ -283,4 +293,5 @@ samsung
 emojiplus
 srf
 src
+fallback
 finish; ui_print "- Cleaning Leftovers..."
