@@ -40,10 +40,9 @@ Beng-Regular.ttf
 Beng-Medium.ttf  
 Beng-Bold.ttf
  ```
- - Download the font configuration file from [here](https://github.com/charityrolfson433/mffmv11/raw/main/Bengali%20Font%20Packages/Beng-MFFM_v1.2.xml) and copy it to the `MFFM` folder.
- - You can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip archive directly `(without putting them in a folder)` and rename it to `Beng-FontName.zip` and then copy it to `MFFM` folder to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip`
- - 
-
+- Then you can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip archive directly `(without putting them in a folder)` and rename it to `Beng-FontName.zip` and then copy it to `MFFM` folder to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip`
+- Download the Generic Bengali font configuration file from [here](https://github.com/charityrolfson433/mffmv11/raw/main/Bengali%20Font%20Packages/Beng-MFFM_v1.2.xml) and copy it to the `MFFM` folder.
+ 
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
 ## Monospace
