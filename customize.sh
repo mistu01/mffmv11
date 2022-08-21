@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/21
+## 2022/08/22
 
 set -xv
 
@@ -27,6 +27,12 @@ MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && echo 'MFFM folder and resourecs not found..' && mkdir -p $MFFM
 
 mffmex(){
+    f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
+	for i in $f; do
+	    if [ ! -f "$FONTDIR/$i" ]; then
+		    cp $MFFM/$i $FONTDIR
+		fi
+	done
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.zip $FONTDIR
     fi
@@ -119,7 +125,7 @@ prdscrp(){
 }
 
 fallback(){
-    cp $FONTDIR/Roboto.ttf $SYSFONT/DroidSans.ttf
+    cp $FONTDIR/Roboto-Regular.ttf $SYSFONT/DroidSans.ttf
 	sed -i 's/<\/familyset>//g' $SYSXML
 	cat $FONTDIR/fallback.xml >> $SYSXML
 }
@@ -217,9 +223,8 @@ emojiplus(){
     echo '#!/system/bin/sh'
 	echo '('
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022/08/03'
-    echo ''	
-    echo '#In App Emoji Change'
+    echo '## 2022/08/22'
+    echo ''
     echo 'find /data/data -name "*Emoji*.ttf" -exec cp $MODPATH/system/fonts/NotoColorEmoji.ttf {} \;'
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
 	echo ')'
