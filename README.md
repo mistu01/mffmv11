@@ -32,7 +32,6 @@ You can use these options if you like. For example you want to use you favourite
 
 Remember you can copy the files directly to the template's `Files` foler to make a permanent module, even though the tutorial says to put them in your local storage's `MFFM` folder.
 
-If you put these optional files directly in `Files` folder of the module, make sure your Local Storage's `MFFM` Folder is empty, otherwise if conflicting files are found in the `MFFM` Folder, the original module's optional content will be overwritten.
 ## Bengali Fonts 
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
  - Rename the 3 weight (Bold/Medium/Regular) Bengali font like this:
@@ -41,7 +40,9 @@ Beng-Regular.ttf
 Beng-Medium.ttf  
 Beng-Bold.ttf
  ```
+ - Download the font configuration file from [here](https://github.com/charityrolfson433/mffmv11/raw/main/Bengali%20Font%20Packages/Beng-MFFM_v1.2.xml) and copy it to the `MFFM` folder.
  - You can directly copy the font files to `MFFM Folder (/LocalStorage/MFFM)` or make a zip archive directly `(without putting them in a folder)` and rename it to `Beng-FontName.zip` and then copy it to `MFFM` folder to avoid messy environment inside the `MFFM` folder. Eg: `Beng-Kalpurush.zip`
+ - 
 
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
