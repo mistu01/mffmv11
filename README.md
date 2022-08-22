@@ -5,7 +5,7 @@
 - **Android 12/13 ready**
 - **Flashable *only* in Magisk**
 
-#Usages:
+# Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time.\
 To use it as a module template you can copy the `renamed files` directly to the template's `Files` foler to make a permanent module.
 
