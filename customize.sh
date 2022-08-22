@@ -277,6 +277,11 @@ src(){
     fi
 }
 
+PERMISSION() {
+set_perm_recursive $MODPATH 0 0 0755 0644
+set_perm $MODPATH/service.sh 0 0 0777 0777
+}
+
 finish(){
     rm -f $MODPATH/*.ttf
 	rm -f $MODPATH/*.xml
@@ -302,3 +307,4 @@ srf
 src
 fallback
 finish; ui_print "- Cleaning Leftovers..."
+PERMISSION
