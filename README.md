@@ -9,9 +9,9 @@
 You can use the template as an installer or as a regular Magisk module template, or both at the same time.\
 To use it as a module template you can copy the `renamed files` directly to the template's `Files` foler to make a permanent module.
 
-To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` folder.\
-Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files.\
-The template should work just fine.
+To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` folder.
+
+Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files. The template should work just fine.
 
 ## Latin/English Fonts
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
