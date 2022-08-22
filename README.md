@@ -1,11 +1,19 @@
 # -= MFFM Template v.X.xx =-
+- **Can be used as a template or as an installer**
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/Miui/Samsung**
 - **Monospace / Bengali font / Emoji / Serif support (user dependent)**
 - **Android 12/13 ready**
 - **Flashable *only* in Magisk**
 
+#Usages:
+You can use the template as an installer or as a regular Magisk module template, or both at the same time.\
+To use it as a module template you can copy the `renamed files` directly to the template's `Files` foler to make a permanent module.
 
-# Usage
+To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` folder.\
+Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files.\
+The template should work just fine.
+
+## Latin/English Fonts
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
 - The best way is to use the template is to use it with `MT Manager` file manager.  With [MT Manager](https://m.apkpure.com/mt-manager/bin.mt.plus) you can directly edit the zip file without unpacking it.
 - Eitherway you can unpack the zip file with any file manager, I recommend Mixplorer. And after editing/copying files in the template, repack the template content to `.zip` archive to make a module.
@@ -24,15 +32,13 @@
     Thin.ttf
     ThinItalic.ttf
     ```
-- And then copy those font files to `Files` folder of the template. 
+- And then copy those font files to `Files` folder of the template to make a module. 
 - If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template. 
 
-## Optional Usages:
-You can use these options if you like. For example you want to use you favourite Emoji Font with this module, or want to use Bengali Font, then you can follow this tutorial stated bellow.
+# Optional Usage
+- Even though the following tutorial follows the `installer` mode, you can shove the `renamed files` directly to the Template's `Files` folder to use it as a permanent module.
 
-Remember you can copy the files directly to the template's `Files` foler to make a permanent module, even though the tutorial says to put them in your local storage's `MFFM` folder.
-
-## Bengali Fonts 
+## Bengali Fonts
  - You are gonna need 3 styles/weights of your Bengali font, Bold/Medium/Regular. If you have only one weight (ie. Regular), copy it and make total 3 copies.
  - Rename the 3 weight (Bold/Medium/Regular) Bengali font like this:
 ```

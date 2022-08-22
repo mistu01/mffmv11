@@ -26,12 +26,11 @@ FONTDIR=$MODPATH/Files
 MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
 
-mffmex(){
-    [ ! -d $MFFM/Files ] && mkdir -p $MFFM/Files
+mffmex(){    
     f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
 	for i in $f; do
 	    if [ ! -f "$FONTDIR/$i" ]; then
-		    cp $MFFM/Files/$i $FONTDIR
+		    cp $MFFM/$i $FONTDIR
 		fi
 	done
 	if [ ! -f $FONTDIR/MFFM.ttf ]; then cp $MFFM/MFFM.ttf $FONTDIR; fi
