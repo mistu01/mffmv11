@@ -24,13 +24,17 @@ MODPROP=$MODPATH/module.prop
 FONTDIR=$MODPATH/Files
 #MFFM
 MFFM=/sdcard/MFFM
-[ ! -d $MFFM ] && echo 'MFFM folder and resourecs not found..' && mkdir -p $MFFM
+[ ! -d $MFFM ] && mkdir -p $MFFM
 
 mffmex(){
-    if [ ! -f $FONTDR/Regular.ttf ]; then
-	    set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
-	    for i do cp $MFFM/$i.ttf $FONTDIR/$i.ttf; done
-	fi
+    [ ! -d $MFFM/Files ] && mkdir -p $MFFM/Files
+    f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
+	for i in $f; do
+	    if [ ! -f "$FONTDIR/$i" ]; then
+		    cp $MFFM/Files/$i $FONTDIR
+		fi
+	done
+	if [ ! -f $FONTDIR/MFFM.ttf ]; then cp $MFFM/MFFM.ttf $FONTDIR; fi
     if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
         cp $MFFM/Beng*.zip $FONTDIR
     fi
