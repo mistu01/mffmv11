@@ -33,7 +33,8 @@ Remember you can use both mode `(Template/Installer)` at the same, so it really 
     ThinItalic.ttf
     ```
 - And then copy those font files to `Files` folder of the template to make a module. 
-- If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template. 
+- If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template.
+- Put the file to the `MFFM` folder if you want to use it in the `installer` mode. 
 
 # Optional Usage
 - Even though the following tutorial follows the `installer` mode, you can shove the `renamed files` directly to the Template's `Files` folder to use it as a permanent module.
