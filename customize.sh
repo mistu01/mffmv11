@@ -52,7 +52,8 @@ mffmex(){
 	if [ ! -f $FONTDIR/Serif*.ttf ] && [ ! -f $FONTDIR/Serif*.zip ] && [ -f $MFFM/Serif*.ttf ] && [ ! -f $MFFM/Serif*.zip ]; then
         cp $MFFM/Serif*.ttf $FONTDIR
     fi	
-    if [ ! -f $FONTDIR/Mono*.ttf ]; then cp $MFFM/Mono*.ttf $FONTDIR; fi | if [ ! -f $FONTDIR/Emoji*.ttf ]; then cp $MFFM/Emoji*.ttf $FONTDIR; fi
+    if [ ! -f $FONTDIR/Mono*.ttf ]; then cp $MFFM/Mono*.ttf $FONTDIR; fi
+	if [ ! -f $FONTDIR/Emoji*.ttf ]; then cp $MFFM/Emoji*.ttf $FONTDIR; fi
 	cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
 }
 
@@ -226,7 +227,7 @@ emojiplus(){
     echo '## MFFM Installer v11 by MFFM'
     echo '## 2022/08/22'
     echo ''
-    echo 'find /data/data -name "*Emoji*.ttf" -exec cp $MODPATH/system/fonts/NotoColorEmoji.ttf {} \;'
+    echo 'find /data/data -name "*Emoji*.ttf" -exec cp -f $MODPATH/system/fonts/NotoColorEmoji.ttf {} \;'
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
 	echo ')'
 } > $MODPATH/service.sh
