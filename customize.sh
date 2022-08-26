@@ -26,7 +26,9 @@ FONTDIR=$MODPATH/Files
 MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
 
-mffmex(){    
+mffmex(){
+    sleep 1
+	ui_print "⏩ Copying MFFM Folder Resources to Module Directory.."
     f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
 	for i in $f; do
 	    if [ ! -f "$FONTDIR/$i" ]; then
@@ -144,15 +146,17 @@ bengpatch(){
 }
 
 beng(){
+    sleep 0.5
+	ui_print ""
     unzip -qq $FONTDIR/Beng*.zip -d $FONTDIR
     cp $FONTDIR/Beng-Regular.ttf $SYSFONT/NotoSansBengali-VF.ttf
     cp $FONTDIR/NotoSansBengali-VF.ttf $SYSFONT/NotoSansBengali-VF.ttf
 	cp $FONTDIR/Beng-Medium.ttf $SYSFONT/NotoSerifBengali-VF.ttf
 	cp $FONTDIR/Beng-Bold.ttf $SYSFONT/NotoSansBengaliUI-VF.ttf
     if [ -f $SYSFONT/NotoSansBengali-VF.ttf ]; then		
-	    bengpatch && ui_print "- Installing Bengali Fonts..."
+	    bengpatch && ui_print "⏩ Installing Bengali Fonts..."
 	else
-	    ui_print "- Bengali Fonts Resources not found..."
+	    ui_print "⏩ Bengali Fonts Resources not found..."
 	fi
 }
 
@@ -162,8 +166,15 @@ prdfnt(){
 	    for i do ln -s $SYSFONT/$i.ttf $PRDFONT/$i.ttf; done	    
 	fi
 	if [ -f $PRDFONT/Regular.ttf ]; then
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Installing Product Partition (Pixel) Fonts.."
 	    gsans
 	    prdscrp
+	else
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Skipping Product Partition (Pixel) Font installation.."
 	fi
 }
 
@@ -178,8 +189,15 @@ sfont() {
     set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
 	for i do cp $FONTDIR/$i.ttf $SYSFONT/$i.ttf; done
 	singlefont
-	if [ -f $SYSFONT/Regular.ttf ]; then        
+	if [ -f $SYSFONT/Regular.ttf ]; then
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Installing Sans-Serif fonts.."
         patchsysxml
+	else
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Skipping Sans-Serif Installation.."
 	fi
 }
 
@@ -187,9 +205,13 @@ monospace(){
     if [ -f $FONTDIR/Mono*.ttf ]; then
         cp $FONTDIR/Mono*.ttf $SYSFONT/CutiveMono.ttf
 	    cp $FONTDIR/Mono*.ttf $SYSFONT/DroidSansMono.ttf
-	    ui_print "- Installing Monospace Fonts..."
+		sleep 0.5
+	    ui_print ""
+	    ui_print "⏩ Installing Monospace Fonts..."
 	else
-	    ui_print "- Monospace Font Resources Not Found..."
+	    sleep 0.5
+	    ui_print ""
+	    ui_print "⏩ Monospace Font Resources Not Found..."
     fi
 }
 
@@ -200,21 +222,30 @@ srf(){
 	cp $FONTDIR/Serif-Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
 	cp $FONTDIR/Serif-BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
 	if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Installing Serif fonts.."
 		sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	    sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
+	else
+	    sleep 0.5
+	    ui_print ""
+		ui_print "⏩ Serif Resources not found.."
 	fi
 }
 
 #Emoji Replacement | Thanks to @MrCarb0n
 emojiplus(){
-    [ $FONTDIR/Emoji*.ttf ] && ui_print "- Installing Custom Emoji" || ui_print "- Custom Emoji Resources Not Found."
+    sleep 0.5
+	ui_print ""
+    [ $FONTDIR/Emoji*.ttf ] && ui_print "⏩ Installing Custom Emoji" || ui_print "⏩ Custom Emoji Resources Not Found."
     DEMJ="NotoColorEmoji.ttf"
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ✅" || ui_print "- Replacing $DEMJ ❌"
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "⏩ Replacing $DEMJ ✅" || ui_print "⏩ Replacing $DEMJ ❌"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ; do
         if [ -f $SYSFONT/$DEMJ ]; then
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ✅" || ui_print "- Replacing $i ❌"
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "⏩ Replacing $i ✅" || ui_print "⏩ Replacing $i ❌"
         fi
     done
 	
@@ -225,7 +256,7 @@ emojiplus(){
     echo '#!/system/bin/sh'
 	echo '('
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022/08/22'
+    echo '## 2022/08/26'
     echo ''
     echo 'find /data/data -name "*Emoji*.ttf" -exec cp -f $MODPATH/system/fonts/NotoColorEmoji.ttf {} \;'
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
@@ -277,25 +308,30 @@ src(){
     fi
 }
 
-PERMISSION() {
-set_perm_recursive $MODPATH 0 0 0755 0644
-set_perm $MODPATH/service.sh 0 0 0777 0777
+perm() {
+    sleep 0.5
+	ui_print ""
+	ui_print "⏩ Setting up permissions.."
+    set_perm_recursive $MODPATH 0 0 0755 0644
+    set_perm $MODPATH/service.sh 0 0 0777 0777
 }
 
 finish(){
+    sleep 0.5
+	ui_print ""
+	ui_print "⏩ Cleaning Leftovers.."
     rm -f $MODPATH/*.ttf
 	rm -f $MODPATH/*.xml
 	rm -f $MODPATH/f
 	rm -f $MODPATH/bin
-	rm -f $MODPATH/install.sh
 	rm -f $MODPATH/*.md
 	rm -f $MODPATH/*.zip
 	rm -f $MODPATH/LICENSE
 	rm -rf $MODPATH/Files
 }
 
-mffmex; ui_print "- Copying MFFM Resources to MODPATH..."
-sfont; ui_print "- Installing Fonts and Patching Fonts.xml..."
+mffmex
+sfont
 prdfnt
 monospace
 beng
@@ -306,5 +342,5 @@ emojiplus
 srf
 src
 fallback
-finish; ui_print "- Cleaning Leftovers..."
+finish
 PERMISSION
