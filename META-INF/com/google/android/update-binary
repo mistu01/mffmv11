@@ -74,12 +74,16 @@ unzip -o "$ZIPFILE" -d "$MODPATH" >&2
 sleep 1
 ui_print ""
 ui_print "-A"
+sleep 0.3
+ui_print ""
 ui_print "███╗   ███╗███████╗███████╗███╗   ███╗"
 ui_print "████╗ ████║██╔════╝██╔════╝████╗ ████║"
 ui_print "██╔████╔██║█████╗  █████╗  ██╔████╔██║"
 ui_print "██║╚██╔╝██║██╔══╝  ██╔══╝  ██║╚██╔╝██║"
 ui_print "██║ ╚═╝ ██║██║     ██║     ██║ ╚═╝ ██║"
 ui_print "╚═╝     ╚═╝╚═╝     ╚═╝     ╚═╝     ╚═╝"
+ui_print ""
+sleep 0.3
 ui_print "                           -Production"
 ui_print ""
 
@@ -142,5 +146,5 @@ cd /
 rm_exist "$TMPDIR"
 sleep 0.5
 ui_print ""
-ui_print "⏩ Done. Reboot to see changes."
+ui_print "[>] Done. Reboot to see changes."
 exit 0
