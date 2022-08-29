@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/28
+## 2022/08/29
 
 set -xv
 
@@ -252,15 +252,32 @@ emojiplus(){
     [ -d /data/fonts ] && rm -f -rf /data/fonts
 }
 
+
 {
-    echo '#!/system/bin/sh'
-	echo '('
+    echo '#!/system/bin/sh'	
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022/08/28'
+    echo '## 2022/08/29'
     echo ''
-    echo 'find /data/data -name "*Emoji*.ttf" -exec cp -f $MODPATH/system/fonts/NotoColorEmoji.ttf {} \;'
+    echo 'sleep 90'
+    echo ''
+	echo 'rm -rf /data/data/com.facebook.orca/app_ras_blobs'
+    echo 'rm -rf /data/data/com.facebook.katana/app_ras_blobs'
+    echo 'mkdir /data/data/com.facebook.orca/app_ras_blobs'
+    echo 'mkdir /data/data/com.facebook.katana/app_ras_blobs'
+    echo 'cp -rf $MODPATH/system/fonts/NotoColorEmoji.ttf /data/data/com.facebook.orca/app_ras_blobs'
+    echo 'cd /data/data/com.facebook.orca/app_ras_blobs/'
+    echo 'mv NotoColorEmoji.ttf FacebookEmoji.ttf'
+    echo 'cp -rf $MODPATH/system/fonts/NotoColorEmoji.ttf /data/data/com.facebook.katana/app_ras_blobs'
+    echo 'cd /data/data/com.facebook.katana/app_ras_blobs/'
+    echo 'mv NotoColorEmoji.ttf FacebookEmoji.ttf'
+	echo ''
+	echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
+    echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
+    echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755'
+    echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs 0 0 0755 755'
+	echo ''
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
-	echo ')'
+	echo ''
 } > $MODPATH/service.sh
 
 xmi(){
