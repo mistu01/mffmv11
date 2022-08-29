@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/29
+## 2022/08/30
 
 set -xv
 
@@ -28,7 +28,7 @@ MFFM=/sdcard/MFFM
 
 mffmex(){
     sleep 1
-	ui_print "[>] Copying MFFM Folder Resources to Module Directory.."
+	ui_print "- Copying MFFM Folder Resources to Module Directory."
     f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
 	for i in $f; do
 	    if [ ! -f "$FONTDIR/$i" ]; then
@@ -154,9 +154,9 @@ beng(){
 	cp $FONTDIR/Beng-Medium.ttf $SYSFONT/NotoSerifBengali-VF.ttf
 	cp $FONTDIR/Beng-Bold.ttf $SYSFONT/NotoSansBengaliUI-VF.ttf
     if [ -f $SYSFONT/NotoSansBengali-VF.ttf ]; then		
-	    bengpatch && ui_print "[>] Installing Bengali Fonts..."
+	    bengpatch && ui_print "- Installing Bengali Fonts."
 	else
-	    ui_print "[>] Bengali Fonts Resources not found..."
+	    ui_print "- Bengali Fonts Resources Not Found."
 	fi
 }
 
@@ -168,13 +168,13 @@ prdfnt(){
 	if [ -f $PRDFONT/Regular.ttf ]; then
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Installing Product Partition (Pixel) Fonts.."
+		ui_print "- Installing Product Partition (Pixel) Fonts."
 	    gsans
 	    prdscrp
 	else
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Skipping Product Partition (Pixel) Font installation.."
+		ui_print "- Skipping Product Partition (Pixel) Font Installation."
 	fi
 }
 
@@ -192,12 +192,12 @@ sfont() {
 	if [ -f $SYSFONT/Regular.ttf ]; then
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Installing Sans-Serif fonts.."
+		ui_print "- Installing Sans-Serif Fonts."
         patchsysxml
 	else
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Skipping Sans-Serif Installation.."
+		ui_print "- Skipping Sans-Serif Installation."
 	fi
 }
 
@@ -207,11 +207,11 @@ monospace(){
 	    cp $FONTDIR/Mono*.ttf $SYSFONT/DroidSansMono.ttf
 		sleep 0.5
 	    ui_print ""
-	    ui_print "[>] Installing Monospace Fonts..."
+	    ui_print "- Installing Monospace Fonts."
 	else
 	    sleep 0.5
 	    ui_print ""
-	    ui_print "[>] Monospace Font Resources Not Found..."
+	    ui_print "- Monospace Font Resources Not Found."
     fi
 }
 
@@ -224,13 +224,13 @@ srf(){
 	if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Installing Serif fonts.."
+		ui_print "- Installing Serif Fonts."
 		sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	    sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
 	else
 	    sleep 0.5
 	    ui_print ""
-		ui_print "[>] Serif Resources not found.."
+		ui_print "- Serif Font Resources Not Found."
 	fi
 }
 
@@ -238,14 +238,14 @@ srf(){
 emojiplus(){
     sleep 0.5
 	ui_print ""
-    [ $FONTDIR/Emoji*.ttf ] && ui_print "[>] Installing Custom Emoji" || ui_print "[>] Custom Emoji Resources Not Found."
+    [ $FONTDIR/Emoji*.ttf ] && ui_print "- Installing Custom Emoji." || ui_print "- Custom Emoji Resources Not Found."
     DEMJ="NotoColorEmoji.ttf"
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "[>] Replacing $DEMJ ✅" || ui_print "[>] Replacing $DEMJ ❌"
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ✅" || ui_print "- Replacing $DEMJ ❌"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ; do
         if [ -f $SYSFONT/$DEMJ ]; then
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "[>] Replacing $i ✅" || ui_print "[>] Replacing $i ❌"
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ✅" || ui_print "- Replacing $i ❌"
         fi
     done
 	
@@ -256,7 +256,7 @@ emojiplus(){
 {
     echo '#!/system/bin/sh'	
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022/08/29'
+    echo '## 2022/08/30'
     echo ''
     echo 'sleep 90'
     echo ''
@@ -328,7 +328,7 @@ src(){
 perm() {
     sleep 0.5
 	ui_print ""
-	ui_print "[>] Setting up permissions.."
+	ui_print "- Setting Up Permissions."
     set_perm_recursive $MODPATH 0 0 0755 0644
     set_perm $MODPATH/service.sh 0 0 0777 0777
 }
@@ -336,7 +336,7 @@ perm() {
 finish(){
     sleep 0.5
 	ui_print ""
-	ui_print "[>] Cleaning Leftovers.."
+	ui_print "- Cleaning Leftovers."
     rm -f $MODPATH/*.ttf
 	rm -f $MODPATH/*.xml
 	rm -f $MODPATH/f

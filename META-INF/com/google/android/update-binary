@@ -73,18 +73,7 @@ unzip -o "$ZIPFILE" -d "$MODPATH" >&2
 
 sleep 1
 ui_print ""
-ui_print "-A"
-sleep 0.3
-ui_print ""
-ui_print "███╗   ███╗███████╗███████╗███╗   ███╗"
-ui_print "████╗ ████║██╔════╝██╔════╝████╗ ████║"
-ui_print "██╔████╔██║█████╗  █████╗  ██╔████╔██║"
-ui_print "██║╚██╔╝██║██╔══╝  ██╔══╝  ██║╚██╔╝██║"
-ui_print "██║ ╚═╝ ██║██║     ██║     ██║ ╚═╝ ██║"
-ui_print "╚═╝     ╚═╝╚═╝     ╚═╝     ╚═╝     ╚═╝"
-ui_print ""
-sleep 0.3
-ui_print "                           -Production"
+ui_print "*************"
 ui_print ""
 
 # Load install script
@@ -146,5 +135,20 @@ cd /
 rm_exist "$TMPDIR"
 sleep 0.5
 ui_print ""
-ui_print "[>] Done. Reboot to see changes."
+ui_print "- Done. Reboot To See Changes."
+ui_print ""
+ui_print "*************"
+ui_print ""
+sleep 0.3
+echo '   *     (     (       *     
+ (  `    )\ )  )\ )  (  `    
+ )\))(  (()/( (()/(  )\))(   
+((_)()\  /(_)) /(_))((_)()\  
+(_()((_)(_))_|(_))_|(_()((_) 
+|  \/  || |_  | |_  |  \/  | 
+| |\/| || __| | __| | |\/| | 
+|_|  |_||_|   |_|   |_|  |_|'
+sleep 0.3
+ui_print ""
+echo "-= A MFFM PRODUCTION =-"
 exit 0
