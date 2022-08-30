@@ -240,12 +240,12 @@ emojiplus(){
 	ui_print ""
     [ $FONTDIR/Emoji*.ttf ] && ui_print "- Installing Custom Emoji." || ui_print "- Custom Emoji Resources Not Found."
     DEMJ="NotoColorEmoji.ttf"
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "- Replacing $DEMJ ✅" || ui_print "- Replacing $DEMJ ❌"
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "  Replacing $DEMJ ✅" || ui_print "  Replacing $DEMJ ❌"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ; do
         if [ -f $SYSFONT/$DEMJ ]; then
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "- Replacing $i ✅" || ui_print "- Replacing $i ❌"
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "  Replacing $i ✅" || ui_print "  Replacing $i ❌"
         fi
     done
 	
@@ -254,30 +254,28 @@ emojiplus(){
 
 
 {
-    echo '#!/system/bin/sh'	
+    echo '#!/system/bin/sh'  
     echo '## MFFM Installer v11 by MFFM'
     echo '## 2022/08/30'
     echo ''
+    echo '('
     echo 'sleep 90'
     echo ''
-	echo 'rm -rf /data/data/com.facebook.orca/app_ras_blobs'
-    echo 'rm -rf /data/data/com.facebook.katana/app_ras_blobs'
-    echo 'mkdir /data/data/com.facebook.orca/app_ras_blobs'
-    echo 'mkdir /data/data/com.facebook.katana/app_ras_blobs'
-    echo 'cp -rf $MODPATH/system/fonts/NotoColorEmoji.ttf /data/data/com.facebook.orca/app_ras_blobs'
-    echo 'cd /data/data/com.facebook.orca/app_ras_blobs/'
-    echo 'mv NotoColorEmoji.ttf FacebookEmoji.ttf'
-    echo 'cp -rf $MODPATH/system/fonts/NotoColorEmoji.ttf /data/data/com.facebook.katana/app_ras_blobs'
-    echo 'cd /data/data/com.facebook.katana/app_ras_blobs/'
-    echo 'mv NotoColorEmoji.ttf FacebookEmoji.ttf'
+    echo 'F1="$(find /data/data -name FacebookEmoji.ttf)"'
+    echo 'for i in $F1; do'
+    echo '    cp -f /system/fonts/NotoColorEmoji.ttf $i'
+    echo 'done'
 	echo ''
-	echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
+    echo 'am force-stop com.facebook.orca'
+    echo 'am force-stop com.facebook.katana'
+    echo ''
+    echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
     echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
     echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755'
     echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs 0 0 0755 755'
-	echo ''
+    echo ''
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
-	echo ''
+    echo ')'
 } > $MODPATH/service.sh
 
 xmi(){

@@ -139,7 +139,7 @@ ui_print "- Done. Reboot To See Changes."
 ui_print ""
 ui_print "*************"
 ui_print ""
-sleep 0.3
+sleep 0.5
 echo '   *     (     (       *     
  (  `    )\ )  )\ )  (  `    
  )\))(  (()/( (()/(  )\))(   
@@ -148,7 +148,7 @@ echo '   *     (     (       *
 |  \/  || |_  | |_  |  \/  | 
 | |\/| || __| | __| | |\/| | 
 |_|  |_||_|   |_|   |_|  |_|'
-sleep 0.3
+sleep 0.5
 ui_print ""
 echo "-= A MFFM PRODUCTION =-"
 exit 0
