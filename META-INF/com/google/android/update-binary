@@ -1,4 +1,6 @@
 #!/sbin/sh
+## MFFM Installer v11 by MFFM
+## 2022.09.03
 
 ######
 # INIT
@@ -134,7 +136,6 @@ cd /
 "$BOOTMODE" || recovery_cleanup
 rm_exist "$TMPDIR"
 sleep 0.5
-ui_print ""
 ui_print "- Done. Reboot To See Changes."
 ui_print ""
 ui_print "*************"

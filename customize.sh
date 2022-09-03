@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022/08/30
+## 2022.09.03
 
 set -xv
 
@@ -146,8 +146,7 @@ bengpatch(){
 }
 
 beng(){
-    sleep 0.5
-	ui_print ""
+    sleep 0.5	
     unzip -qq $FONTDIR/Beng*.zip -d $FONTDIR
     cp $FONTDIR/Beng-Regular.ttf $SYSFONT/NotoSansBengali-VF.ttf
     cp $FONTDIR/NotoSansBengali-VF.ttf $SYSFONT/NotoSansBengali-VF.ttf
@@ -166,14 +165,12 @@ prdfnt(){
 	    for i do ln -s $SYSFONT/$i.ttf $PRDFONT/$i.ttf; done	    
 	fi
 	if [ -f $PRDFONT/Regular.ttf ]; then
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Installing Product Partition (Pixel) Fonts."
 	    gsans
 	    prdscrp
 	else
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Skipping Product Partition (Pixel) Font Installation."
 	fi
 }
@@ -190,13 +187,11 @@ sfont() {
 	for i do cp $FONTDIR/$i.ttf $SYSFONT/$i.ttf; done
 	singlefont
 	if [ -f $SYSFONT/Regular.ttf ]; then
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Installing Sans-Serif Fonts."
         patchsysxml
 	else
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Skipping Sans-Serif Installation."
 	fi
 }
@@ -205,12 +200,10 @@ monospace(){
     if [ -f $FONTDIR/Mono*.ttf ]; then
         cp $FONTDIR/Mono*.ttf $SYSFONT/CutiveMono.ttf
 	    cp $FONTDIR/Mono*.ttf $SYSFONT/DroidSansMono.ttf
-		sleep 0.5
-	    ui_print ""
+		sleep 0.5	    
 	    ui_print "- Installing Monospace Fonts."
 	else
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 	    ui_print "- Monospace Font Resources Not Found."
     fi
 }
@@ -222,22 +215,19 @@ srf(){
 	cp $FONTDIR/Serif-Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
 	cp $FONTDIR/Serif-BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
 	if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Installing Serif Fonts."
 		sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	    sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
 	else
-	    sleep 0.5
-	    ui_print ""
+	    sleep 0.5	    
 		ui_print "- Serif Font Resources Not Found."
 	fi
 }
 
 #Emoji Replacement | Thanks to @MrCarb0n
 emojiplus(){
-    sleep 0.5
-	ui_print ""
+    sleep 0.5	
     [ $FONTDIR/Emoji*.ttf ] && ui_print "- Installing Custom Emoji." || ui_print "- Custom Emoji Resources Not Found."
     DEMJ="NotoColorEmoji.ttf"
     [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ &&  ui_print "  Replacing $DEMJ ✅" || ui_print "  Replacing $DEMJ ❌"
@@ -256,7 +246,7 @@ emojiplus(){
 {
     echo '#!/system/bin/sh'  
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022/08/30'
+    echo '## 2022.09.03'
     echo ''
     echo '('
     echo 'sleep 90'
@@ -324,16 +314,14 @@ src(){
 }
 
 perm() {
-    sleep 0.5
-	ui_print ""
+    sleep 0.5	
 	ui_print "- Setting Up Permissions."
     set_perm_recursive $MODPATH 0 0 0755 0644
     set_perm $MODPATH/service.sh 0 0 0777 0777
 }
 
 finish(){
-    sleep 0.5
-	ui_print ""
+    sleep 0.5	
 	ui_print "- Cleaning Leftovers."
     rm -f $MODPATH/*.ttf
 	rm -f $MODPATH/*.xml
