@@ -1,6 +1,6 @@
 #!/sbin/sh
 ## MFFM Installer v11 by MFFM
-## 2022.09.03
+## 2022.09.05
 
 ######
 # INIT
@@ -152,5 +152,5 @@ echo '   *     (     (       *
 |_|  |_||_|   |_|   |_|  |_|'
 sleep 1
 ui_print ""
-echo "-= A MFFM PRODUCTION =-"
+echo "  -= A MFFM PRODUCTION =-"
 exit 0
