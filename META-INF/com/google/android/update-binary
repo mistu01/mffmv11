@@ -1,6 +1,6 @@
 #!/sbin/sh
 ## MFFM Installer v11 by MFFM
-## 2022.09.05
+## 2022.09.09
 
 ######
 # INIT
@@ -75,7 +75,8 @@ unzip -o "$ZIPFILE" -d "$MODPATH" >&2
 
 sleep 1
 ui_print ""
-ui_print "*************"
+ui_print "**********************************"
+ui_print "**********************************"
 ui_print ""
 
 # Load install script
@@ -139,7 +140,8 @@ sleep 0.5
 ui_print "- Done. Reboot To See Changes."
 ui_print ""
 sleep 1
-ui_print "*************"
+ui_print "**********************************"
+ui_print "**********************************"
 ui_print ""
 sleep 1
 echo '   *     (     (       *     

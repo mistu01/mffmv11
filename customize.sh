@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022.09.05
+## 2022.09.09
 
 set -xv
 
@@ -246,7 +246,7 @@ emojiplus(){
 {
     echo '#!/system/bin/sh'  
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022.09.05'
+    echo '## 2022.09.09'
     echo ''
     echo '('
     echo 'sleep 90'
