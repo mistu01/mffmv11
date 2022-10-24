@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022.09.14
+## 2022.10.24
 
 set -xv
 
@@ -27,10 +27,9 @@ MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
 
 mffmex(){
-    sleep 1
-	ui_print "║                                        ║"
-	ui_print "║ ■ COPYING MFFM FOLDER RESOURCES TO THE ║"
-	ui_print "║   MODULE DIRECTORY.                    ║"
+    sleep 1	
+	ui_print ""
+	ui_print "- Copying MFFM folder resources to module directory."
     f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
 	for i in $f; do
 	    if [ ! -f "$FONTDIR/$i" ]; then
@@ -86,7 +85,7 @@ patchsysxml(){
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"google-sans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
-    sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+    sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML	
 	sed -i "s/<family name=\"serif\">/<family name=\"serif\">\n        $regular\n        $bold\n        $italic\n        $bolditalic\n    <\/family>\n    <family>\n        <font weight=\"400\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-BoldItalic.ttf<\/font>/" $SYSXML
 }
 
@@ -156,10 +155,10 @@ beng(){
     cp $FONTDIR/NotoSansBengali-VF.ttf $SYSFONT/NotoSansBengali-VF.ttf
 	cp $FONTDIR/Beng-Medium.ttf $SYSFONT/NotoSerifBengali-VF.ttf
 	cp $FONTDIR/Beng-Bold.ttf $SYSFONT/NotoSansBengaliUI-VF.ttf
-    if [ -f $SYSFONT/NotoSansBengali-VF.ttf ]; then		
-	    bengpatch && ui_print "║   Installing BENGALI fonts.            ║"
+    if [ -f $SYSFONT/NotoSansBengali-VF.ttf ]; then                     
+	    bengpatch && ui_print "  Installing BENGALI fonts."
 	else
-	    ui_print "║   Skipping BENGALI font installation.  ║"
+	    ui_print "  Skipping BENGALI font installation."
 	fi
 }
 
@@ -169,7 +168,6 @@ prdfnt(){
 	    for i do ln -s $SYSFONT/$i.ttf $PRDFONT/$i.ttf; done	    
 	fi
 	if [ -f $PRDFONT/Regular.ttf ]; then
-	    sleep 0.5
 	    gsans
 	    prdscrp
 	fi
@@ -188,15 +186,15 @@ sfont() {
 	singlefont
 	if [ -f $SYSFONT/Regular.ttf ]; then
 	    sleep 0.5
-        ui_print "║                                        ║"		
-		ui_print "║ ■ INSTALLING FONTS.                    ║"
-		ui_print "║   Installing SANS-SERIF fonts.         ║"
+        ui_print ""		
+		ui_print "- Installing Fonts"
+		ui_print "  Installing SANS-SERIF fonts"
         patchsysxml
 	else
 	    sleep 0.5
-		ui_print "║                                        ║"		
-		ui_print "║ ■ INSTALLING FONTS.                    ║"
-		ui_print "║   Skipping SANS-SERIF installation.    ║"
+		ui_print ""		
+		ui_print "- Installing Fonts"
+		ui_print "  Skipping SANS-SERIF installation."
 	fi
 }
 
@@ -204,11 +202,11 @@ monospace(){
     if [ -f $FONTDIR/Mono*.ttf ]; then
         cp $FONTDIR/Mono*.ttf $SYSFONT/CutiveMono.ttf
 	    cp $FONTDIR/Mono*.ttf $SYSFONT/DroidSansMono.ttf
-		sleep 0.5	    
-	    ui_print "║   Installing MONOSPACE fonts.          ║"
+		sleep 0.5
+	    ui_print "  Installing MONOSPACE fonts."
 	else
-	    sleep 0.5	    
-	    ui_print "║   Skipping MONOSPACE font installation.║"
+	    sleep 0.5
+	    ui_print "  Skipping MONOSPACE font installation."
     fi
 }
 
@@ -219,29 +217,30 @@ srf(){
 	cp $FONTDIR/Serif-Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
 	cp $FONTDIR/Serif-BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
 	if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
-	    sleep 0.5	    
-		ui_print "║   Installing SERIF fonts.              ║"
+	    sleep 0.5
+		ui_print "  Installing SERIF fonts."
 		sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	    sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
 	else
-	    sleep 0.5	    
-		ui_print "║   Skipping SERIF font installation.    ║"
+	    sleep 0.5 
+		ui_print "  Skipping SERIF font installation."
 	fi
 }
 
 #Emoji Replacement | Thanks to @MrCarb0n
 emojiplus(){
-    sleep 0.5	
-    
-	[ $FONTDIR/Emoji*.ttf ] && ui_print "║   Installing Emoji font.               ║" || ui_print "║   Skipping Emoji installation.  ║"
-    
-	DEMJ="NotoColorEmoji.ttf"
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf;
+    sleep 0.5
+    [ $FONTDIR/Emoji*.ttf ] && ui_print "  Installing Emoji font." || ui_print "  Skipping Emoji installation."
+	
+	sleep 0.5
+	
+    DEMJ="NotoColorEmoji.ttf"	
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ && ui_print "  Installed $DEMJ" || ui_print "  Failed to install $DEMJ"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ; do
-        if [ -f $SYSFONT/$DEMJ ]; then
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i
+        if [ -f $SYSFONT/$DEMJ ]; then		                                                         
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "  Installed $i" || ui_print " Failed to install $i"
         fi
     done
 	
@@ -249,10 +248,12 @@ emojiplus(){
 }
 
 
-{
-    echo '#!/system/bin/sh'  
+emj_serv(){
+ if [ -f $SYSFONT/NotoColorEmoji.ttf ]; then
+  {
+    echo '#!/system/bin/sh'
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022.09.14'
+    echo '## 2022.10.24'
     echo ''
     echo '('
     echo 'sleep 90'
@@ -272,7 +273,9 @@ emojiplus(){
     echo ''
     echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
     echo ')'
-} > $MODPATH/service.sh
+  } > $MODPATH/service.sh
+ fi
+}
 
 xmi(){
     #miui main
@@ -321,16 +324,15 @@ src(){
 
 perm() {
     sleep 0.5	
-	ui_print "║                                        ║"
-	ui_print "║ ■ SETTING UP PERMISSIONS.              ║"
+	ui_print "- Setting up permissions."
     set_perm_recursive $MODPATH 0 0 0755 0644
     set_perm $MODPATH/service.sh 0 0 0777 0777
 }
 
 finish(){
-    sleep 0.5	
-	ui_print "║                                        ║"
-	ui_print "║ ■ CLEANING LEFTOVERS.                  ║"
+    sleep 0.5
+	ui_print ""
+	ui_print "- Cleaning leftovers."
     rm -f $MODPATH/*.ttf
 	rm -f $MODPATH/*.xml
 	rm -f $MODPATH/f
@@ -349,8 +351,9 @@ beng
 oxygen
 xmi
 samsung
-emojiplus
 srf
+emojiplus
+emj_serv
 src
 fallback
 finish
