@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2022.10.24
+## 2023.02.02
 
 set -xv
 
@@ -27,7 +27,7 @@ MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
 
 mffmex(){
-    sleep 1	
+    sleep 1
 	ui_print ""
 	ui_print "- Copying MFFM folder resources to module directory."
     f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
@@ -75,15 +75,17 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	medium="<font weight=\"500\" style=\"normal\">Medium.ttf<\/font>"	mediumitalic="<font weight=\"500\" style=\"italic\">MediumItalic.ttf<\/font>"
 	black="<font weight=\"900\" style=\"normal\">Black.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">BlackItalic.ttf<\/font>"
 	bold="<font weight=\"700\" style=\"normal\">Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">BoldItalic.ttf<\/font>"
-	
+
 patchsysxml(){
+    sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML
-	sed -i -n '/<family name=\"sans-serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
 	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"google-sans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
+	sed -i -n '/<family name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+	sed -i "s/<family name=\"googlesans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
     sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML	
 	sed -i "s/<family name=\"serif\">/<family name=\"serif\">\n        $regular\n        $bold\n        $italic\n        $bolditalic\n    <\/family>\n    <family>\n        <font weight=\"400\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-BoldItalic.ttf<\/font>/" $SYSXML
@@ -110,6 +112,10 @@ gsans(){
 	sed -i "s/$GSTI/$GSTI\n        $italic/" $PRDXML
 	sed -i -n '/<family customizationType=\"new-named-family\" name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
 	sed -i "s/$GSN/$GSN\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML	
+    sed -i -n '/<family customizationType=\"new-named-family\" name=\"googlesansclock\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"googlesansclock\">/<family customizationType=\"new-named-family\" name=\"googlesansclock\">\n        $gregular/" $PRDXML
+    sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-clock\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"google-sans-clock\">/<family customizationType=\"new-named-family\" name=\"googlesansclock\">\n        $gregular/" $PRDXML
 }
 
 prdscrp(){
@@ -132,7 +138,7 @@ prdscrp(){
 }
 
 fallback(){
-    cp $FONTDIR/Roboto-Regular.ttf $SYSFONT/DroidSans.ttf
+    cp $FONTDIR/DroidSans.ttf $SYSFONT/DroidSans.ttf
 	sed -i 's/<\/familyset>//g' $SYSXML
 	cat $FONTDIR/fallback.xml >> $SYSXML
 }
@@ -189,13 +195,21 @@ sfont() {
         ui_print ""		
 		ui_print "- Installing Fonts"
 		ui_print "  Installing SANS-SERIF fonts"
-        patchsysxml
+		if grep -q 'SysSans-En-Regular.ttf' $ORISYSXML; then
+		    cp $FONTDIR/Regular.ttf $SYSFONT/Roboto-Regular.ttf
+	        cp $FONTDIR/Regular.ttf $SYSFONT/RobotoStatic-Regular.ttf
+		    sed -i -n '/<family name=\"sans-serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+		    patchsysxml
+			fallback
+		else
+		    patchsysxml
+		fi        
 	else
 	    sleep 0.5
 		ui_print ""		
 		ui_print "- Installing Fonts"
 		ui_print "  Skipping SANS-SERIF installation."
-	fi
+	fi	
 }
 
 monospace(){
@@ -247,13 +261,12 @@ emojiplus(){
     [ -d /data/fonts ] && rm -f -rf /data/fonts
 }
 
-
 emj_serv(){
  if [ -f $SYSFONT/NotoColorEmoji.ttf ]; then
   {
     echo '#!/system/bin/sh'
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2022.10.24'
+    echo '## 2023.02.02'
     echo ''
     echo '('
     echo 'sleep 90'
@@ -284,7 +297,7 @@ xmi(){
 	    if [ -f "$ORISYSFONT/$i" ]; then
 		    cp $FONTDIR/Regular.ttf $SYSFONT/$i
 		fi
-	done	
+	done
 	#miui extra
 	miextra='MitypeClock.otf MitypeClockMono.otf MiClock.otf MiClockThin.otf MiClockMono.otf MiClockUyghur-Thin.ttf MiClockTibetan-Thin.ttf MitypeVF.ttf MitypeMonoVF.ttf'
 	for i in $miextra; do
@@ -303,6 +316,11 @@ samsung(){
 	sed -i "s/<family name=\"sec-roboto-condensed-light\">/<family name=\"sec-roboto-condensed-light\">\n        $clight/" $SYSXML
 }
 
+oxyp(){
+    sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSXML
+	sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSEXTETC/fonts_base.xml
+}
+
 oxygen(){ 
     if [ -f $ORISYSETC/fonts_base.xml ]; then
 	cp $SYSXML $SYSETC/fonts_base.xml
@@ -313,11 +331,15 @@ oxygen(){
 	if [ -f $ORISYSETC/fonts_slate.xml ]; then
 	cp $SYSXML $SYSETC/fonts_slate.xml
 	fi
+	if grep -q 'SysSans-En-Regular.ttf' $ORISYSXML; then oxyp; fi
 }
 
 src(){
     if [ -f $MFFM/MFFM*.sh ]; then
 	cp $MFFM/MFFM*.sh $MODPATH
+	    for i in $(ls $MODPATH/MFFM*.sh); do
+            . $i
+        done
     . $MODPATH/MFFM*.sh    
     fi
 }
@@ -355,6 +377,6 @@ srf
 emojiplus
 emj_serv
 src
-fallback
+#fallback
 finish
 perm
