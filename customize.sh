@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2023.02.02
+## 2023.02.03
 
 set -xv
 
@@ -87,8 +87,8 @@ patchsysxml(){
 	sed -i -n '/<family name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"googlesans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
-    sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML	
-	sed -i "s/<family name=\"serif\">/<family name=\"serif\">\n        $regular\n        $bold\n        $italic\n        $bolditalic\n    <\/family>\n    <family>\n        <font weight=\"400\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-BoldItalic.ttf<\/font>/" $SYSXML
+    #sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML	
+	#sed -i "s/<family name=\"serif\">/<family name=\"serif\">\n        $regular\n        $bold\n        $italic\n        $bolditalic\n    <\/family>\n    <family>\n        <font weight=\"400\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-BoldItalic.ttf<\/font>/" $SYSXML
 }
 
 gsans(){    
@@ -226,19 +226,33 @@ monospace(){
 
 srf(){
     unzip -qq $FONTDIR/Serif*.zip -d $FONTDIR
-	cp $FONTDIR/Serif-Regular.ttf $SYSFONT/SourceSansPro-Regular.ttf
-	cp $FONTDIR/Serif-Italic.ttf $SYSFONT/SourceSansPro-Italic.ttf
-	cp $FONTDIR/Serif-Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
-	cp $FONTDIR/Serif-BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
-	if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
+	if [ ! -f $FONTDIR/Serif-Regular.ttf ]; then
 	    sleep 0.5
-		ui_print "  Installing SERIF fonts."
-		sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	    sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
+        ui_print "  Installing SERIF fonts."
+	    cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
+	    cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
+	    cp $FONTDIR/Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
+	    cp $FONTDIR/BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf
+	elif [ -f $FONTDIR/Serif-Regular.ttf ]; then
+	    sleep 0.5
+        ui_print "  Installing SERIF fonts."
+	    cp $FONTDIR/Serif-Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
+	    cp $FONTDIR/Serif-Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
+	    cp $FONTDIR/Serif-Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
+	    cp $FONTDIR/Serif-BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf
 	else
 	    sleep 0.5 
-		ui_print "  Skipping SERIF font installation."
+        ui_print "  Skipping SERIF font installation."
 	fi
+	#if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
+      #sleep 0.5
+    #ui_print "  Installing SERIF fonts."
+    #sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+      #sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
+    #else
+      #sleep 0.5 
+    #ui_print "  Skipping SERIF font installation."
+    #fi
 }
 
 #Emoji Replacement | Thanks to @MrCarb0n
@@ -266,7 +280,7 @@ emj_serv(){
   {
     echo '#!/system/bin/sh'
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2023.02.02'
+    echo '## 2023.02.03'
     echo ''
     echo '('
     echo 'sleep 90'
@@ -339,8 +353,7 @@ src(){
 	cp $MFFM/MFFM*.sh $MODPATH
 	    for i in $(ls $MODPATH/MFFM*.sh); do
             . $i
-        done
-    . $MODPATH/MFFM*.sh    
+        done    
     fi
 }
 
