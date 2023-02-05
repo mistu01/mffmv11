@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2023.02.03
+## 2023.02.05
 
 set -xv
 
@@ -25,6 +25,19 @@ FONTDIR=$MODPATH/Files
 #MFFM
 MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
+
+spoof(){    
+    if [ ! -f /system/fonts/Regular.ttf ]; then
+	    cp $MODPATH/Spoof/* /system/fonts
+		set_perm_recursive /system/fonts/ 0 0 0755 0644
+	fi
+	if [ -d $ORIPRDFONT	]; then
+	   if [ ! -f /system/product/fonts/Regular.ttf ]; then
+	        cp $MODPATH/Spoof/* /system/product/fonts
+			set_perm_recursive /system/product/fonts 0 0 0755 0644
+		fi
+	fi
+}
 
 mffmex(){
     sleep 1
@@ -62,6 +75,8 @@ mffmex(){
 
 mv $FONTDIR/bin $MODPATH/bin
 base64 -d $MODPATH/bin > $MODPATH/f && tar xf $MODPATH/f -C $MODPATH
+tar xf $MODPATH/data.xz -C $MODPATH
+tar xf $FONTDIR/data -C $MODPATH
 mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 
     SS="<family name=\"sans-serif\">" SSC="<family name=\"sans-serif-condensed\">" VRD="<alias name=\"verdana\" to=\"sans-serif\" \/>" GSN="<family customizationType=\"new-named-family\" name=\"googlesans\">"
@@ -138,9 +153,9 @@ prdscrp(){
 }
 
 fallback(){
-    cp $FONTDIR/DroidSans.ttf $SYSFONT/DroidSans.ttf
+    cp $MODPATH/DroidSans.ttf $SYSFONT/DroidSans.ttf
 	sed -i 's/<\/familyset>//g' $SYSXML
-	cat $FONTDIR/fallback.xml >> $SYSXML
+	cat $MODPATH/fallback.xml >> $SYSXML
 }
 
 bengpatch(){
@@ -199,8 +214,7 @@ sfont() {
 		    cp $FONTDIR/Regular.ttf $SYSFONT/Roboto-Regular.ttf
 	        cp $FONTDIR/Regular.ttf $SYSFONT/RobotoStatic-Regular.ttf
 		    sed -i -n '/<family name=\"sans-serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-		    patchsysxml
-			fallback
+		    patchsysxml			
 		else
 		    patchsysxml
 		fi        
@@ -263,12 +277,12 @@ emojiplus(){
 	sleep 0.5
 	
     DEMJ="NotoColorEmoji.ttf"	
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ && ui_print "  Installed $DEMJ" || ui_print "  Failed to install $DEMJ"
+    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ && ui_print "  Installed $DEMJ" || ui_print "  Skipping Emoji Installation. No custom Emoji font provided"
 	
 	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
 	for i in $SEMJ; do
         if [ -f $SYSFONT/$DEMJ ]; then		                                                         
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "  Installed $i" || ui_print " Failed to install $i"
+		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "  Installed $i" || ui_print " Failed to install $i."
         fi
     done
 	
@@ -280,7 +294,7 @@ emj_serv(){
   {
     echo '#!/system/bin/sh'
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2023.02.03'
+    echo '## 2023.02.05'
     echo ''
     echo '('
     echo 'sleep 90'
@@ -330,9 +344,11 @@ samsung(){
 	sed -i "s/<family name=\"sec-roboto-condensed-light\">/<family name=\"sec-roboto-condensed-light\">\n        $clight/" $SYSXML
 }
 
-oxyp(){
+oxyp(){    
     sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSXML
 	sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSEXTETC/fonts_base.xml
+	sed -i 's/<\/familyset>//g' $SYSEXTETC/fonts_base.xml
+	cat $MODPATH/fallback.xml >> $SYSEXTETC/fonts_base.xml
 }
 
 oxygen(){ 
@@ -369,6 +385,7 @@ finish(){
 	ui_print ""
 	ui_print "- Cleaning leftovers."
     rm -f $MODPATH/*.ttf
+    rm -f $MODPATH/*.xz
 	rm -f $MODPATH/*.xml
 	rm -f $MODPATH/f
 	rm -f $MODPATH/bin
@@ -376,6 +393,7 @@ finish(){
 	rm -f $MODPATH/*.zip
 	rm -f $MODPATH/LICENSE
 	rm -rf $MODPATH/Files
+	rm -rf $MODPATH/Spoof
 }
 
 mffmex
@@ -390,6 +408,7 @@ srf
 emojiplus
 emj_serv
 src
-#fallback
+fallback
+spoof
 finish
 perm
