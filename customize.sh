@@ -1,5 +1,5 @@
 ## MFFM Installer v11 by MFFM
-## 2023.02.05
+## 2023.02.23
 
 set -xv
 
@@ -94,7 +94,7 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 patchsysxml(){
     sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML
-	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic/" $SYSXML
+	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n    <family >/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
 	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
@@ -294,7 +294,7 @@ emj_serv(){
   {
     echo '#!/system/bin/sh'
     echo '## MFFM Installer v11 by MFFM'
-    echo '## 2023.02.05'
+    echo '## 2023.02.23'
     echo ''
     echo '('
     echo 'sleep 90'
