@@ -1,6 +1,6 @@
 #!/sbin/sh
-## MFFM Installer v11 by MFFM
-## 2023.02.23
+## MFFM v11 by MFFM
+## 2023.11.14
 
 ######
 # INIT
@@ -78,13 +78,6 @@ ui_print ""
 ui_print "******************************************"
 ui_print ""
 sleep 0.5
-cat << "EOF"
-  __  __ ___ ___ __  __ 
- |  \/  | __| __|  \/  |
- | |\/| | _|| _|| |\/| |
- |_|  |_|_| |_| |_|  |_| v11
-                   ©2023 
-EOF
 
 # Load install script
 source "$MODPATH/customize.sh"
@@ -143,9 +136,4 @@ rm_exist "$MODPATH/changelog.md"
 cd /
 "$BOOTMODE" || recovery_cleanup
 rm_exist "$TMPDIR"
-sleep 0.5
-ui_print "- Done. Reboot to see changes."
-ui_print ""
-sleep 0.5
-ui_print "******************************************"
 exit 0

@@ -1,76 +1,66 @@
-## MFFM Installer v11 by MFFM
-## 2023.02.23
+## MFFM v11
+## 2023.11.14
 
+#Debugging mode enabled
 set -xv
 
-MIRRORPATH=$(magisk --path)/.magisk/mirror
-APILEVEL=$(getprop ro.build.version.sdk)
-#Original
-ORIPRDFONT=$MIRRORPATH/system/product/fonts
-ORIPRDETC=$MIRRORPATH/system/product/etc
+#Original Paths
+[ -d ${ORIDIR:=`magisk --path`/.magisk/mirror} ] || \ # Borrowed From OMF
+    ORIDIR=
+[ -d ${ORIPRD:=$ORIDIR/product} ] || \ # Borrowed From OMF
+    ORIPRD=$ORIDIR/system/product
+[ -d ${ORISYSEXT:=$ORIDIR/system_ext} ] || \ # Borrowed From OMF
+    ORISYSEXT=$ORIDIR/system/system_ext
+
+ORIPRDFONT=$ORIPRD/fonts
+ORIPRDETC=$ORIPRD/etc
 ORIPRDXML=$ORIPRDETC/fonts_customization.xml
-ORISYSFONT=$MIRRORPATH/system/fonts
-ORISYSETC=$MIRRORPATH/system/etc
+ORISYSFONT=$ORIDIR/system/fonts
+ORISYSETC=$ORIDIR/system/etc
 ORISYSXML=$ORISYSETC/fonts.xml
 #MODPATH
-PRDFONT=$MODPATH/system/product/fonts
-PRDETC=$MODPATH/system/product/etc
+PRDFONT="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/fonts"
+PRDETC="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/etc"
 PRDXML=$PRDETC/fonts_customization.xml
 SYSFONT=$MODPATH/system/fonts
 SYSETC=$MODPATH/system/etc
-SYSEXTETC=$MODPATH/system/system_ext/etc
+SYSEXTETC="$MODPATH/$(if [ "$ORISYSEXT" = "$ORIDIR/system_ext" ]; then echo "system_ext"; else echo "system/system_ext"; fi)/etc"
 SYSXML=$SYSETC/fonts.xml
 MODPROP=$MODPATH/module.prop
 FONTDIR=$MODPATH/Files
 #MFFM
 MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
-
-spoof(){    
-    if [ ! -f /system/fonts/Regular.ttf ]; then
-	    cp $MODPATH/Spoof/* /system/fonts
-		set_perm_recursive /system/fonts/ 0 0 0755 0644
-	fi
-	if [ -d $ORIPRDFONT	]; then
-	   if [ ! -f /system/product/fonts/Regular.ttf ]; then
-	        cp $MODPATH/Spoof/* /system/product/fonts
-			set_perm_recursive /system/product/fonts 0 0 0755 0644
-		fi
-	fi
-}
+#API
+APILEVEL=$(getprop ro.build.version.sdk)
 
 mffmex(){
     sleep 1
-	ui_print ""
 	ui_print "- Copying MFFM folder resources to module directory."
-    f='Thin.ttf ThinItalic.ttf Light.ttf LightItalic.ttf Regular.ttf Italic.ttf Medium.ttf MediumItalic.ttf Bold.ttf BoldItalic.ttf Black.ttf BlackItalic.ttf'
-	for i in $f; do
-	    if [ ! -f "$FONTDIR/$i" ]; then
-		    cp $MFFM/$i $FONTDIR
-		fi
-	done
-	if [ ! -f $FONTDIR/MFFM.ttf ]; then cp $MFFM/MFFM.ttf $FONTDIR; fi
-    if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ ! -f $MFFM/Beng*.ttf ] && [ -f $MFFM/Beng*.zip ]; then
-        cp $MFFM/Beng*.zip $FONTDIR
+	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Beng*")" ]; then
+        :
+    else
+        bengali=$(find "$MFFM" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Beng*")    
+        if [ -n "$bengali" ]; then
+            cp $bengali $FONTDIR
+        fi
     fi
-	if [ ! -f $FONTDIR/Beng*.ttf ] && [ ! -f $FONTDIR/Beng*.zip ] && [ -f $MFFM/Beng*.ttf ] && [ ! -f $MFFM/Beng*.zip ]; then
-        cp $MFFM/Beng*.ttf $FONTDIR
+	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Serif*")" ]; then
+        :
+    else
+        serif=$(find "$MFFM" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Serif*")    
+        if [ -n "$serif" ]; then
+            cp $serif $FONTDIR
+        fi
+    fi	
+	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f -name "Mono*.ttf")" ]; then
+       :
+    else
+        monofile=$(find "$MFFM" -maxdepth 1 -type f -name "Mono*.ttf")    
+        if [ -n "$monofile" ]; then
+            cp $monofile $FONTDIR
+        fi
     fi
-	if [ ! -f $FONTDIR/NotoSansBengali-VF.ttf ] && [ -f $MFFM/NotoSansBengali-VF.ttf ]; then
-	    cp $MFFM/NotoSansBengali-VF.ttf $FONTDIR
-	fi
-	if [ ! -f $FONTDIR/Beng*.xml ] && [ -f $MFFM/Beng*.xml ]; then
-	    cp $MFFM/Beng*.xml $FONTDIR
-	fi
-	if [ ! -f $FONTDIR/Serif*.ttf ] && [ ! -f $FONTDIR/Serif*.zip ] && [ ! -f $MFFM/Serif*.ttf ] && [ -f $MFFM/Serif*.zip ]; then
-        cp $MFFM/Serif*.zip $FONTDIR
-    fi	
-	if [ ! -f $FONTDIR/Serif*.ttf ] && [ ! -f $FONTDIR/Serif*.zip ] && [ -f $MFFM/Serif*.ttf ] && [ ! -f $MFFM/Serif*.zip ]; then
-        cp $MFFM/Serif*.ttf $FONTDIR
-    fi	
-    if [ ! -f $FONTDIR/Mono*.ttf ]; then cp $MFFM/Mono*.ttf $FONTDIR; fi
-	if [ ! -f $FONTDIR/Emoji*.ttf ]; then cp $MFFM/Emoji*.ttf $FONTDIR; fi
-	cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
 }
 
 mv $FONTDIR/bin $MODPATH/bin
@@ -78,18 +68,23 @@ base64 -d $MODPATH/bin > $MODPATH/f && tar xf $MODPATH/f -C $MODPATH
 tar xf $MODPATH/data.xz -C $MODPATH
 tar xf $FONTDIR/data -C $MODPATH
 mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
+cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
 
     SS="<family name=\"sans-serif\">" SSC="<family name=\"sans-serif-condensed\">" VRD="<alias name=\"verdana\" to=\"sans-serif\" \/>" GSN="<family customizationType=\"new-named-family\" name=\"googlesans\">"
 	GS="<family customizationType=\"new-named-family\" name=\"google-sans\">" GST="<family customizationType=\"new-named-family\" name=\"google-sans-text\">" GSB="<family customizationType=\"new-named-family\" name=\"google-sans-bold\">"
 	GSM="<family customizationType=\"new-named-family\" name=\"google-sans-medium\">" GSTM="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium\">" GSTB="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold\">"
 	GSTBI="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold-italic\">" GSTMI="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium-italic\">" GSTI="<family customizationType=\"new-named-family\" name=\"google-sans-text-italic\">"
 
-    thin="<font weight=\"100\" style=\"normal\">Thin.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">ThinItalic.ttf<\/font>"
-	light="<font weight=\"300\" style=\"normal\">Light.ttf<\/font>"	lightitalic="<font weight=\"300\" style=\"italic\">LightItalic.ttf<\/font>"
-	regular="<font weight=\"400\" style=\"normal\">Regular.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">Italic.ttf<\/font>"
-	medium="<font weight=\"500\" style=\"normal\">Medium.ttf<\/font>"	mediumitalic="<font weight=\"500\" style=\"italic\">MediumItalic.ttf<\/font>"
-	black="<font weight=\"900\" style=\"normal\">Black.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">BlackItalic.ttf<\/font>"
-	bold="<font weight=\"700\" style=\"normal\">Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">BoldItalic.ttf<\/font>"
+    thin="<font weight=\"100\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
+	light="<font weight=\"300\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>"	lightitalic="<font weight=\"300\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>"
+	regular="<font weight=\"400\" style=\"normal\">NotoSerif-Regular.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">NotoSerif-Italic.ttf<\/font>"
+	medium="<font weight=\"500\" style=\"normal\">SourceSansPro-SemiBold.ttf<\/font>"	mediumitalic="<font weight=\"500\" style=\"italic\">SourceSansPro-SemiBoldItalic.ttf<\/font>"
+	black="<font weight=\"900\" style=\"normal\">DroidSans.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">DroidSans-Bold.ttf<\/font>"
+	bold="<font weight=\"700\" style=\"normal\">NotoSerif-Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">NotoSerif-BoldItalic.ttf<\/font>"
+
+    gregular="<font weight=\"400\" style=\"normal\">Rubik-Regular.ttf<\/font>"	gitalic="<font weight=\"400\" style=\"italic\">Rubik-Italic.ttf<\/font>"
+	gmedium="<font weight=\"500\" style=\"normal\">Rubik-Medium.ttf<\/font>"	gmediumitalic="<font weight=\"500\" style=\"italic\">Rubik-MediumItalic.ttf<\/font>"
+	gbold="<font weight=\"700\" style=\"normal\">Rubik-Bold.ttf<\/font>"    gbolditalic="<font weight=\"700\" style=\"italic\">Rubik-BoldItalic.ttf<\/font>"
 
 patchsysxml(){
     sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
@@ -102,93 +97,95 @@ patchsysxml(){
 	sed -i -n '/<family name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"googlesans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
-    #sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML	
-	#sed -i "s/<family name=\"serif\">/<family name=\"serif\">\n        $regular\n        $bold\n        $italic\n        $bolditalic\n    <\/family>\n    <family>\n        <font weight=\"400\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\" fallbackFor=\"serif\">NotoSerif-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\" fallbackFor=\"serif\">NotoSerif-BoldItalic.ttf<\/font>/" $SYSXML
 }
 
 gsans(){    
-    sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GS/$GS\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML    
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GST/$GST\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-bold\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSB/$GSB\n        $bold/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-medium\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSM/$GSM\n        $medium/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text-medium\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSTM/$GSTM\n        $medium/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text-bold\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSTB/$GSTB\n        $bold/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text-bold-italic\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSTBI/$GSTBI\n        $bolditalic/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text-medium-italic\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSTMI/$GSTMI\n        $mediumitalic/" $PRDXML	
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-text-italic\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSTI/$GSTI\n        $italic/" $PRDXML
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/$GSN/$GSN\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML	
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"googlesansclock\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
 	sed -i "s/<family customizationType=\"new-named-family\" name=\"googlesansclock\">/<family customizationType=\"new-named-family\" name=\"googlesansclock\">\n        $gregular/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"google-sans-clock\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
 	sed -i "s/<family customizationType=\"new-named-family\" name=\"google-sans-clock\">/<family customizationType=\"new-named-family\" name=\"googlesansclock\">\n        $gregular/" $PRDXML
+    sed -i -n '/<family customizationType=\"new-named-family\" name=\"audimat\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"audimat\">/<family customizationType=\"new-named-family\" name=\"audimat\">\n        $gregular/" $PRDXML
 }
 
-prdscrp(){
+prdscrp(){    
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"manrope\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"manrope\">/<family customizationType=\"new-named-family\" name=\"manrope\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"manrope\">/<family customizationType=\"new-named-family\" name=\"manrope\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"noto-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"noto-sans\">/<family customizationType=\"new-named-family\" name=\"noto-sans\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"noto-sans\">/<family customizationType=\"new-named-family\" name=\"noto-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"source-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"source-sans\">/<family customizationType=\"new-named-family\" name=\"source-sans\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"source-sans\">/<family customizationType=\"new-named-family\" name=\"source-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"roboto-system\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"roboto-system\">/<family customizationType=\"new-named-family\" name=\"roboto-system\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"roboto-system\">/<family customizationType=\"new-named-family\" name=\"roboto-system\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"rubik\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"rubik\">/<family customizationType=\"new-named-family\" name=\"rubik\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"rubik\">/<family customizationType=\"new-named-family\" name=\"rubik\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"barlow\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"barlow\">/<family customizationType=\"new-named-family\" name=\"barlow\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"barlow\">/<family customizationType=\"new-named-family\" name=\"barlow\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
     sed -i -n '/<family customizationType=\"new-named-family\" name=\"lato\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"lato\">/<family customizationType=\"new-named-family\" name=\"lato\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
-	sed -i -n '/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
-	sed -i "s/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/<family customizationType=\"new-named-family\" name=\"fluid-sans\">\n        $regular\n        $medium\n        $bold\n        $italic\n        $mediumitalic\n        $bolditalic/" $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"lato\">/<family customizationType=\"new-named-family\" name=\"lato\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
+    sed -i -n '/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"fluid-sans\">/<family customizationType=\"new-named-family\" name=\"fluid-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
+	sed -i -n '/<family customizationType=\"new-named-family\" name=\"harmonyos-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"harmonyos-sans\">/<family customizationType=\"new-named-family\" name=\"harmonyos-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
+	sed -i -n '/<family customizationType=\"new-named-family\" name=\"op-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"op-sans\">/<family customizationType=\"new-named-family\" name=\"op-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
+    sed -i -n '/<family customizationType=\"new-named-family\" name=\"oneplusslate\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $PRDXML
+	sed -i "s/<family customizationType=\"new-named-family\" name=\"oneplusslate\">/<family customizationType=\"new-named-family\" name=\"op-sans\">\n        $gregular\n        $gmedium\n        $gbold\n        $gitalic\n        $gmediumitalic\n        $gbolditalic/" $PRDXML
 }
 
-fallback(){
-    cp $MODPATH/DroidSans.ttf $SYSFONT/DroidSans.ttf
-	sed -i 's/<\/familyset>//g' $SYSXML
-	cat $MODPATH/fallback.xml >> $SYSXML
+# Borrowed From OMF
+delgsans(){ 
+    sed -i '/<family customizationType="new-named-family" name="google-sans">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-flex">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-medium">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-bold">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text-medium">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text-bold">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text-italic">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text-medium-italic">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-text-bold-italic">/,/<\/family>/d' $PRDXML
+    sed -i '/<family customizationType="new-named-family" name="google-sans-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-medium-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-bold-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-medium-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-bold-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-italic-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-medium-italic-inter">/,/<\/family>/d' $PRDXML
+	sed -i '/<family customizationType="new-named-family" name="google-sans-text-bold-italic-inter">/,/<\/family>/d' $PRDXML
+}
+
+# Borrowed From OMF
+gfntdsbl(){
+    [ ! -f "$MODPATH/service.sh" ] && echo > "$MODPATH/service.sh"
+	sed -i '1i( until pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 60; done ) &' $MODPATH/service.sh #Borrowed from OMF
+    [ ! -f "$MODPATH/uninstall.sh" ] && echo > "$MODPATH/uninstall.sh"
+	sed -i '1i( until pm enable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 5; done ) &' $MODPATH/uninstall.sh #Borrowed from OMF
 }
 
 bengpatch(){
-    BXML="$FONTDIR/Beng*.xml"
-	sed '/<\!-- elegant -->/,/<\!-- elegant ends -->/!d' $BXML > $MODPATH/elegant.xml
-	sed '/<\!-- compact -->/,/<\!-- compact ends -->/!d' $BXML > $MODPATH/compact.xml
-	sed -i -n '/<family lang=\"und-Beng\" variant=\"elegant\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i "/<family lang=\"und-Beng\" variant=\"elegant\">/r $MODPATH/elegant.xml" $SYSXML
-	sed -i -n '/<family lang=\"und-Beng\" variant=\"compact\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i "/<family lang=\"und-Beng\" variant=\"compact\">/r $MODPATH/compact.xml" $SYSXML
-	sed -i '/<\!-- elegant -->/d;/<\!-- elegant ends -->/d;/<\!-- compact -->/d;/<\!-- compact ends -->/d' $SYSXML
+    sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
+    sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
 }
 
 beng(){
     sleep 0.5	
     unzip -qq $FONTDIR/Beng*.zip -d $FONTDIR
-    cp $FONTDIR/Beng-Regular.ttf $SYSFONT/NotoSansBengali-VF.ttf
-    cp $FONTDIR/NotoSansBengali-VF.ttf $SYSFONT/NotoSansBengali-VF.ttf
-	cp $FONTDIR/Beng-Medium.ttf $SYSFONT/NotoSerifBengali-VF.ttf
-	cp $FONTDIR/Beng-Bold.ttf $SYSFONT/NotoSansBengaliUI-VF.ttf
-    if [ -f $SYSFONT/NotoSansBengali-VF.ttf ]; then                     
-	    bengpatch && ui_print "  Installing BENGALI fonts."
-	else
-	    ui_print "  Skipping BENGALI font installation."
-	fi
+	cp $FONTDIR/Beng-Regular.ttf $SYSFONT/NotoSansBengali-VF.ttf &&	cp $FONTDIR/Beng-Medium.ttf $SYSFONT/NotoSerifBengali-VF.ttf &&	cp $FONTDIR/Beng-Bold.ttf $SYSFONT/NotoSansBengaliUI-VF.ttf
+    [ -f $SYSFONT/NotoSansBengali-VF.ttf ] && { bengpatch && ui_print "  Installing BENGALI fonts."; } || ui_print "  Skipping BENGALI font installation."
 }
 
 prdfnt(){
     if [ -f $ORIPRDXML ]; then
-	    set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
-	    for i do ln -s $SYSFONT/$i.ttf $PRDFONT/$i.ttf; done	    
+	    ln -s $SYSFONT/NotoSerif-Regular.ttf $PRDFONT/Rubik-Regular.ttf
+	    ln -s $SYSFONT/NotoSerif-Italic.ttf $PRDFONT/Rubik-Italic.ttf
+	    ln -s $SYSFONT/NotoSerif-Bold.ttf $PRDFONT/Rubik-Bold.ttf
+	    ln -s $SYSFONT/NotoSerif-BoldItalic.ttf $PRDFONT/Rubik-BoldItalic.ttf
+	    ln -s $SYSFONT/SourceSansPro-SemiBold.ttf $PRDFONT/Rubik-Medium.ttf
+	    ln -s $SYSFONT/SourceSansPro-SemiBoldItalic.ttf $PRDFONT/Rubik-MediumItalic.ttf
 	fi
-	if [ -f $PRDFONT/Regular.ttf ]; then
+	if [ -f $PRDFONT/Rubik-Regular.ttf ]; then
 	    gsans
 	    prdscrp
 	fi
@@ -197,27 +194,30 @@ prdfnt(){
 singlefont(){
     if [ -f $FONTDIR/MFFM.ttf ]; then
         set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
-	    for i do cp $FONTDIR/MFFM.ttf $SYSFONT/$i.ttf; done
+	    for i do cp $FONTDIR/MFFM.ttf $FONTDIR/$i.ttf; done
     fi
 }
 
 sfont() {
-    set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
-	for i do cp $FONTDIR/$i.ttf $SYSFONT/$i.ttf; done
+    cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
+    cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
+    cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
+    cp $FONTDIR/MediumItalic.ttf $SYSFONT/SourceSansPro-SemiBoldItalic.ttf
+    cp $FONTDIR/Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
+    cp $FONTDIR/BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf
+    cp $FONTDIR/Black.ttf $SYSFONT/DroidSans.ttf
+    cp $FONTDIR/BlackItalic.ttf $SYSFONT/DroidSans-Bold.ttf
+    cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
+    cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
+    cp $FONTDIR/Light.ttf $SYSFONT/SourceSansPro-Bold.ttf
+    cp $FONTDIR/LightItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf   
 	singlefont
-	if [ -f $SYSFONT/Regular.ttf ]; then
+	if [ -f $SYSFONT/NotoSerif-Regular.ttf ]; then
 	    sleep 0.5
         ui_print ""		
 		ui_print "- Installing Fonts"
 		ui_print "  Installing SANS-SERIF fonts"
-		if grep -q 'SysSans-En-Regular.ttf' $ORISYSXML; then
-		    cp $FONTDIR/Regular.ttf $SYSFONT/Roboto-Regular.ttf
-	        cp $FONTDIR/Regular.ttf $SYSFONT/RobotoStatic-Regular.ttf
-		    sed -i -n '/<family name=\"sans-serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-		    patchsysxml			
-		else
-		    patchsysxml
-		fi        
+		patchsysxml
 	else
 	    sleep 0.5
 		ui_print ""		
@@ -258,64 +258,6 @@ srf(){
 	    sleep 0.5 
         ui_print "  Skipping SERIF font installation."
 	fi
-	#if [ -f $SYSFONT/SourceSansPro-Regular.ttf ]; then
-      #sleep 0.5
-    #ui_print "  Installing SERIF fonts."
-    #sed -i -n '/<family name=\"serif\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-      #sed -i 's/<family name=\"serif\">/<family name=\"serif\">\n        <font weight=\"400\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>\n        <font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>\n        <font weight=\"400\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>\n        <font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>/' $SYSXML  
-    #else
-      #sleep 0.5 
-    #ui_print "  Skipping SERIF font installation."
-    #fi
-}
-
-#Emoji Replacement | Thanks to @MrCarb0n
-emojiplus(){
-    sleep 0.5
-    [ $FONTDIR/Emoji*.ttf ] && ui_print "  Installing Emoji font." || ui_print "  Skipping Emoji installation."
-	
-	sleep 0.5
-	
-    DEMJ="NotoColorEmoji.ttf"	
-    [ $ORISYSFONT/$DEMJ ] && cp $FONTDIR/Emoji*.ttf $SYSFONT/$DEMJ && ui_print "  Installed $DEMJ" || ui_print "  Skipping Emoji Installation. No custom Emoji font provided"
-	
-	SEMJ="$(find $ORISYSFONT -type f ! -name 'NotoColorEmoji.ttf' -name "*Emoji*.ttf" -exec basename {} \;)"	
-	for i in $SEMJ; do
-        if [ -f $SYSFONT/$DEMJ ]; then		                                                         
-		    ln -s $SYSFONT/$DEMJ $SYSFONT/$i && ui_print "  Installed $i" || ui_print " Failed to install $i."
-        fi
-    done
-	
-    [ -d /data/fonts ] && rm -f -rf /data/fonts
-}
-
-emj_serv(){
- if [ -f $SYSFONT/NotoColorEmoji.ttf ]; then
-  {
-    echo '#!/system/bin/sh'
-    echo '## MFFM Installer v11 by MFFM'
-    echo '## 2023.02.23'
-    echo ''
-    echo '('
-    echo 'sleep 90'
-    echo ''
-    echo 'F1="$(find /data/data -name FacebookEmoji.ttf)"'
-    echo 'for i in $F1; do'
-    echo '    cp -f /system/fonts/NotoColorEmoji.ttf $i'
-    echo 'done'
-	echo ''
-    echo 'am force-stop com.facebook.orca'
-    echo 'am force-stop com.facebook.katana'
-    echo ''
-    echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
-    echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700'
-    echo 'set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755'
-    echo 'set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs 0 0 0755 755'
-    echo ''
-    echo '[ -d /data/fonts ] && rm -f -rf /data/fonts'
-    echo ')'
-  } > $MODPATH/service.sh
- fi
 }
 
 xmi(){
@@ -339,23 +281,23 @@ samsung(){
     sed -i -n '/<family name=\"sec-roboto-light\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"sec-roboto-light\">/<family name=\"sec-roboto-light\">\n        $regular\n        $medium/" $SYSXML
 	sed -i -n '/<family name=\"sec-roboto-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i "s/<family name=\"sec-roboto-condensed\">/<family name=\"sec-roboto-condensed\">\n        $cregular\n        $cbold/" $SYSXML
+	sed -i "s/<family name=\"sec-roboto-condensed\">/<family name=\"sec-roboto-condensed\">\n        $regular\n        $bold/" $SYSXML
 	sed -i -n '/<family name=\"sec-roboto-condensed-light\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i "s/<family name=\"sec-roboto-condensed-light\">/<family name=\"sec-roboto-condensed-light\">\n        $clight/" $SYSXML
+	sed -i "s/<family name=\"sec-roboto-condensed-light\">/<family name=\"sec-roboto-condensed-light\">\n        $light/" $SYSXML
 }
 
-oxyp(){    
+oxyp(){
     sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSXML
+	sed -i '/<family >/,/<\/family>/d' $SYSXML
 	sed -i '/<\!-- #ifdef/,/*\/ -->/d' $SYSEXTETC/fonts_base.xml
-	sed -i 's/<\/familyset>//g' $SYSEXTETC/fonts_base.xml
-	cat $MODPATH/fallback.xml >> $SYSEXTETC/fonts_base.xml
+	sed -i '/<family >/,/<\/family>/d' $SYSEXTETC/fonts_base.xml    	
 }
 
-oxygen(){ 
+oxygen(){    
     if [ -f $ORISYSETC/fonts_base.xml ]; then
 	cp $SYSXML $SYSETC/fonts_base.xml
 	fi
-	if [ -f $MIRRORPATH/system/system_ext/etc/fonts_base.xml ]; then
+	if [ -f $ORIDIR/system_ext/etc/fonts_base.xml ]; then
 	cp $SYSXML $SYSEXTETC/fonts_base.xml
 	fi
 	if [ -f $ORISYSETC/fonts_slate.xml ]; then
@@ -365,12 +307,11 @@ oxygen(){
 }
 
 src(){
-    if [ -f $MFFM/MFFM*.sh ]; then
-	cp $MFFM/MFFM*.sh $MODPATH
-	    for i in $(ls $MODPATH/MFFM*.sh); do
-            . $i
-        done    
-    fi
+    local sh="$(find $MFFM -maxdepth 1 -type f -name '*.sh' -exec basename {} \;)"
+    local i
+    for i in $sh; do
+        . $MFFM/$i
+    done
 }
 
 perm() {
@@ -378,6 +319,7 @@ perm() {
 	ui_print "- Setting up permissions."
     set_perm_recursive $MODPATH 0 0 0755 0644
     set_perm $MODPATH/service.sh 0 0 0777 0777
+    set_perm $MODPATH/uninstall.sh 0 0 0777 0777
 }
 
 finish(){
@@ -399,16 +341,27 @@ finish(){
 mffmex
 sfont
 prdfnt
+delgsans
 monospace
 beng
 oxygen
 xmi
 samsung
-srf
-emojiplus
-emj_serv
+#srf
+gfntdsbl
 src
-fallback
-spoof
 finish
 perm
+
+sleep 0.5
+ui_print "- Done. Reboot to see changes."
+ui_print ""
+sleep 0.5
+ui_print "******************************************"
+sleep 0.5
+cat << "EOF"
+  __  __ ___ ___ __  __ 
+ |  \/  | __| __|  \/  |
+ | |\/| | _|| _|| |\/| | v11
+ |_|  |_|_| |_| |_|  |_| ©2024
+EOF
