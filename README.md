@@ -1,5 +1,5 @@
 # -= MFFM Template v.X.xx =-
-- **Can be used as a template or as ~~an installer~~**
+- **Can be used as a template or as an installer**
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/~~Miui~~/Samsung (Miui is broken atm)**
 - **Monospace / Bengali font / Emoji / ~~Serif support~~ (user dependent)**
 - **Android 12/13/14 ready**
@@ -34,7 +34,7 @@ Remember you can use both mode `(Template/Installer)` at the same, so it really 
     ```
 - And then copy those font files to `Files` folder of the template to make a module. 
 - If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template.
-- Put the file to the `MFFM` folder if you want to use it in the `installer` mode. 
+- If you want to use in installer mode, create a folder named `Fonts` inside `MFFM` folder. Put the renamed files in the `MFFM/Fonts` folder. Flash the template/Installer
 
 # Optional Usage
 - Even though the following tutorial follows the `installer` mode, you can shove the `renamed files` directly to the Template's `Files` folder to use it as a permanent module.
