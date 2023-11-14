@@ -55,9 +55,9 @@ Beng-Bold.ttf
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
-- ** Serif Support withdrawn due in rarity of usage and to use native spoof **
+- **Serif Support withdrawn due in rarity of usage and to use native spoof.**
 # Magisk Hide / Zygisk Denylist Hidden App Crash
-- ** With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group. **
+- **With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group.**
 
 # GApps Font
 - If your Google Apps font don't change by default then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
