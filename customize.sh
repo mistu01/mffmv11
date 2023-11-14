@@ -36,7 +36,20 @@ APILEVEL=$(getprop ro.build.version.sdk)
 
 mffmex(){
     sleep 1
-	ui_print "- Copying MFFM folder resources to module directory."
+	ui_print "- Copying MFFM folder resources to module directory."	
+	fonts="Black.ttf BlackItalic.ttf Bold.ttf BoldItalic.ttf Medium.ttf MediumItalic.ttf Regular.ttf Italic.ttf Light.ttf LightItalic.ttf Thin.ttf ThinItalic.ttf"
+    for file in $fonts; do
+    if [ -e $FONTDIR/$file ]; then
+        :
+    else
+        fontstocopy="$MFFM/Fonts/$file"
+		for i in $fontstocopy; do
+        if [ -e $i ]; then
+            cp $fontstocopy $FONTDIR
+        fi
+		done
+    fi
+    done
 	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Beng*")" ]; then
         :
     else
