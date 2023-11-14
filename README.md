@@ -1,5 +1,5 @@
 # -= MFFM Template v.X.xx =-
-- **Can be used as a template or as an installer**
+- **Can be used as a template or as ~~an installer~~**
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/~~Miui~~/Samsung (Miui is broken atm)**
 - **Monospace / Bengali font / Emoji / Serif support (user dependent)**
 - **Android 12/13 ready**
