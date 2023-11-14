@@ -17,7 +17,7 @@ Remember you can use both mode `(Template/Installer)` at the same, so it really 
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
 - The best way is to use the template is to use it with `MT Manager` file manager.  With [MT Manager](https://m.apkpure.com/mt-manager/bin.mt.plus) you can directly edit the zip file without unpacking it.
 - Eitherway you can unpack the zip file with any file manager, I recommend Mixplorer. And after editing/copying files in the template, repack the template content to `.zip` archive to make a module.
-- You are going to need 12 font style to use this template. Rename your font file as stated bellow: 
+- You are going to need 12 font style to use this template. Rename your font file as stated bellow:
     ```
     Black.ttf
     BlackItalic.ttf
@@ -51,23 +51,13 @@ Beng-Bold.ttf
  
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
+ - Download the Emoji Addon from [here](https://github.com/charityrolfson433/mffmv11/raw/main/Emoji%20Fonts%20Packges/MFFM_UniEmoji_v5.1.sh). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
-- To use serif family you should have 4 styles of the font family. `Regular` `Italic` `Bold` & `BoldItalic`. So if you have this 4 files to use with your module, then rename the files according to this:
-```
-Serif-Regular.ttf
-Serif-Italic.ttf
-Serif-Bold.ttf
-Serif-BoldItalic.ttf
-```
-- Now you can directly put those files in `MFFM` folder or zip the four files directly `(without putting them in a folder)` and name it `Serif-NameOfYourFont.zip`, Eg: `Serif-SourceSerif.zip` and copy it to the `MFFM` folder.
+- ** Serif Support withdrawn due in rarity of usage and to use native spoof **
 # Magisk Hide / Zygisk Denylist Hidden App Crash
-- If you hide any of your app in your `zygisk denylist` and it crashes due to the font module you just flashed created using this template. Then: 
-- To solve this issue please follow this solution carefully. 
-- Uninstall the font module first and then: 
-- Download any of this packages from [HERE](https://github.com/mistu2020/mffm_v11_public/tree/main/Font%20Spoof%20Package) and flash in your `TWRP recovery`
-- Reboot and flash your font module once again.
+- ** With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group. **
 
 # GApps Font
 - If your Google Apps font don't change by default then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
