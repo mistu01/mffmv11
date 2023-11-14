@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.14
+## 2023.11.15
 
 #Debugging mode enabled
 set -xv
@@ -36,7 +36,14 @@ APILEVEL=$(getprop ro.build.version.sdk)
 
 mffmex(){
     sleep 1
-	ui_print "- Copying MFFM folder resources to module directory."	
+	ui_print "- Copying MFFM folder resources to module directory."
+	if [ -e $FONTDIR/MFFM.ttf ]; then
+        :
+    else
+        if [ -e $MFFM/Fonts/MFFM.ttf ]; then
+            cp $MFFM/Fonts/MFFM.ttf $FONTDIR
+        fi
+    fi	
 	fonts="Black.ttf BlackItalic.ttf Bold.ttf BoldItalic.ttf Medium.ttf MediumItalic.ttf Regular.ttf Italic.ttf Light.ttf LightItalic.ttf Thin.ttf ThinItalic.ttf"
     for file in $fonts; do
     if [ -e $FONTDIR/$file ]; then
@@ -212,6 +219,7 @@ singlefont(){
 }
 
 sfont() {
+    singlefont
     cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
     cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
     cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
@@ -223,8 +231,7 @@ sfont() {
     cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
     cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
     cp $FONTDIR/Light.ttf $SYSFONT/SourceSansPro-Bold.ttf
-    cp $FONTDIR/LightItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf   
-	singlefont
+    cp $FONTDIR/LightItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf	
 	if [ -f $SYSFONT/NotoSerif-Regular.ttf ]; then
 	    sleep 0.5
         ui_print ""		
