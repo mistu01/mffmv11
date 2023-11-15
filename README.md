@@ -3,7 +3,7 @@
 - **Support for AOSP/LOS/Pixel Stock/Oxygen/~~Miui~~/Samsung (Miui is broken atm)**
 - **Monospace / Bengali font / Emoji / ~~Serif support~~ (user dependent)**
 - **Android 12/13/14 ready**
-- **Flashable *only* in Magisk and KSU**
+- **Compatible with Magisk and KSU**
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time.\
