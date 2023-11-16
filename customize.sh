@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.15
+## 2023.11.16
 
 #Debugging mode enabled
 set -xv
@@ -36,25 +36,26 @@ APILEVEL=$(getprop ro.build.version.sdk)
 
 mffmex(){
     sleep 1
-	ui_print "- Copying MFFM folder resources to module directory."
-	if [ -e $FONTDIR/MFFM.ttf ]; then
+	ui_print "- Copying MFFM folder resources to module directory."	
+	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f -name "MFFM.ttf" -o -name "Regular.ttf")" ]; then
         :
     else
-        if [ -e $MFFM/Fonts/MFFM.ttf ]; then
-            cp $MFFM/Fonts/MFFM.ttf $FONTDIR
+        snglfnt=$(find "$MFFM" -maxdepth 1 -type f -name "MFFM.ttf")
+        if [ -n $snglfnt ]; then
+            cp $snglfnt $FONTDIR
         fi
     fi	
 	fonts="Black.ttf BlackItalic.ttf Bold.ttf BoldItalic.ttf Medium.ttf MediumItalic.ttf Regular.ttf Italic.ttf Light.ttf LightItalic.ttf Thin.ttf ThinItalic.ttf"
     for file in $fonts; do
-    if [ -e $FONTDIR/$file ]; then
+    if [ -e $FONTDIR/$file ] || [ -e $FONTDIR/MFFM.ttf ]; then
         :
     else
         fontstocopy="$MFFM/Fonts/$file"
-		for i in $fontstocopy; do
-        if [ -e $i ]; then
-            cp $fontstocopy $FONTDIR
-        fi
-		done
+        for i in "$fontstocopy"; do
+            if [ -e $i ]; then
+                cp $fontstocopy $FONTDIR
+            fi
+        done
     fi
     done
 	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f \( -name "*.zip" -o -name "*.ttf" \) -name "*Beng*")" ]; then
@@ -109,7 +110,7 @@ cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
 patchsysxml(){
     sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML
-	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n    <family >/" $SYSXML
+	sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n    <family >/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
 	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
@@ -228,8 +229,8 @@ sfont() {
     cp $FONTDIR/BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf
     cp $FONTDIR/Black.ttf $SYSFONT/DroidSans.ttf
     cp $FONTDIR/BlackItalic.ttf $SYSFONT/DroidSans-Bold.ttf
-    cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
-    cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
+    #cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
+    #cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
     cp $FONTDIR/Light.ttf $SYSFONT/SourceSansPro-Bold.ttf
     cp $FONTDIR/LightItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf	
 	if [ -f $SYSFONT/NotoSerif-Regular.ttf ]; then
