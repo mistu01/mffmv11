@@ -6,7 +6,7 @@
 - **Compatible with Magisk and KSU**
 
 # Usages:
-You can use the template as an installer or as a regular Magisk module template, or both at the same time. \
+You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
 To use it as a module template you can copy the renamed files directly to the template's `Files` folder to make a permanent module.
 
 To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` & `MFFM/fonts` folder.\ 
