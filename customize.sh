@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.16
+## 2023.11.17
 
 #Debugging mode enabled
 set -xv
@@ -183,6 +183,7 @@ gfntdsbl(){
 	sed -i '1i( until pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 60; done ) &' $MODPATH/service.sh #Borrowed from OMF
     [ ! -f "$MODPATH/uninstall.sh" ] && echo > "$MODPATH/uninstall.sh"
 	sed -i '1i( until pm enable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 5; done ) &' $MODPATH/uninstall.sh #Borrowed from OMF
+    echo '( [ -d "/data/fonts" ] && rm -rf /data/fonts ) &' >> $MODPATH/service.sh
 }
 
 bengpatch(){
