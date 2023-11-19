@@ -1,6 +1,7 @@
 # -= MFFM Template v.X.xx =-
 - **Can be used as a template or as an installer**
-- **Support for AOSP/LOS/Pixel Stock/Oxygen/~~Miui~~/Samsung (Miui is broken atm)**
+- **Support for AOSP/LOS/Pixel Stock/Oxygen/Miui-HyperOS/Samsung(OneUI5)**
+- **Disable Miui Optimization from Developer Option to use in HyperOS**
 - **Monospace / Bengali font / Emoji / ~~Serif support~~ (user dependent)**
 - **Android 12/13/14 ready**
 - **Compatible with Magisk and KSU**
