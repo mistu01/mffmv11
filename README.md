@@ -6,12 +6,14 @@
 - **Compatible with Magisk and KSU**
 
 # Usages:
-You can use the template as an installer or as a regular Magisk module template, or both at the same time.\
-To use it as a module template you can copy the `renamed files` directly to the template's `Files` foler to make a permanent module.
+You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
+To use it as a module template you can copy the renamed files directly to the template's `Files` folder to make a permanent module.
 
-To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` folder.
+To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` & `MFFM/fonts` folder. Other detailed instructions are in particular sections of the respective topis (Which file/script goes where).
 
-Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files. The template should work just fine. If same category files `(eg. Bengali Fonts)` are present in both the `MFFM` folder and inside of the module `(in Files folder)`, the module's content will be flashed and `MFFM` folder's content will be ignored. 
+Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files. The template should work just fine.
+
+If same category files `(eg. Bengali Fonts)` are present in both the `MFFM` folder and inside of the module `(in Files folder)`, the module's content will be flashed and `MFFM` folder's content will be ignored. 
 
 ## Latin/English Fonts
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
