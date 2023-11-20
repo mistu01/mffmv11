@@ -1,6 +1,6 @@
 id=mffmv11
-name=[Font] MFFM_v11
-version=v23.11.20
-versionCode=231120
+name=MFFM_v11
+version=2023.11.21
+versionCode=20231121
 author=MFFM
-description=This Module will replace your android default Roboto font family with "your desired" font. For support join https://t.me/MFFMDisc on telegram.
+description=This Module will replace your android default Roboto font family with your desired fonts. For support join https://t.me/MFFMDisc on telegram.

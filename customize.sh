@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.20
+## 2023.11.21
 
 #Debugging mode enabled
 set -xv
@@ -305,8 +305,14 @@ xmi(){
 		        ln -s $SYSFONT/NotoSerif-Regular.ttf $PRDFONT/$i
 		    fi
 	    done
-		#[ -f $ORIPRDFONT/MiSansL3.otf ] && cp $FONTDIR/Regular.ttf $PRDFONT/MiSansL3.otf
 		
+		#LCxml
+        sed -i -e '/<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/,/<\/family>/ { /<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/b; /<\/family>/b; d; }' $PRDXML
+		sed -i '/<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/a\        <font weight="400" style="normal" postScriptName="MiSansRoundedSC-Regular">MiSansRoundedSC.ttf</font>' $PRDXML		
+		sed -i -e '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/,/<\/family>/ { /<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/b; /<\/family>/b; d; }' $PRDXML
+		sed -i '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/a\        <font weight="400" style="normal" postScriptName="MiSansRoundedTC-Regular">MiSansRoundedTC.ttf</font>' $PRDXML
+	
+	if grep -q 'miui-regular' "$SYSXML" && grep -q 'mipro' "$SYSXML"; then		
 		#miui xml
 		sed -i -e '/<!-- first font is default -->/,/<!-- Note that aliases must come after the fonts they reference. -->/ {
             /<!-- first font is default -->/!{
@@ -433,12 +439,7 @@ XML
 		sed -i 's/<font weight="400" style="normal" postScriptName="MIUIEX-Normal">MiuiEx-Regular.ttf<\/font>/<font weight="400" style="normal" postScriptName="MIUIEX-Normal">NotoSerif-Regular.ttf<\/font>/' $SYSXML
         sed -i 's/<font weight="700" style="normal" postScriptName="MIUIEX-Bold">MiuiEx-Bold.ttf<\/font>/<font weight="700" style="normal" postScriptName="MIUIEX-Bold">NotoSerif-Bold.ttf<\/font>/' $SYSXML
         sed -i 's/<font weight="300" style="normal" postScriptName="MIUIEX-Light">MiuiEx-Light.ttf<\/font>/<font weight="300" style="normal" postScriptName="MIUIEX-Light">SourceSansPro-Bold.ttf<\/font>/' $SYSXML
-
-		#LCxml
-        sed -i -e '/<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/,/<\/family>/ { /<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/b; /<\/family>/b; d; }' $PRDXML
-		sed -i '/<family customizationType="new-named-family" name="miclock-misans-rounded-sc">/a\        <font weight="400" style="normal" postScriptName="MiSansRoundedSC-Regular">MiSansRoundedSC.ttf</font>' $PRDXML		
-		sed -i -e '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/,/<\/family>/ { /<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/b; /<\/family>/b; d; }' $PRDXML
-		sed -i '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/a\        <font weight="400" style="normal" postScriptName="MiSansRoundedTC-Regular">MiSansRoundedTC.ttf</font>' $PRDXML
+    fi
 	fi
 }
 
@@ -510,7 +511,7 @@ delgsans
 monospace
 beng
 oxygen
-xmi
+grep -q 'miui' $SYSXML && xmi
 samsung
 #srf
 gfntdsbl
