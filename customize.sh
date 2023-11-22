@@ -115,7 +115,7 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	gbold="<font weight=\"700\" style=\"normal\">Rubik-Bold.ttf<\/font>"    gbolditalic="<font weight=\"700\" style=\"italic\">Rubik-BoldItalic.ttf<\/font>"
 
 patchsysxml(){
-    sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
+    #sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML
 	sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n    <family >/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
@@ -304,7 +304,7 @@ xmi(){
 		    cp $FONTDIR/Regular.ttf $SYSFONT/$i
 		fi
 	done
-	if [ $APILEVEL -ge 32 ]; then
+	if [ $APILEVEL -ge 30 ]; then
 	    #LCClock
 		milc='MiSansLatinVF.ttf MiSansTCVF.ttf MiSansRoundedSC.ttf MiSansRoundedTC.ttf MiSansRound-Medium.otf MiClock.otf MiClockThin.otf MiClockMono.otf MiClockUyghur-Thin.ttf MiClockTibetan-Thin.ttf MiSansC_3.005.ttf Interscaled-Regular.otf Interscaled-Medium.otf'
 		for i in $milc; do
