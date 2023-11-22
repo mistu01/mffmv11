@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.21
+## 2023.11.22
 
 #Debugging mode enabled
 set -xv
@@ -14,10 +14,13 @@ set -xv
 
 ORIPRDFONT=$ORIPRD/fonts
 ORIPRDETC=$ORIPRD/etc
-ORIPRDXML=$ORIPRDETC/fonts_customization.xml
+#ORIPRDXML=$ORIPRDETC/fonts_customization.xml
+ORIPRDXML=/sdcard/MFFM/fontsxml/fonts_customization.xml
 ORISYSFONT=$ORIDIR/system/fonts
 ORISYSETC=$ORIDIR/system/etc
-ORISYSXML=$ORISYSETC/fonts.xml
+#ORISYSXML=$ORISYSETC/fonts.xml
+ORISYSXML=/sdcard/MFFM/fontsxml/fonts.xml
+
 #MODPATH
 PRDFONT="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/fonts"
 PRDETC="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/etc"
@@ -28,14 +31,17 @@ SYSEXTETC="$MODPATH/$(if [ "$ORISYSEXT" = "$ORIDIR/system_ext" ]; then echo "sys
 SYSXML=$SYSETC/fonts.xml
 MODPROP=$MODPATH/module.prop
 FONTDIR=$MODPATH/Files
+
 #MFFM
 MFFM=/sdcard/MFFM
 [ ! -d $MFFM ] && mkdir -p $MFFM
+
 #API
 APILEVEL=$(getprop ro.build.version.sdk)
 
 mffmex(){
     sleep 1
+	ui_print ""
 	ui_print "- Copying MFFM folder resources to module directory."	
 	if [ -n "$(find "$FONTDIR" -maxdepth 1 -type f -name "MFFM.ttf" -o -name "Regular.ttf")" ]; then
         :
@@ -89,7 +95,8 @@ base64 -d $MODPATH/bin > $MODPATH/f && tar xf $MODPATH/f -C $MODPATH
 tar xf $MODPATH/data.xz -C $MODPATH
 tar xf $FONTDIR/data -C $MODPATH
 mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
-cp $ORISYSXML $SYSXML; cp $ORIPRDXML $PRDXML
+[ -f $ORISYSXML ] && cp $ORISYSXML $SYSXML
+[ -f $ORIPRDXML ] && cp $ORIPRDXML $PRDXML
 
     SS="<family name=\"sans-serif\">" SSC="<family name=\"sans-serif-condensed\">" VRD="<alias name=\"verdana\" to=\"sans-serif\" \/>" GSN="<family customizationType=\"new-named-family\" name=\"googlesans\">"
 	GS="<family customizationType=\"new-named-family\" name=\"google-sans\">" GST="<family customizationType=\"new-named-family\" name=\"google-sans-text\">" GSB="<family customizationType=\"new-named-family\" name=\"google-sans-bold\">"
