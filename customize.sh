@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2023.11.22
+## 2023.12.07
 
 #Debugging mode enabled
 set -xv
@@ -103,12 +103,12 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	GSM="<family customizationType=\"new-named-family\" name=\"google-sans-medium\">" GSTM="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium\">" GSTB="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold\">"
 	GSTBI="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold-italic\">" GSTMI="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium-italic\">" GSTI="<family customizationType=\"new-named-family\" name=\"google-sans-text-italic\">"
 
-    thin="<font weight=\"100\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
-	light="<font weight=\"300\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>"	lightitalic="<font weight=\"300\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>"
-	regular="<font weight=\"400\" style=\"normal\">NotoSerif-Regular.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">NotoSerif-Italic.ttf<\/font>"
+    #thin="<font weight=\"100\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
+	light="<font weight=\"300\" style=\"normal\">CarroisGothicSC-Regular.ttf<\/font>"	lightitalic="<font weight=\"300\" style=\"italic\">ComingSoon.ttf<\/font>"
+	regular="<font weight=\"400\" style=\"normal\">Roboto-Regular.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">RobotoStatic-Regular.ttf<\/font>"
 	medium="<font weight=\"500\" style=\"normal\">SourceSansPro-SemiBold.ttf<\/font>"	mediumitalic="<font weight=\"500\" style=\"italic\">SourceSansPro-SemiBoldItalic.ttf<\/font>"
-	black="<font weight=\"900\" style=\"normal\">DroidSans.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">DroidSans-Bold.ttf<\/font>"
-	bold="<font weight=\"700\" style=\"normal\">NotoSerif-Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">NotoSerif-BoldItalic.ttf<\/font>"
+	black="<font weight=\"900\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
+	bold="<font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>"
 
     gregular="<font weight=\"400\" style=\"normal\">Rubik-Regular.ttf<\/font>"	gitalic="<font weight=\"400\" style=\"italic\">Rubik-Italic.ttf<\/font>"
 	gmedium="<font weight=\"500\" style=\"normal\">Rubik-Medium.ttf<\/font>"	gmediumitalic="<font weight=\"500\" style=\"italic\">Rubik-MediumItalic.ttf<\/font>"
@@ -116,8 +116,8 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 
 patchsysxml(){
     #sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
-    sed -i 's/RobotoStatic/Roboto/g' $SYSXML
-	sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>\n    <family >/" $SYSXML
+    sed -i 's/RobotoStatic/Roboto/g' $SYSXML	
+	sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n   <\/family>\n   <family>/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
 	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
@@ -125,6 +125,34 @@ patchsysxml(){
 	sed -i -n '/<family name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"googlesans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i "s/$VRD/$VRD\n \n    <\!-- GS Starts -->\n    $GS\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSM\n        $medium\n    <\/family>\n \n    $GSB\n        $bold\n    <\/family>\n \n    $GST\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic\n    <\/family>\n \n    $GSTM\n        $medium\n    <\/family>\n \n    $GSTB\n        $bold\n    <\/family>\n \n    $GSTI\n        $italic\n    <\/family>\n \n    $GSTMI\n        $mediumitalic\n    <\/family>\n \n    $GSTBI\n        $bolditalic\n    <\/family>\n    <\!-- GS Ends -->/g" $SYSXML
+}
+
+sfont() {
+    singlefont
+    cp $FONTDIR/Regular.ttf $SYSFONT/Roboto-Regular.ttf
+    cp $FONTDIR/Italic.ttf $SYSFONT/RobotoStatic-Regualar.ttf
+    cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
+    cp $FONTDIR/MediumItalic.ttf $SYSFONT/SourceSansPro-SemiBoldItalic.ttf
+    cp $FONTDIR/Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
+    cp $FONTDIR/BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
+    cp $FONTDIR/Black.ttf $SYSFONT/SourceSansPro-Regular.ttf
+    cp $FONTDIR/BlackItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf
+    #cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
+    #cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
+    cp $FONTDIR/Light.ttf $SYSFONT/CarroisGothicSC-Regular.ttf
+    cp $FONTDIR/LightItalic.ttf $SYSFONT/ComingSoon.ttf	
+	if [ -f $SYSFONT/Roboto-Regular.ttf ]; then
+	    sleep 0.5
+        ui_print ""		
+		ui_print "- Installing Fonts"
+		ui_print "  Installing SANS-SERIF fonts"
+		patchsysxml
+	else
+	    sleep 0.5
+		ui_print ""		
+		ui_print "- Installing Fonts"
+		ui_print "  Skipping SANS-SERIF installation."
+	fi	
 }
 
 gsans(){    
@@ -207,10 +235,10 @@ beng(){
 
 prdfnt(){
     if [ -f $ORIPRDXML ]; then
-	    ln -s $SYSFONT/NotoSerif-Regular.ttf $PRDFONT/Rubik-Regular.ttf
-	    ln -s $SYSFONT/NotoSerif-Italic.ttf $PRDFONT/Rubik-Italic.ttf
-	    ln -s $SYSFONT/NotoSerif-Bold.ttf $PRDFONT/Rubik-Bold.ttf
-	    ln -s $SYSFONT/NotoSerif-BoldItalic.ttf $PRDFONT/Rubik-BoldItalic.ttf
+	    ln -s $SYSFONT/Roboto-Regular.ttf $PRDFONT/Rubik-Regular.ttf
+	    ln -s $SYSFONT/RobotoStatic-Regualar.ttf $PRDFONT/Rubik-Italic.ttf
+	    ln -s $SYSFONT/SourceSansPro-Bold.ttf $PRDFONT/Rubik-Bold.ttf
+	    ln -s $SYSFONT/SourceSansPro-BoldItalic.ttf $PRDFONT/Rubik-BoldItalic.ttf
 	    ln -s $SYSFONT/SourceSansPro-SemiBold.ttf $PRDFONT/Rubik-Medium.ttf
 	    ln -s $SYSFONT/SourceSansPro-SemiBoldItalic.ttf $PRDFONT/Rubik-MediumItalic.ttf
 	fi
@@ -225,34 +253,6 @@ singlefont(){
         set Black BlackItalic Bold BoldItalic Medium MediumItalic Regular Italic Light LightItalic Thin ThinItalic
 	    for i do cp $FONTDIR/MFFM.ttf $FONTDIR/$i.ttf; done
     fi
-}
-
-sfont() {
-    singlefont
-    cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
-    cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
-    cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
-    cp $FONTDIR/MediumItalic.ttf $SYSFONT/SourceSansPro-SemiBoldItalic.ttf
-    cp $FONTDIR/Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
-    cp $FONTDIR/BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf
-    cp $FONTDIR/Black.ttf $SYSFONT/DroidSans.ttf
-    cp $FONTDIR/BlackItalic.ttf $SYSFONT/DroidSans-Bold.ttf
-    #cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
-    #cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
-    cp $FONTDIR/Light.ttf $SYSFONT/SourceSansPro-Bold.ttf
-    cp $FONTDIR/LightItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf	
-	if [ -f $SYSFONT/NotoSerif-Regular.ttf ]; then
-	    sleep 0.5
-        ui_print ""		
-		ui_print "- Installing Fonts"
-		ui_print "  Installing SANS-SERIF fonts"
-		patchsysxml
-	else
-	    sleep 0.5
-		ui_print ""		
-		ui_print "- Installing Fonts"
-		ui_print "  Skipping SANS-SERIF installation."
-	fi	
 }
 
 monospace(){
@@ -271,7 +271,7 @@ srf(){
     unzip -qq $FONTDIR/Serif*.zip -d $FONTDIR
 	if [ ! -f $FONTDIR/Serif-Regular.ttf ]; then
 	    sleep 0.5
-        ui_print "  Installing SERIF fonts."
+        ui_print "  Installing SANS-SERIF as SERIF fonts."
 	    cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
 	    cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
 	    cp $FONTDIR/Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
@@ -289,9 +289,106 @@ srf(){
 	fi
 }
 
+fallback(){    
+    cp $FONTDIR/DroidSans.ttf $SYSFONT
+    sed -i '/<\/familyset>/c\    <family>\
+        <font weight="100" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="100"/>\
+        </font>\
+        <font weight="100" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="100"/>\
+        </font>\
+        <font weight="200" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="200"/>\
+        </font>\
+        <font weight="200" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="200"/>\
+        </font>\
+        <font weight="300" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="300"/>\
+        </font>\
+        <font weight="300" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="300"/>\
+        </font>\
+        <font weight="400" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="400"/>\
+        </font>\
+        <font weight="400" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="400"/>\
+        </font>\
+        <font weight="500" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="500"/>\
+        </font>\
+        <font weight="500" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="500"/>\
+        </font>\
+        <font weight="600" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="600"/>\
+        </font>\
+        <font weight="600" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="600"/>\
+        </font>\
+        <font weight="700" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="700"/>\
+        </font>\
+        <font weight="700" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="700"/>\
+        </font>\
+        <font weight="800" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="800"/>\
+        </font>\
+        <font weight="800" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="800"/>\
+        </font>\
+        <font weight="900" style="normal">DroidSans.ttf\
+            <axis tag="ital" stylevalue="0"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="900"/>\
+        </font>\
+        <font weight="900" style="italic">DroidSans.ttf\
+            <axis tag="ital" stylevalue="1"/>\
+            <axis tag="wdth" stylevalue="100"/>\
+            <axis tag="wght" stylevalue="900"/>\
+        </font>\
+    </family>\
+</familyset>' $SYSXML
+}
+
 xmi(){
     #miui main
-  mimain='MiLanProVF.ttf MiSansVF.ttf RobotoVF.ttf MiSansVF_Overlay.ttf'
+    mimain='MiLanProVF.ttf MiSansVF.ttf RobotoVF.ttf MiSansVF_Overlay.ttf'
     for i in $mimain; do
       if [ -f "$ORISYSFONT/$i" ]; then
         cp $FONTDIR/Regular.ttf $SYSFONT/$i
@@ -309,7 +406,7 @@ xmi(){
 		milc='MiSansLatinVF.ttf MiSansTCVF.ttf MiSansRoundedSC.ttf MiSansRoundedTC.ttf MiSansRound-Medium.otf MiClock.otf MiClockThin.otf MiClockMono.otf MiClockUyghur-Thin.ttf MiClockTibetan-Thin.ttf MiSansC_3.005.ttf Interscaled-Regular.otf Interscaled-Medium.otf'
 		for i in $milc; do
 	        if [ -f "$ORIPRDFONT/$i" ]; then
-		        ln -s $SYSFONT/NotoSerif-Regular.ttf $PRDFONT/$i
+		        ln -s $SYSFONT/Roboto-Regular.ttf $PRDFONT/$i
 		    fi
 	    done
 		
@@ -319,135 +416,18 @@ xmi(){
 		sed -i -e '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/,/<\/family>/ { /<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/b; /<\/family>/b; d; }' $PRDXML
 		sed -i '/<family customizationType="new-named-family" name="miclock-misans-rounded-tc">/a\        <font weight="400" style="normal" postScriptName="MiSansRoundedTC-Regular">MiSansRoundedTC.ttf</font>' $PRDXML
 	
-	if grep -q 'miui-regular' "$SYSXML" && grep -q 'mipro' "$SYSXML"; then		
-		#miui xml
-		sed -i -e '/<!-- first font is default -->/,/<!-- Note that aliases must come after the fonts they reference. -->/ {
-            /<!-- first font is default -->/!{
-                /<!-- Note that aliases must come after the fonts they reference. -->/! {
-                    /<family name="sans-serif">/!d
+	    if grep -q 'miui-regular' "$SYSXML" && grep -q 'mipro' "$SYSXML"; then		
+		    #miui xml
+		    sed -i -e '/<!-- first font is default -->/,/<!-- Note that aliases must come after the fonts they reference. -->/ {
+                /<!-- first font is default -->/!{
+                    /<!-- Note that aliases must come after the fonts they reference. -->/! {
+                        /<family name="sans-serif">/!d
+                    }
                 }
-            }
-        }' $SYSXML
-		sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>/" $SYSXML
-	    cp $ORISYSFONT/Roboto-Regular.ttf $SYSFONT/SourceSansPro-Regular.ttf
-		sed -i -e '/<\/familyset>/ {' -e 'r /dev/stdin' -e 'd' -e '}' $SYSXML <<'XML'
-    <family>
-        <font weight="100" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="100" />
-        </font>
-        <font weight="200" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="200" />
-        </font>
-        <font weight="300" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="300" />
-        </font>
-        <font weight="400" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="400" />
-        </font>        
-        <font weight="500" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="500" />
-        </font>
-        <font weight="600" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="600" />
-        </font>
-        <font weight="700" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="700" />
-        </font>
-        <font weight="800" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="800" />
-        </font>
-        <font weight="900" style="normal">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="0" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="900" />
-        </font>
-        <font weight="100" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="100" />
-        </font>
-        <font weight="200" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="200" />
-        </font>
-        <font weight="300" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="300" />
-        </font>
-        <font weight="400" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="400" />
-        </font>
-        <font weight="500" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="500" />
-        </font>
-        <font weight="600" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="600" />
-        </font>
-        <font weight="700" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="700" />
-        </font>
-        <font weight="800" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="800" />
-        </font>
-        <font weight="900" style="italic">SourceSansPro-Regular.ttf
-          <axis tag="ital" stylevalue="1" />
-          <axis tag="wdth" stylevalue="100" />
-          <axis tag="wght" stylevalue="900" />
-        </font>
-   </family>
-</familyset>
-XML
-
-		# Attempt To Fix Weight #Doesn't Work #Disbable Miui Optimization
-		sed -i -e '/<family name="miui">/,/<\/family>/ { /<\/family>/! { /<family name="miui">/!d } }; /<family name="miui">/a\    <font weight="400" style="normal" postScriptName="MiSansVF">NotoSerif-Regular.ttf</font>' $SYSXML
-		sed -i -e '/<family name="miui-thin">/,/<\/family>/ { /<\/family>/! { /<family name="miui-thin">/!d } }; /<family name="miui-thin">/a\    <font weight="100" style="normal" postScriptName="MiSansVF">SourceSansPro-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="miui-light">/,/<\/family>/ { /<\/family>/! { /<family name="miui-light">/!d } }; /<family name="miui-light">/a\    <font weight="300" style="normal" postScriptName="MiSansVF">SourceSansPro-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="miui-regular">/,/<\/family>/ { /<\/family>/! { /<family name="miui-regular">/!d } }; /<family name="miui-regular">/a\    <font weight="400" style="normal" postScriptName="MiSansVF">NotoSerif-Regular.ttf</font>' $SYSXML
-		sed -i -e '/<family name="miui-bold">/,/<\/family>/ { /<\/family>/! { /<family name="miui-bold">/!d } }; /<family name="miui-bold">/a\    <font weight="700" style="normal" postScriptName="MiSansVF">NotoSerif-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro">/,/<\/family>/ { /<\/family>/! { /<family name="mipro">/!d } }; /<family name="mipro">/a\    <font weight="400" style="normal" postScriptName="MiSansVF">NotoSerif-Regular.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-thin">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-thin">/!d } }; /<family name="mipro-thin">/a\    <font weight="100" style="normal" postScriptName="MiSansVF">SourceSansPro-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-extralight">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-extralight">/!d } }; /<family name="mipro-extralight">/a\    <font weight="200" style="normal" postScriptName="MiSansVF">SourceSansPro-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-light">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-light">/!d } }; /<family name="mipro-light">/a\    <font weight="300" style="normal" postScriptName="MiSansVF">SourceSansPro-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-normal">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-normal">/!d } }; /<family name="mipro-normal">/a\    <font weight="400" style="normal" postScriptName="MiSansVF">NotoSerif-Regular.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-regular">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-regular">/!d } }; /<family name="mipro-regular">/a\    <font weight="400" style="normal" postScriptName="MiSansVF">NotoSerif-Regular.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-medium">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-medium">/!d } }; /<family name="mipro-medium">/a\    <font weight="500" style="normal" postScriptName="MiSansVF">SourceSansPro-SemiBold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-semibold">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-semibold">/!d } }; /<family name="mipro-semibold">/a\    <font weight="500" style="normal" postScriptName="MiSansVF">SourceSansPro-SemiBold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-demibold">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-demibold">/!d } }; /<family name="mipro-demibold">/a\    <font weight="600" style="normal" postScriptName="MiSansVF">SourceSansPro-SemiBold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-bold">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-bold">/!d } }; /<family name="mipro-bold">/a\    <font weight="700" style="normal" postScriptName="MiSansVF">NotoSerif-Bold.ttf</font>' $SYSXML
-		sed -i -e '/<family name="mipro-heavy">/,/<\/family>/ { /<\/family>/! { /<family name="mipro-heavy">/!d } }; /<family name="mipro-heavy">/a\    <font weight="900" style="normal" postScriptName="MiSansVF">DroidSans.ttf</font>' $SYSXML
-		sed -i 's/<font weight="400" style="normal" postScriptName="MIUIEX-Normal">MiuiEx-Regular.ttf<\/font>/<font weight="400" style="normal" postScriptName="MIUIEX-Normal">NotoSerif-Regular.ttf<\/font>/' $SYSXML
-        sed -i 's/<font weight="700" style="normal" postScriptName="MIUIEX-Bold">MiuiEx-Bold.ttf<\/font>/<font weight="700" style="normal" postScriptName="MIUIEX-Bold">NotoSerif-Bold.ttf<\/font>/' $SYSXML
-        sed -i 's/<font weight="300" style="normal" postScriptName="MIUIEX-Light">MiuiEx-Light.ttf<\/font>/<font weight="300" style="normal" postScriptName="MIUIEX-Light">SourceSansPro-Bold.ttf<\/font>/' $SYSXML
+            }' $SYSXML
+		    sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n    <\/family>/" $SYSXML
+	    fi
     fi
-	fi
 }
 
 samsung(){
@@ -520,9 +500,10 @@ beng
 oxygen
 grep -q 'miui' $SYSXML && xmi
 samsung
-#srf
+srf
 gfntdsbl
 src
+fallback
 finish
 perm
 
