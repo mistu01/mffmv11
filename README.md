@@ -70,7 +70,15 @@ Beng-Bold.ttf
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
-- **Serif Support withdrawn due in rarity of usage and to use native spoof.**
+- To use Serif font, you will need 4 styles. Regular, Italic, Bold and BoldItalic. Rename your fonts like this:
+```
+Serif-Regular.ttf
+Serif-Italic.ttf
+Serif-Bold.ttf
+Serif-BoldItalic.ttf
+```
+- After renaming, either copy them direct to `MFFM` folder or make a `zip archive` following this naming pattern, '`Serif-YourFontName.zip`' eg `Serif-SourceSerif.zip` and as usual copy the archive to `MFFM` folder.
+- Lastly, however you place your files in `MFFM` folder, if the naming patterns are followed it will be installed once you flash your original font module. 
 # Magisk Hide / Zygisk Denylist Hidden App Crash
 - **With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group.**
 
