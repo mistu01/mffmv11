@@ -103,9 +103,9 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	GSM="<family customizationType=\"new-named-family\" name=\"google-sans-medium\">" GSTM="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium\">" GSTB="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold\">"
 	GSTBI="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold-italic\">" GSTMI="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium-italic\">" GSTI="<family customizationType=\"new-named-family\" name=\"google-sans-text-italic\">"
 
-    #thin="<font weight=\"100\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
+    thin="<font weight=\"100\" style=\"normal\">NotoSansBuhid-Regular.ttf<\/font>"	thinitalic="<font weight=\"100\" style=\"italic\">NotoSansCarian-Regular.ttf<\/font>"
 	light="<font weight=\"300\" style=\"normal\">CarroisGothicSC-Regular.ttf<\/font>"	lightitalic="<font weight=\"300\" style=\"italic\">ComingSoon.ttf<\/font>"
-	regular="<font weight=\"400\" style=\"normal\">Roboto-Regular.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">RobotoStatic-Regular.ttf<\/font>"
+	regular="<font weight=\"400\" style=\"normal\">DroidSans.ttf<\/font>"	italic="<font weight=\"400\" style=\"italic\">DroidSans-Bold.ttf<\/font>"
 	medium="<font weight=\"500\" style=\"normal\">SourceSansPro-SemiBold.ttf<\/font>"	mediumitalic="<font weight=\"500\" style=\"italic\">SourceSansPro-SemiBoldItalic.ttf<\/font>"
 	black="<font weight=\"900\" style=\"normal\">SourceSansPro-Regular.ttf<\/font>"	blackitalic="<font weight=\"900\" style=\"italic\">SourceSansPro-Italic.ttf<\/font>"
 	bold="<font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf<\/font>"    bolditalic="<font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf<\/font>"
@@ -115,11 +115,10 @@ mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 	gbold="<font weight=\"700\" style=\"normal\">Rubik-Bold.ttf<\/font>"    gbolditalic="<font weight=\"700\" style=\"italic\">Rubik-BoldItalic.ttf<\/font>"
 
 patchsysxml(){
-    #sed -i '/<\!-- # MIUI Edit Start -->/,/<\!-- # MIUI Edit END -->/d' $SYSXML
     sed -i 's/RobotoStatic/Roboto/g' $SYSXML	
-	sed -i "s/$SS/$SS\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n   <\/family>\n   <family>/" $SYSXML
+	sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n   <\/family>\n   <family>/" $SYSXML
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML   
-	sed -i "s/$SSC/$SSC\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
+	sed -i "s/$SSC/$SSC\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     sed -i -n '/<family name=\"google-sans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
 	sed -i "s/<family name=\"google-sans\">/<family name=\"google-sans\">\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
 	sed -i -n '/<family name=\"googlesans\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
@@ -129,19 +128,19 @@ patchsysxml(){
 
 sfont() {
     singlefont
-    cp $FONTDIR/Regular.ttf $SYSFONT/Roboto-Regular.ttf
-    cp $FONTDIR/Italic.ttf $SYSFONT/RobotoStatic-Regualar.ttf
+    cp $FONTDIR/Regular.ttf $SYSFONT/DroidSans.ttf
+    cp $FONTDIR/Italic.ttf $SYSFONT/DroidSans-Bold.ttf
     cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
     cp $FONTDIR/MediumItalic.ttf $SYSFONT/SourceSansPro-SemiBoldItalic.ttf
     cp $FONTDIR/Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
     cp $FONTDIR/BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
     cp $FONTDIR/Black.ttf $SYSFONT/SourceSansPro-Regular.ttf
     cp $FONTDIR/BlackItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf
-    #cp $FONTDIR/Thin.ttf $SYSFONT/SourceSansPro-Regular.ttf
-    #cp $FONTDIR/ThinItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf	
+    cp $FONTDIR/Thin.ttf $SYSFONT/NotoSansBuhid-Regular.ttf
+    cp $FONTDIR/ThinItalic.ttf $SYSFONT/NotoSansCarian-Regular.ttf	
     cp $FONTDIR/Light.ttf $SYSFONT/CarroisGothicSC-Regular.ttf
     cp $FONTDIR/LightItalic.ttf $SYSFONT/ComingSoon.ttf	
-	if [ -f $SYSFONT/Roboto-Regular.ttf ]; then
+	if [ -f $SYSFONT/DroidSans.ttf ]; then
 	    sleep 0.5
         ui_print ""		
 		ui_print "- Installing Fonts"
@@ -235,8 +234,8 @@ beng(){
 
 prdfnt(){
     if [ -f $ORIPRDXML ]; then
-	    ln -s $SYSFONT/Roboto-Regular.ttf $PRDFONT/Rubik-Regular.ttf
-	    ln -s $SYSFONT/RobotoStatic-Regualar.ttf $PRDFONT/Rubik-Italic.ttf
+	    ln -s $SYSFONT/DroidSans.ttf $PRDFONT/Rubik-Regular.ttf
+	    ln -s $SYSFONT/DroidSans-Bold.ttf $PRDFONT/Rubik-Italic.ttf
 	    ln -s $SYSFONT/SourceSansPro-Bold.ttf $PRDFONT/Rubik-Bold.ttf
 	    ln -s $SYSFONT/SourceSansPro-BoldItalic.ttf $PRDFONT/Rubik-BoldItalic.ttf
 	    ln -s $SYSFONT/SourceSansPro-SemiBold.ttf $PRDFONT/Rubik-Medium.ttf
@@ -497,13 +496,16 @@ prdfnt
 delgsans
 monospace
 beng
-oxygen
-grep -q 'miui' $SYSXML && xmi
-samsung
+#oxygen
+grep -q 'miui' $SYSXML && {
+  echo "- Miui detected, Not supported, Aborting installation."  
+  exit 1
+}
+#samsung
 srf
 gfntdsbl
 src
-fallback
+#fallback
 finish
 perm
 
