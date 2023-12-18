@@ -1,6 +1,6 @@
 # -= MFFM Template v.X.xx =-
 - **Can be used as a template or as an installer**
-- **Support for AOSP/LOS/PixelStock and Closest Kin Like ROMS/~~Oxygen/Miui-HyperOS/Samsung(OneUI5)~~** ****
+- **Support for AOSP/LOS/PixelStock and Closest Kin Like ROMS/~~Oxygen/Miui-HyperOS/Samsung(OneUI5)~~**
 - **Monospace / Bengali font / Emoji / Serif support (user dependent)**
 - **Android 12/13/14 ready**
 - **Compatible with Magisk and KSU**
