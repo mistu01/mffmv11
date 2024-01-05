@@ -65,7 +65,7 @@ Beng-Bold.ttf
  
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
- - Download the Emoji Addon from [here](https://t.me/MFFMDisc/69690/78845). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
+ - Download the Emoji Addon from [here](https://github.com/charityrolfson433/mffmv11/tree/main/Emoji%20Fonts%20Packges). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
