@@ -9,9 +9,7 @@
 As of new changes the installation logic has changed dated: `11/22/2023` for seamless installation across KSU/Magisk/Newer android versions. With no font or font related module (that modifies `fonts.xml`) installed (if installed any uninstall all of them and reboot) open any Terminal app eg. `Termux` run this following command with root permission. 
 ```
 su -c '
-if [ ! -d /sdcard/MFFM/fontsxml ]; then
-    mkdir -p /sdcard/MFFM/fontsxml
-fi
+[ ! -d /sdcard/MFFM/fontsxml ] && mkdir -p /sdcard/MFFM/fontsxml
 cp /system/etc/fonts.xml /sdcard/MFFM/fontsxml/fonts.xml
 cp /product/etc/fonts_customization.xml /sdcard/MFFM/fontsxml/fonts_customization.xml'
 ```
