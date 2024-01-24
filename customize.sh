@@ -269,6 +269,22 @@ monospace(){
     fi
 }
 
+moto(){
+    sed -i "/<family name=\"hanyiqihei\" customizationType=\"new-named-family\">/,/<\/family>/c\<family name=\"hanyiqihei\" customizationType=\"new-named-family\">\n\t<font weight=\"400\" style=\"normal\" postScriptName=\"HYQiHei-EES\">\n\t\tRubik-Regular.ttf\n\t</font>\n</family>" $PRDXML
+    sed -i "/<family name=\"zhongsong\" customizationType=\"new-named-family\">/,/<\/family>/c\<family name=\"zhongsong\" customizationType=\"new-named-family\">\n\t<font weight=\"400\" style=\"normal\" postScriptName=\"AaZhongsongNon-CommercialUse\">\n\t\tRubik-Regular.ttf\n\t</font>\n</family>" $PRDXML
+    sed -i "/<family name=\"Inter-Thin\" customizationType=\"new-named-family\">/,/<\/family>/c\<family name=\"Inter-Thin\" customizationType=\"new-named-family\">\n\t<font weight=\"400\" style=\"normal\" postScriptName=\"Inter-Thin\">\n\t\tRubik-Regular.ttf\n\t</font>\n</family>" $PRDXML
+    sed -i "/<family name=\"Rookery-Regular\" customizationType=\"new-named-family\">/,/<\/family>/c\
+    <font weight=\"400\" style=\"normal\" postScriptName=\"Rookery-Regular\">\n\
+        Rubik-Regular.ttf\n\
+    <\/font>\n\
+    <font weight=\"500\" style=\"normal\" postScriptName=\"Rookery-Medium\">\n\
+        Rubik-Medium.ttf\n\
+    <\/font>\n\
+    <font weight=\"400\" style=\"italic\" postScriptName=\"Rookery-Italic\">\n\
+        Rubik-Italic.ttf\n\
+    <\/font>" $PRDXML
+}
+
 srf(){
     unzip -qq $FONTDIR/Serif*.zip -d $FONTDIR
 	if [ ! -f $FONTDIR/Serif-Regular.ttf ]; then
@@ -336,6 +352,7 @@ beng
 srf
 gfntdsbl
 src
+moto
 #fallback
 finish
 perm
