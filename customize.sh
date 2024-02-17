@@ -216,11 +216,16 @@ prdscrp(){
 
 # Borrowed From OMF
 gfntdsbl(){
-    [ ! -f "$MODPATH/service.sh" ] && echo > "$MODPATH/service.sh"
-	sed -i '1i( until pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 60; done ) &' $MODPATH/service.sh #Borrowed from OMF
+    echo 'MODDIR=${0%/*}
+until [ "$(getprop sys.boot_completed)" = 1 ]; do sleep 1; done
+until [ -d /sdcard ]; do sleep 1; done
+sleep 1 
+
+su -c pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider
+su -c rm -rf /data/fonts
+su -c rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf' > $MODPATH/service.sh
     [ ! -f "$MODPATH/uninstall.sh" ] && echo > "$MODPATH/uninstall.sh"
 	sed -i '1i( until pm enable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 5; done ) &' $MODPATH/uninstall.sh #Borrowed from OMF
-    echo '( [ -d "/data/fonts" ] && rm -rf /data/fonts ) &' >> $MODPATH/service.sh
 }
 
 bengpatch(){
