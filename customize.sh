@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.02.17
+## 2024.03.12
 
 #Debugging mode enabled
 set -xv
@@ -93,6 +93,10 @@ mffmex(){
             cp $monofile $FONTDIR
         fi
     fi
+}
+
+v() {
+    sed -i "s/\(version=\)\(.*\)/\1\2$1/" module.prop
 }
 
 mv $FONTDIR/bin $MODPATH/bin
@@ -222,10 +226,12 @@ until [ -d /sdcard ]; do sleep 1; done
 sleep 1 
 
 pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider
+pm disable com.google.android.gms/com.google.android.gms.fonts.update.UpdateSchedulerService
 rm -rf /data/fonts
-rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf' > $MODPATH/service.sh
-    [ ! -f "$MODPATH/uninstall.sh" ] && echo > "$MODPATH/uninstall.sh"
-	sed -i '1i( until pm enable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 5; done ) &' $MODPATH/uninstall.sh #Borrowed from OMF
+rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf
+rm -rf /data/user/0/com.google.android.gms/files/fonts/opentype/*ttf' > $MODPATH/service.sh
+    #[ ! -f "$MODPATH/uninstall.sh" ] && echo > "$MODPATH/uninstall.sh"
+	#sed -i '1i( until pm enable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider; do sleep 5; done ) &' $MODPATH/uninstall.sh #Borrowed from OMF
 }
 
 bengpatch(){

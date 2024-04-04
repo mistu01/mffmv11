@@ -19,6 +19,11 @@ sed -i "s/\(version=\).*/\1$VERSION/" module.prop
 DESCRIPTION="This Module will replace your android default Roboto font family with \"$NAME\" font family as your default android system font. For support join @MFFMDisc on telegram."
 sed -i "s/\(description=\).*/\1$DESCRIPTION/" module.prop
 
+#ID
+#NEW_ID="mffm11_${NAME//[[:blank:]]/}"
+#sed -i "s/^id=.*$/id=$NEW_ID/" module.prop
+sed -i 's/\(id=\).*/\1mffm11/' module.prop
+
 # Zip name - replace spaces
 ZIP_NAME=${NAME// /} 
 
