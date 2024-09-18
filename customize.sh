@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.03.12
+## 2024.18.09
 
 #Debugging mode enabled
 set -xv
@@ -365,6 +365,7 @@ gfntdsbl
 src
 moto
 #fallback
+[ -f "/system/etc/font_fallback.xml" ] && cp "$SYSXML" "$MODPATH/system/etc/font_fallback.xml"
 finish
 perm
 
