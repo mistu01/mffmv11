@@ -82,10 +82,8 @@ Serif-BoldItalic.ttf
 
 # GApps Font
 - If your mffm template powered modules stopped working in Google Apps or didn't change at all, you can run this commands for respective (11 or 12 template) templates in Terminal with Super User privileges. No need to restart, Force close any Google App if not still showing the font. 
-```
-for mffm11 su -c /data/adb/modules/mffm11/service.sh
-for mffm12 su -c /data/adb/modules/mffmv12/service.sh 
-```
+for mffm11 `su -c /data/adb/modules/mffm11/service.sh`
+for mffm12 `su -c /data/adb/modules/mffmv12/service.sh` 
 if method mentioned above is not working for you then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
 # Credits
