@@ -14,7 +14,7 @@ rm -rf /sdcard/MFFM/fontsxml
 cp /system/etc/fonts.xml /sdcard/MFFM/fontsxml/fonts.xml
 cp /product/etc/fonts_customization.xml /sdcard/MFFM/fontsxml/fonts_customization.xml'
 ```
-You only need to do this once. Repeat this only if you change ROM! After this you are ready to install, update, dirty install, install `MFFMv12` modules without any trouble. 
+You only need to do this once. Repeat this only if you change ROM! After this you are ready to install, update, dirty install, install `MFFMv11/12` modules without any trouble. 
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
@@ -81,7 +81,10 @@ Serif-BoldItalic.ttf
 - **With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group.**
 
 # GApps Font
-- If your Google Apps font don't change by default then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
+- If your mffm template powered modules stopped working in Google Apps or didn't change at all, you can run this commands for respective (11 or 12 template) templates in Terminal with Super User privileges. No need to restart, Force close any Google App if not still showing the font. 
+- For mffm11 `su -c /data/adb/modules/mffm11/service.sh` 
+- For mffm12 `su -c /data/adb/modules/mffmv12/service.sh` 
+- If method mentioned above is not working for you then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk) | [Inter Font Pack By kdrag0n](https://github.com/kdrag0n/inter-font-pack)
