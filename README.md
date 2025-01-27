@@ -6,15 +6,15 @@
 - **Compatible with Magisk and KSU**
 
 # Important Info Before Installation:
-No need to do that anymore, install like normal magisk or KSU module. 
-Instead you must install `Font Loader` zygisk module to stop the app crashes. 
+Install like normal magisk or KSU module. 
+But you must install `Font Loader` zygisk module to stop the app crashes. 
 - **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash in your magisk. Make sure zygisk is enabled**
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
 To use it as a module template you can copy the renamed files directly to the template's `Files` folder to make a permanent module.
 
-To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` & `MFFM/fonts` folder. Other detailed instructions are in particular sections of the respective topis (Which file/script goes where).
+To use the template as an installer first you have to create a folder named `MFFM` in your local storage. Then you can copy your `renamed files` to the `MFFM` & `MFFM/Fonts` folder. Other detailed instructions are in particular sections of the respective topics (Which file/script goes where).
 
 Remember you can use both mode `(Template/Installer)` at the same, so it really doesn't matter where ever `(inside the template or in the MFFM foler)` you put your files. The template should work just fine.
 
@@ -46,7 +46,6 @@ If same category files `(eg. Bengali Fonts)` are present in both the `MFFM` fold
     ThinItalic.ttf
     ```
 - And then copy those font files to `Files` folder of the template to make a module. 
-- If you have only one font file or want to use only one weight/style then rename the file to `MFFM.ttf` and copy it to `Files` folder of the template.
 - If you want to use in installer mode, create a folder named `Fonts` inside `MFFM` folder. Put the renamed files in the `MFFM/Fonts` folder. Flash the template/Installer
 
 # Optional Usage
