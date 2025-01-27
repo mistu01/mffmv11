@@ -1,20 +1,14 @@
 # -= MFFM Template v.X.xx =-
 - **Can be used as a template or as an installer**
-- **Support for AOSP/LOS/PixelStock and Closest Kin Like ROMS/~~Oxygen/Miui-HyperOS/Samsung(OneUI5)~~**
+- **Support for AOSP/LOS/PixelStock and Closest Kin Like ROMS**
 - **Monospace / Bengali font / Emoji / Serif support (user dependent)**
-- **Android 12/13/14 ready**
+- **Android 12/13/14/15 ready**
 - **Compatible with Magisk and KSU**
 
 # Important Info Before Installation:
-As of new changes the installation logic has changed dated: `11/22/2023` for seamless installation across KSU/Magisk/Newer android versions. With no font or font related module (that modifies `fonts.xml`) installed (if installed any uninstall all of them and reboot) open any Terminal app eg. `Termux` run this following command with root permission. 
-```
-su -c '
-rm -rf /sdcard/MFFM/fontsxml
-[ ! -d /sdcard/MFFM/fontsxml ] && mkdir -p /sdcard/MFFM/fontsxml
-cp /system/etc/fonts.xml /sdcard/MFFM/fontsxml/fonts.xml
-cp /product/etc/fonts_customization.xml /sdcard/MFFM/fontsxml/fonts_customization.xml'
-```
-You only need to do this once. Repeat this only if you change ROM! After this you are ready to install, update, dirty install, install `MFFMv11/12` modules without any trouble. 
+No need to do that anymore, install like normal magisk or KSU module. 
+Instead you must install `Font Loader` zygisk module to stop the app crashes. 
+- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash in your magisk. Make sure zygisk is enabled**
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
@@ -30,18 +24,24 @@ If same category files `(eg. Bengali Fonts)` are present in both the `MFFM` fold
 - Download the template from [Releases](https://github.com/mistu2020/mffm_v11_public/tree/main/Releases) folder.
 - The best way is to use the template is to use it with `MT Manager` file manager.  With [MT Manager](https://m.apkpure.com/mt-manager/bin.mt.plus) you can directly edit the zip file without unpacking it.
 - Eitherway you can unpack the zip file with any file manager, I recommend Mixplorer. And after editing/copying files in the template, repack the template content to `.zip` archive to make a module.
-- You are going to need 12 font style to use this template. Rename your font file as stated bellow:
+- You are going to need at least one style `Regular.ttf` to use this template. You can use upto 18 styles currently. Rename your font file as stated bellow:
     ```
     Black.ttf
     BlackItalic.ttf
+    ExtraBold.ttf
+    ExtraBoldItalic.ttf
     Bold.ttf
     BoldItalic.ttf
+    SemiBold.ttf
+    SemiBoldItalic.ttf
     Medium.ttf
     MediumItalic.ttf
     Regular.ttf
     Italic.ttf
     Light.ttf
     LightItalic.ttf
+    ExtraLight.ttf
+    ExtraLightItalic.ttf
     Thin.ttf
     ThinItalic.ttf
     ```
@@ -64,7 +64,7 @@ Beng-Bold.ttf
  
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
- - Download the Emoji Addon from [here](https://github.com/charityrolfson433/mffmv11/tree/main/Emoji%20Fonts%20Packges). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
+ - Download the Emoji Addon from [here](https://github.com/mistu01/mffmv11/raw/refs/heads/main/Emoji%20Fonts%20Packges/MFFM_UniEmoji_v5.5.zip). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
@@ -89,6 +89,6 @@ Serif-BoldItalic.ttf
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk) | [Inter Font Pack By kdrag0n](https://github.com/kdrag0n/inter-font-pack)
 # Tributes & Acknowledgements
-- [OMF](https://gitlab.com/nongthaihoang/oh_my_font) | [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF) | [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) | [Magifont](https://t.me/Magifonts_Support)
+- [OMF](https://gitlab.com/nongthaihoang/oh_my_font) | [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF) | [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) | [Magifont](https://t.me/Magifonts_Support) | [Fontloader](https://github.com/JingMatrix/FontLoader)
 # Support And Discussions
 - [MFFM Discussion](https://t.me/MFFMDisc) | [MFFM Main](https://t.me/MFFMMain) | [MFFM Blog](https://t.me/mffmex)
