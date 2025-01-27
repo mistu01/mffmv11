@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.10.05
+## 2024.12.26
 
 #Debugging mode enabled
 set -xv
@@ -14,21 +14,29 @@ set -xv
 
 ORIPRDFONT=$ORIPRD/fonts
 ORIPRDETC=$ORIPRD/etc
-#ORIPRDXML=$ORIPRDETC/fonts_customization.xml
-ORIPRDXML=/sdcard/MFFM/fontsxml/fonts_customization.xml
+ORIPRDXML=$ORIPRDETC/fonts_customization.xml
+#ORIPRDXML=/sdcard/MFFM/fontsxml/fonts_customization.xml
 ORISYSFONT=$ORIDIR/system/fonts
 ORISYSETC=$ORIDIR/system/etc
-#ORISYSXML=$ORISYSETC/fonts.xml
-ORISYSXML=/sdcard/MFFM/fontsxml/fonts.xml
+ORISYSXML=$ORISYSETC/fonts.xml
+ORISYSXMLL=$ORISYSETC/font_fallback.xml
+#ORISYSXML=/sdcard/MFFM/fontsxml/fonts.xml
+#ORISYSXMLL=/sdcard/MFFM/fontsxml/font_fallback.xml
+
+umount $ORISYSXML $ORISYSXMLL $ORIPRDXML &>/dev/null
 
 #MODPATH
-PRDFONT="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/fonts"
-PRDETC="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/etc"
+#PRDFONT="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/fonts"
+PRDFONT=$MODPATH/system/product/fonts
+#PRDETC="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/etc"
+PRDETC=$MODPATH/system/product/etc
 PRDXML=$PRDETC/fonts_customization.xml
 SYSFONT=$MODPATH/system/fonts
 SYSETC=$MODPATH/system/etc
-SYSEXTETC="$MODPATH/$(if [ "$ORISYSEXT" = "$ORIDIR/system_ext" ]; then echo "system_ext"; else echo "system/system_ext"; fi)/etc"
+#SYSEXTETC="$MODPATH/$(if [ "$ORISYSEXT" = "$ORIDIR/system_ext" ]; then echo "system_ext"; else echo "system/system_ext"; fi)/etc"
+SYSEXTETC=$MODPATH/system/system_ext/etc
 SYSXML=$SYSETC/fonts.xml
+SYSXMLL=$SYSETC/font_fallback.xml
 MODPROP=$MODPATH/module.prop
 FONTDIR=$MODPATH/Files
 
@@ -38,11 +46,6 @@ MFFM=/sdcard/MFFM
 
 #API
 APILEVEL=$(getprop ro.build.version.sdk)
-
-grep -q 'miui' $SYSXML && {
-  echo "- Miui detected, Not supported, Aborting installation."  
-  exit 1
-}
 
 mffmex(){
     sleep 1
@@ -104,46 +107,49 @@ base64 -d $MODPATH/bin > $MODPATH/f && tar xf $MODPATH/f -C $MODPATH
 tar xf $MODPATH/data.xz -C $MODPATH
 tar xf $FONTDIR/data -C $MODPATH
 mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
-if [ ! -f "$ORISYSXML" ]; then    
-    nohup am start -a android.intent.action.VIEW -d https://telegra.ph/Installation-Logic-for-seamless-installing-updating-12-28 >/dev/null 2>&1 &
-    exit 1
-else    
-    cp "$ORISYSXML" "$SYSXML"
-fi
+
 [ -f $ORIPRDXML ] && cp $ORIPRDXML $PRDXML
+[ -f $ORISYSXMLL ] && cp $ORISYSXMLL $SYSXMLL
+[ -f $ORISYSXML ] && cp $ORISYSXML $SYSXML
 
     SS="<family name=\"sans-serif\">" SSC="<family name=\"sans-serif-condensed\">" VRD="<alias name=\"verdana\" to=\"sans-serif\" \/>" GSN="<family customizationType=\"new-named-family\" name=\"googlesans\">"
 	GS="<family customizationType=\"new-named-family\" name=\"google-sans\">" GST="<family customizationType=\"new-named-family\" name=\"google-sans-text\">" GSB="<family customizationType=\"new-named-family\" name=\"google-sans-bold\">"
 	GSM="<family customizationType=\"new-named-family\" name=\"google-sans-medium\">" GSTM="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium\">" GSTB="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold\">"
 	GSTBI="<family customizationType=\"new-named-family\" name=\"google-sans-text-bold-italic\">" GSTMI="<family customizationType=\"new-named-family\" name=\"google-sans-text-medium-italic\">" GSTI="<family customizationType=\"new-named-family\" name=\"google-sans-text-italic\">"
 
-[ -f "$FONTDIR/Thin.ttf" ] && thin="<font weight=\"100\" style=\"normal\">NotoSansBuhid-Regular.ttf</font>" || unset thin
-[ -f "$FONTDIR/ThinItalic.ttf" ] && thinitalic="<font weight=\"100\" style=\"italic\">NotoSansCarian-Regular.ttf</font>" || unset thinitalic
-[ -f "$FONTDIR/Light.ttf" ] && light="<font weight=\"300\" style=\"normal\">CarroisGothicSC-Regular.ttf</font>" || unset light
-[ -f "$FONTDIR/LightItalic.ttf" ] && lightitalic="<font weight=\"300\" style=\"italic\">ComingSoon.ttf</font>" || unset lightitalic
-[ -f "$FONTDIR/Regular.ttf" ] && regular="<font weight=\"400\" style=\"normal\">DroidSans.ttf</font>" || unset regular
-[ -f "$FONTDIR/Italic.ttf" ] && italic="<font weight=\"400\" style=\"italic\">DroidSans-Bold.ttf</font>" || unset italic
-[ -f "$FONTDIR/Medium.ttf" ] && medium="<font weight=\"500\" style=\"normal\">SourceSansPro-SemiBold.ttf</font>" || unset medium
-[ -f "$FONTDIR/MediumItalic.ttf" ] && mediumitalic="<font weight=\"500\" style=\"italic\">SourceSansPro-SemiBoldItalic.ttf</font>" || unset mediumitalic
-[ -f "$FONTDIR/Black.ttf" ] && black="<font weight=\"900\" style=\"normal\">SourceSansPro-Regular.ttf</font>" || unset black
-[ -f "$FONTDIR/BlackItalic.ttf" ] && blackitalic="<font weight=\"900\" style=\"italic\">SourceSansPro-Italic.ttf</font>" || unset blackitalic
-[ -f "$FONTDIR/Bold.ttf" ] && bold="<font weight=\"700\" style=\"normal\">SourceSansPro-Bold.ttf</font>" || unset bold
-[ -f "$FONTDIR/BoldItalic.ttf" ] && bolditalic="<font weight=\"700\" style=\"italic\">SourceSansPro-BoldItalic.ttf</font>" || unset bolditalic
+[ -f "$FONTDIR/Thin.ttf" ] && thin="<font weight=\"100\" style=\"normal\">Thin.ttf</font>" || unset thin
+[ -f "$FONTDIR/ThinItalic.ttf" ] && thinitalic="<font weight=\"100\" style=\"italic\">ThinItalic.ttf</font>" || unset thinitalic
+[ -f "$FONTDIR/ExtraLight.ttf" ] && extralight="<font weight=\"200\" style=\"normal\">ExtraLight.ttf</font>" || unset extralight
+[ -f "$FONTDIR/ExtraLightItalic.ttf" ] && extralightitalic="<font weight=\"200\" style=\"italic\">ExtraLightItalic.ttf</font>" || unset extralightitalic
+[ -f "$FONTDIR/Light.ttf" ] && light="<font weight=\"300\" style=\"normal\">Light.ttf</font>" || unset light
+[ -f "$FONTDIR/LightItalic.ttf" ] && lightitalic="<font weight=\"300\" style=\"italic\">LightItalic.ttf</font>" || unset lightitalic
+[ -f "$FONTDIR/Regular.ttf" ] && regular="<font weight=\"400\" style=\"normal\">Regular.ttf</font>" || unset regular
+[ -f "$FONTDIR/Italic.ttf" ] && italic="<font weight=\"400\" style=\"italic\">Italic.ttf</font>" || unset italic
+[ -f "$FONTDIR/Medium.ttf" ] && medium="<font weight=\"500\" style=\"normal\">Medium.ttf</font>" || unset medium
+[ -f "$FONTDIR/MediumItalic.ttf" ] && mediumitalic="<font weight=\"500\" style=\"italic\">MediumItalic.ttf</font>" || unset mediumitalic
+[ -f "$FONTDIR/SemiBold.ttf" ] && semibold="<font weight=\"600\" style=\"normal\">SemiBold.ttf</font>" || unset semibold
+[ -f "$FONTDIR/SemiBoldItalic.ttf" ] && semibolditalic="<font weight=\"600\" style=\"italic\">SemiBoldItalic.ttf</font>" || unset semibolditalic
+[ -f "$FONTDIR/Black.ttf" ] && black="<font weight=\"900\" style=\"normal\">Black.ttf</font>" || unset black
+[ -f "$FONTDIR/BlackItalic.ttf" ] && blackitalic="<font weight=\"900\" style=\"italic\">BlackItalic.ttf</font>" || unset blackitalic
+[ -f "$FONTDIR/Bold.ttf" ] && bold="<font weight=\"700\" style=\"normal\">Bold.ttf</font>" || unset bold
+[ -f "$FONTDIR/BoldItalic.ttf" ] && bolditalic="<font weight=\"700\" style=\"italic\">BoldItalic.ttf</font>" || unset bolditalic
+[ -f "$FONTDIR/ExtraBold.ttf" ] && extrabold="<font weight=\"800\" style=\"normal\">ExtraBold.ttf</font>" || unset extrabold
+[ -f "$FONTDIR/ExtraBoldItalic.ttf" ] && extrabolditalic="<font weight=\"800\" style=\"italic\">ExtraBoldItalic.ttf</font>" || unset extrabolditalic
 #-----
-[ -f "$FONTDIR/Light.ttf" ] && glight="<font weight=\"300\" style=\"normal\">Lato-Regular.ttf</font>" || unset glight
-[ -f "$FONTDIR/LightItalic.ttf" ] && glightitalic="<font weight=\"300\" style=\"italic\">Lato-Italic.ttf</font>" || unset glightitalic
-[ -f "$FONTDIR/Regular.ttf" ] && gregular="<font weight=\"400\" style=\"normal\">Rubik-Regular.ttf</font>" || unset gregular
-[ -f "$FONTDIR/Italic.ttf" ] && gitalic="<font weight=\"400\" style=\"italic\">Rubik-Italic.ttf</font>" || unset gitalic
-[ -f "$FONTDIR/Medium.ttf" ] && gmedium="<font weight=\"500\" style=\"normal\">Rubik-Medium.ttf</font>" || unset gmedium
-[ -f "$FONTDIR/MediumItalic.ttf" ] && gmediumitalic="<font weight=\"500\" style=\"italic\">Rubik-MediumItalic.ttf</font>" || unset gmediumitalic
-[ -f "$FONTDIR/Bold.ttf" ] && gbold="<font weight=\"700\" style=\"normal\">Rubik-Bold.ttf</font>" || unset gbold
-[ -f "$FONTDIR/BoldItalic.ttf" ] && gbolditalic="<font weight=\"700\" style=\"italic\">Rubik-BoldItalic.ttf</font>" || unset gbolditalic
+[ -f "$FONTDIR/Light.ttf" ] && glight="<font weight=\"300\" style=\"normal\">Light.ttf</font>" || unset glight
+[ -f "$FONTDIR/LightItalic.ttf" ] && glightitalic="<font weight=\"300\" style=\"italic\">LightItalic.ttf</font>" || unset glightitalic
+[ -f "$FONTDIR/Regular.ttf" ] && gregular="<font weight=\"400\" style=\"normal\">Regular.ttf</font>" || unset gregular
+[ -f "$FONTDIR/Italic.ttf" ] && gitalic="<font weight=\"400\" style=\"italic\">Italic.ttf</font>" || unset gitalic
+[ -f "$FONTDIR/Medium.ttf" ] && gmedium="<font weight=\"500\" style=\"normal\">Medium.ttf</font>" || unset gmedium
+[ -f "$FONTDIR/MediumItalic.ttf" ] && gmediumitalic="<font weight=\"500\" style=\"italic\">MediumItalic.ttf</font>" || unset gmediumitalic
+[ -f "$FONTDIR/Bold.ttf" ] && gbold="<font weight=\"700\" style=\"normal\">Bold.ttf</font>" || unset gbold
+[ -f "$FONTDIR/BoldItalic.ttf" ] && gbolditalic="<font weight=\"700\" style=\"italic\">BoldItalic.ttf</font>" || unset gbolditalic
 
 patchsysxml(){
-    sed -i 's/RobotoStatic/Roboto/g' $SYSXML	
+    #sed -i 's/RobotoStatic/Roboto/g' $SYSXML	
 	#sed -i "s/$SS/$SS\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $black\n        $blackitalic\n        $bold\n        $bolditalic\n   <\/family>\n   <family>/" $SYSXML
 	FONT_ENTRIES=""
-	for font in thin thinitalic light lightitalic regular italic medium mediumitalic black blackitalic bold bolditalic; do
+	for font in thin thinitalic extralight extralightitalic light lightitalic regular italic medium mediumitalic semibold semibolditalic bold bolditalic extrabold extrabolditalic black blackitalic; do
     	[ -n "$(eval echo \$$font)" ] && FONT_ENTRIES="$FONT_ENTRIES        $(eval echo \$$font)\n"
 	done
 	FONT_ENTRIES=$(echo "$FONT_ENTRIES" | sed 's/\\n$//')
@@ -155,34 +161,39 @@ patchsysxml(){
    	<family>" "$SYSXML"
 	fi
 	
+	if [ -n "$SS" ] && [ -n "$FONT_ENTRIES" ]; then
+    	sed -i "/$SS/a\\
+	$FONT_ENTRIES\\
+   	</family>\\
+   	<family>" "$SYSXMLL"
+	fi
+	
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLL
 	#sed -i "s/$SSC/$SSC\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     if [ -n "$SSC" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/$SSC/a\\
     $FONT_ENTRIES" "$SYSXML"
     fi
+	if [ -n "$SSC" ] && [ -n "$FONT_ENTRIES" ]; then
+        sed -i "/$SSC/a\\
+    $FONT_ENTRIES" "$SYSXMLL"
+    fi
 	sed -i -n '/<family name=\"roboto-flex\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
+	sed -i -n '/<family name=\"roboto-flex\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLL
 	if [ -n "<family name=\"roboto-flex\">" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/<family name=\"roboto-flex\">/a\\
     $FONT_ENTRIES" "$SYSXML"
     fi
+	if [ -n "<family name=\"roboto-flex\">" ] && [ -n "$FONT_ENTRIES" ]; then
+        sed -i "/<family name=\"roboto-flex\">/a\\
+    $FONT_ENTRIES" "$SYSXMLL"
+    fi
 }
 
-sfont() {
-    singlefont
-    cp $FONTDIR/Regular.ttf $SYSFONT/DroidSans.ttf
-    cp $FONTDIR/Italic.ttf $SYSFONT/DroidSans-Bold.ttf
-    cp $FONTDIR/Medium.ttf $SYSFONT/SourceSansPro-SemiBold.ttf
-    cp $FONTDIR/MediumItalic.ttf $SYSFONT/SourceSansPro-SemiBoldItalic.ttf
-    cp $FONTDIR/Bold.ttf $SYSFONT/SourceSansPro-Bold.ttf
-    cp $FONTDIR/BoldItalic.ttf $SYSFONT/SourceSansPro-BoldItalic.ttf
-    cp $FONTDIR/Black.ttf $SYSFONT/SourceSansPro-Regular.ttf
-    cp $FONTDIR/BlackItalic.ttf $SYSFONT/SourceSansPro-Italic.ttf
-    cp $FONTDIR/Thin.ttf $SYSFONT/NotoSansBuhid-Regular.ttf
-    cp $FONTDIR/ThinItalic.ttf $SYSFONT/NotoSansCarian-Regular.ttf	
-    cp $FONTDIR/Light.ttf $SYSFONT/CarroisGothicSC-Regular.ttf
-    cp $FONTDIR/LightItalic.ttf $SYSFONT/ComingSoon.ttf	
-	if [ -f $SYSFONT/DroidSans.ttf ]; then
+sfont() {    
+    cp $FONTDIR/*.ttf $SYSFONT
+	if [ -f $SYSFONT/Regular.ttf ]; then
 	    sleep 0.5
         ui_print ""		
 		ui_print "- Installing Fonts"
@@ -196,7 +207,6 @@ sfont() {
 	fi	
 }
 
-# Borrowed From OMF
 delgsans(){
     sed -i -E "/<family customizationType=\"new-named-family\" name=\"(google-sans|google-sans-flex|google-sans-medium|google-sans-bold|google-sans-text|google-sans-text-medium|google-sans-text-bold|google-sans-text-italic|google-sans-text-medium-italic|google-sans-text-bold-italic|google-sans-inter|google-sans-medium-inter|google-sans-bold-inter|google-sans-text-inter|google-sans-text-medium-inter|google-sans-text-bold-inter|google-sans-text-italic-inter|google-sans-text-medium-italic-inter|google-sans-text-bold-italic-inter)\">/,/<\/family>/d" $PRDXML
 }
@@ -206,17 +216,17 @@ gsans(){
 	for v1 in $var1; do
         sed -i "/<family customizationType=\"new-named-family\" name=\"$v1\">/,/<\/family>/{/<family customizationType=\"new-named-family\" name=\"$v1\">/b;/<\/family>/b;d}" $PRDXML
     done
-	if [ -n "$gbold" ]; then
+	if [ -n "$bold" ]; then
         for name in "google-sans-clock" "googlesansclock" "audimat" "sfroundedtime" "sfsofttime-semibold"; do
-            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $gbold\n    <\/family>" $PRDXML
+            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $bold\n    <\/family>" $PRDXML
         done
-    elif [ -n "$gmedium" ]; then
+    elif [ -n "$medium" ]; then
         for name in "google-sans-clock" "googlesansclock" "audimat" "sfroundedtime" "sfsofttime-semibold"; do
-            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $gmedium\n    <\/family>" $PRDXML
+            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $medium\n    <\/family>" $PRDXML
         done
-    elif [ -n "$gregular" ]; then
+    elif [ -n "$regular" ]; then
         for name in "google-sans-clock" "googlesansclock" "audimat" "sfroundedtime" "sfsofttime-semibold"; do
-            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $gregular\n    <\/family>" $PRDXML
+            sed -i "/<family customizationType=\"new-named-family\" name=\"$name\">/,/<\/family>/c\    <family customizationType=\"new-named-family\" name=\"$name\">\n        $regular\n    <\/family>" $PRDXML
         done
     fi
 	delgsans
@@ -224,7 +234,7 @@ gsans(){
 
 prdscrp(){    
     GFONT_ENTRIES=""
-    for gfont in glight glightitalic gregular gitalic gmedium gmediumitalic gblack gblackitalic gbold gbolditalic; do
+    for gfont in light lightitalic regular italic medium mediumitalic black blackitalic bold bolditalic; do
         [ -n "$(eval echo \$$gfont)" ] && GFONT_ENTRIES="$GFONT_ENTRIES        $(eval echo \$$gfont)\n"
     done
     
@@ -238,22 +248,89 @@ prdscrp(){
     fi    
 }
 
-# Borrowed From OMF
-gfntdsbl(){
-    echo 'MODDIR=${0%/*}
-until [ "$(getprop sys.boot_completed)" = 1 ]; do sleep 1; done
-until [ -d /sdcard ]; do sleep 1; done
-sleep 1 
+gfntdsbl() {
+    echo ""
+    echo "  [INFO] Starting Google Fonts disable operation..."
+    sleep 0.5
 
+    # Create action.sh
+    echo "  [INFO] Creating action.sh script..."
+    cat > "$MODPATH/action.sh" << 'EOF'
+#!/bin/sh
+
+# Define variables
+mod_path=/data/adb/modules/mffm11
+post_fs_data="$mod_path/post-fs-data.sh"
+
+echo "[INFO] Starting action script execution..."
+sleep 0.5
+
+# Check if post-fs-data.sh exists
+if [ -f "$post_fs_data" ]; then
+    echo "[INFO] Found $post_fs_data"
+    sleep 0.5
+    
+    echo "[INFO] Changing directory to $mod_path"
+    cd "$mod_path" || {
+        echo "[ERROR] Failed to change directory to $mod_path"
+        exit 1
+    }
+    sleep 0.5
+    
+    echo "[INFO] Setting executable permissions for post-fs-data.sh"
+    chmod +x "$post_fs_data"
+    sleep 0.5
+    
+    echo "[INFO] Executing post-fs-data.sh"
+    exec "$post_fs_data"
+else
+    echo "[WARNING] post-fs-data.sh does not exist in $mod_path"
+    sleep 0.5
+    exit 1
+fi
+
+sleep 0.5
+exit 0
+EOF
+
+    # Set executable permission for action.sh
+    echo "  [INFO] Setting executable permissions for action.sh"
+    chmod +x "$MODPATH/action.sh"
+    sleep 0.5
+
+    # Create post-fs-data.sh
+    echo "  [INFO] Creating post-fs-data.sh script..."
+    cat > "$MODPATH/post-fs-data.sh" << 'EOF'
+#!/system/bin/sh
+
+echo "[INFO] Disabling Google Fonts Provider..."
 pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider
+sleep 0.5
+
+echo "[INFO] Disabling Fonts Update Scheduler..."
 pm disable com.google.android.gms/com.google.android.gms.fonts.update.UpdateSchedulerService
+sleep 0.5
+
+echo "[INFO] Removing fonts data directory..."
 rm -rf /data/fonts
-rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf' > $MODPATH/service.sh
+sleep 0.5
+
+echo "[INFO] Removing Google GMS fonts..."
+rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf
+sleep 0.5
+
+echo "[INFO] Font disable operations completed successfully"
+EOF
+
+    echo "  [INFO] All scripts created successfully"
+    sleep 0.5
 }
 
 bengpatch(){
     sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
+    sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLL
     sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
+    sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLL
 }
 
 beng(){
@@ -265,19 +342,41 @@ beng(){
 
 prdfnt(){
     if [ -f $ORIPRDXML ]; then
-	    ln -s $SYSFONT/DroidSans.ttf $PRDFONT/Rubik-Regular.ttf
-	    ln -s $SYSFONT/DroidSans-Bold.ttf $PRDFONT/Rubik-Italic.ttf
-	    ln -s $SYSFONT/SourceSansPro-Bold.ttf $PRDFONT/Rubik-Bold.ttf
-	    ln -s $SYSFONT/SourceSansPro-BoldItalic.ttf $PRDFONT/Rubik-BoldItalic.ttf
-	    ln -s $SYSFONT/SourceSansPro-SemiBold.ttf $PRDFONT/Rubik-Medium.ttf
-	    ln -s $SYSFONT/SourceSansPro-SemiBoldItalic.ttf $PRDFONT/Rubik-MediumItalic.ttf
-	    ln -s $SYSFONT/CarroisGothicSC-Regular.ttf $PRDFONT/Lato-Regular.ttf
-	    ln -s $SYSFONT/ComingSoon.ttf $PRDFONT/Lato-Italic.ttf
+	    ln -s $SYSFONT/Regular.ttf $PRDFONT/Regular.ttf
+	    ln -s $SYSFONT/Italic.ttf $PRDFONT/Italic.ttf
+	    ln -s $SYSFONT/Bold.ttf $PRDFONT/Bold.ttf
+	    ln -s $SYSFONT/BoldItalic.ttf $PRDFONT/BoldItalic.ttf
+	    ln -s $SYSFONT/Medium.ttf $PRDFONT/Medium.ttf
+	    ln -s $SYSFONT/MediumItalic.ttf $PRDFONT/MediumItalic.ttf
+	    ln -s $SYSFONT/Regular.ttf $PRDFONT/Regular.ttf
+	    ln -s $SYSFONT/Italic.ttf $PRDFONT/Italic.ttf
 	fi
-	if [ -f $PRDFONT/Rubik-Regular.ttf ]; then
+	if [ -f $PRDFONT/Regular.ttf ]; then
 	    gsans
 	    prdscrp
 	fi
+}
+
+prdfnt2() {
+    if [ -f $ORIPRDXML ]; then
+	    ln -s $SYSFONT/Regular.ttf $PRDFONT/Regular.ttf
+	    ln -s $SYSFONT/Regular.ttf $PRDFONT/GoogleSansClock-Regular.ttf
+	    ln -s $SYSFONT/Italic.ttf $PRDFONT/Italic.ttf
+	    ln -s $SYSFONT/Bold.ttf $PRDFONT/Bold.ttf
+	    ln -s $SYSFONT/BoldItalic.ttf $PRDFONT/BoldItalic.ttf
+	    ln -s $SYSFONT/Medium.ttf $PRDFONT/Medium.ttf
+	    ln -s $SYSFONT/MediumItalic.ttf $PRDFONT/MediumItalic.ttf
+	    ln -s $SYSFONT/Light.ttf $PRDFONT/Light.ttf
+	    ln -s $SYSFONT/LightItalic.ttf $PRDFONT/LightItalic.ttf
+	fi
+	if [ -f "$MODPATH/system/product/etc/fonts_customization.xml" ]; then
+        echo -e '<fonts-modification version="1">\n<family customizationType="new-named-family" name="google-sans-clock">\n<font>GoogleSansClock-Regular.ttf</font>\n</family>\n</fonts-modification>' > $MODPATH/system/product/etc/fonts_customization.xml
+	fi
+}
+
+a15() {
+    [ -f "/system/etc/font_fallback.xml" ] && cp "$SYSXML" "$MODPATH/system/etc/font_fallback.xml"
+    sed -i 's/<familyset version="23">/<familyset>/g' "$MODPATH/system/etc/font_fallback.xml"
 }
 
 singlefont(){
@@ -304,10 +403,45 @@ srf(){
 	if [ ! -f $FONTDIR/Serif-Regular.ttf ]; then
 	    sleep 0.5
         ui_print "  Installing SANS-SERIF as SERIF fonts."    
-		cp $FONTDIR/Regular.ttf $SYSFONT/NotoSerif-Regular.ttf
-        cp $FONTDIR/Italic.ttf $SYSFONT/NotoSerif-Italic.ttf
-        cp $FONTDIR/Bold.ttf $SYSFONT/NotoSerif-Bold.ttf
-	    cp $FONTDIR/BoldItalic.ttf $SYSFONT/NotoSerif-BoldItalic.ttf		
+		replacement=""
+		for style in regular italic bold bolditalic; do
+    		value=$(eval echo \$$style)
+    		[ -n "$value" ] && echo -e "$value" >> $MODPATH/replacement_tmp
+		done
+		replacement=$(cat $MODPATH/replacement_tmp)
+		rm $MODPATH/replacement_tmp
+		# Replace the <family name="serif"> block in the XML file
+		awk -v replacement="$(echo -e "$replacement")" '
+		BEGIN { in_family = 0 }
+		/<family name="serif">/ {
+    		print $0; 
+    		in_family = 1; 
+    		print replacement;
+    		next;
+		}
+		/<\/family>/ && in_family {
+    		print $0;  # Ensure </family> is printed
+    		in_family = 0;
+    		next;
+		}
+		!in_family { print $0 }
+		' "$SYSXML" > temp.xml && mv temp.xml "$SYSXML"
+		
+		awk -v replacement="$(echo -e "$replacement")" '
+		BEGIN { in_family = 0 }
+		/<family name="serif">/ {
+    		print $0; 
+    		in_family = 1; 
+    		print replacement;
+    		next;
+		}
+		/<\/family>/ && in_family {
+    		print $0;  # Ensure </family> is printed
+    		in_family = 0;
+    		next;
+		}
+		!in_family { print $0 }
+		' "$SYSXMLL" > temp.xml && mv temp.xml "$SYSXMLL"
 	elif [ -f $FONTDIR/Serif-Regular.ttf ]; then
 	    sleep 0.5
         ui_print "  Installing SERIF fonts."
@@ -360,14 +494,15 @@ finish(){
 
 mffmex
 sfont
-prdfnt
+#prdfnt
+prdfnt2
 monospace
 beng
 srf
 gfntdsbl
 src
 #fallback
-[ -f "/system/etc/font_fallback.xml" ] && cp "$SYSXML" "$MODPATH/system/etc/font_fallback.xml"
+#a15
 finish
 perm
 
@@ -381,5 +516,5 @@ cat << "EOF"
   __  __ ___ ___ __  __ 
  |  \/  | __| __|  \/  |
  | |\/| | _|| _|| |\/| | v11
- |_|  |_|_| |_| |_|  |_| ©2024
+ |_|  |_|_| |_| |_|  |_| ©2025
 EOF

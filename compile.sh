@@ -31,7 +31,7 @@ ZIP_NAME=${NAME// /}
 ARCHIVE_NAME="$ZIP_NAME"_v"$DATE"[MFFMv11].zip
 
 # Files to zip 
-FILES="Files META-INF module.prop customize.sh"
+FILES="Files META-INF module.prop customize.sh LICENSE"
 
 # Create zip archive
 zip -r "$ARCHIVE_NAME" $FILES
