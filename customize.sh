@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.12.26
+## 2024.12.28
 
 #Debugging mode enabled
 set -xv
@@ -59,7 +59,7 @@ mffmex(){
             cp $snglfnt $FONTDIR
         fi
     fi	
-	fonts="Black.ttf BlackItalic.ttf Bold.ttf BoldItalic.ttf Medium.ttf MediumItalic.ttf Regular.ttf Italic.ttf Light.ttf LightItalic.ttf Thin.ttf ThinItalic.ttf"
+	fonts="Black.ttf BlackItalic.ttf ExtraBold.ttf ExtraBoldItalic.ttf SemiBold.ttf SemiBoldItalic.ttf ExtraLight.ttf ExtraLightItalic.ttf Bold.ttf BoldItalic.ttf Medium.ttf MediumItalic.ttf Regular.ttf Italic.ttf Light.ttf LightItalic.ttf Thin.ttf ThinItalic.ttf"
     for file in $fonts; do
     if [ -e $FONTDIR/$file ] || [ -e $FONTDIR/MFFM.ttf ]; then
         :
