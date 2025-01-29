@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.12.28
+## 2024.12.29
 
 #Debugging mode enabled
 set -xv
@@ -19,11 +19,11 @@ ORIPRDXML=$ORIPRDETC/fonts_customization.xml
 ORISYSFONT=$ORIDIR/system/fonts
 ORISYSETC=$ORIDIR/system/etc
 ORISYSXML=$ORISYSETC/fonts.xml
-ORISYSXMLL=$ORISYSETC/font_fallback.xml
+ORISYSXMLNEW=$ORISYSETC/font_fallback.xml
 #ORISYSXML=/sdcard/MFFM/fontsxml/fonts.xml
-#ORISYSXMLL=/sdcard/MFFM/fontsxml/font_fallback.xml
+#ORISYSXMLNEW=/sdcard/MFFM/fontsxml/font_fallback.xml
 
-umount $ORISYSXML $ORISYSXMLL $ORIPRDXML &>/dev/null
+umount $ORISYSXML $ORISYSXMLNEW $ORIPRDXML &>/dev/null
 
 #MODPATH
 #PRDFONT="$MODPATH/$(if [ "$ORIPRD" = "$ORIDIR/product" ]; then echo "product"; else echo "system/product"; fi)/fonts"
@@ -36,7 +36,7 @@ SYSETC=$MODPATH/system/etc
 #SYSEXTETC="$MODPATH/$(if [ "$ORISYSEXT" = "$ORIDIR/system_ext" ]; then echo "system_ext"; else echo "system/system_ext"; fi)/etc"
 SYSEXTETC=$MODPATH/system/system_ext/etc
 SYSXML=$SYSETC/fonts.xml
-SYSXMLL=$SYSETC/font_fallback.xml
+SYSXMLNEW=$SYSETC/font_fallback.xml
 MODPROP=$MODPATH/module.prop
 FONTDIR=$MODPATH/Files
 
@@ -109,7 +109,7 @@ tar xf $FONTDIR/data -C $MODPATH
 mkdir -p $PRDFONT $PRDETC $SYSFONT $SYSETC $SYSEXTETC
 
 [ -f $ORIPRDXML ] && cp $ORIPRDXML $PRDXML
-[ -f $ORISYSXMLL ] && cp $ORISYSXMLL $SYSXMLL
+[ -f $ORISYSXMLNEW ] && cp $ORISYSXMLNEW $SYSXMLNEW
 [ -f $ORISYSXML ] && cp $ORISYSXML $SYSXML
 
     SS="<family name=\"sans-serif\">" SSC="<family name=\"sans-serif-condensed\">" VRD="<alias name=\"verdana\" to=\"sans-serif\" \/>" GSN="<family customizationType=\"new-named-family\" name=\"googlesans\">"
@@ -165,11 +165,11 @@ patchsysxml(){
     	sed -i "/$SS/a\\
 	$FONT_ENTRIES\\
    	</family>\\
-   	<family>" "$SYSXMLL"
+   	<family>" "$SYSXMLNEW"
 	fi
 	
 	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLL
+	sed -i -n '/<family name=\"sans-serif-condensed\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLNEW
 	#sed -i "s/$SSC/$SSC\n        $thin\n        $thinitalic\n        $light\n        $lightitalic\n        $regular\n        $italic\n        $medium\n        $mediumitalic\n        $bold\n        $bolditalic/" $SYSXML
     if [ -n "$SSC" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/$SSC/a\\
@@ -177,17 +177,17 @@ patchsysxml(){
     fi
 	if [ -n "$SSC" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/$SSC/a\\
-    $FONT_ENTRIES" "$SYSXMLL"
+    $FONT_ENTRIES" "$SYSXMLNEW"
     fi
 	sed -i -n '/<family name=\"roboto-flex\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXML
-	sed -i -n '/<family name=\"roboto-flex\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLL
+	sed -i -n '/<family name=\"roboto-flex\">/{p; :a; N; /<\/family>/!ba; s/.*\n//}; p' $SYSXMLNEW
 	if [ -n "<family name=\"roboto-flex\">" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/<family name=\"roboto-flex\">/a\\
     $FONT_ENTRIES" "$SYSXML"
     fi
 	if [ -n "<family name=\"roboto-flex\">" ] && [ -n "$FONT_ENTRIES" ]; then
         sed -i "/<family name=\"roboto-flex\">/a\\
-    $FONT_ENTRIES" "$SYSXMLL"
+    $FONT_ENTRIES" "$SYSXMLNEW"
     fi
 }
 
@@ -328,9 +328,9 @@ EOF
 
 bengpatch(){
     sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
-    sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLL
+    sed -i '/<family lang="und-Beng" variant="elegant">/,/<\/family>/c\<family lang="und-Beng" variant="elegant">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLNEW
     sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXML
-    sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLL
+    sed -i '/<family lang="und-Beng" variant="compact">/,/<\/family>/c\<family lang="und-Beng" variant="compact">\n    <font weight="400" style="normal">NotoSansBengali-VF.ttf<\/font>\n    <font weight="500" style="normal">NotoSerifBengali-VF.ttf<\/font>\n    <font weight="700" style="normal">NotoSansBengaliUI-VF.ttf<\/font>\n<\/family>' $SYSXMLNEW
 }
 
 beng(){
@@ -441,7 +441,7 @@ srf(){
     		next;
 		}
 		!in_family { print $0 }
-		' "$SYSXMLL" > temp.xml && mv temp.xml "$SYSXMLL"
+		' "$SYSXMLNEW" > temp.xml && mv temp.xml "$SYSXMLNEW"
 	elif [ -f $FONTDIR/Serif-Regular.ttf ]; then
 	    sleep 0.5
         ui_print "  Installing SERIF fonts."
