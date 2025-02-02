@@ -8,7 +8,7 @@
 # Important Info Before Installation:
 Install like normal magisk or KSU module. 
 But you must install `Font Loader` zygisk module to stop the app crashes. 
-- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash in your magisk. Make sure zygisk is enabled**
+- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash in your magisk. Make sure zygisk is enabled. Also keep in mind that: You need to be logged-in in Github in order to download the action related artifacts**
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
