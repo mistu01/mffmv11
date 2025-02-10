@@ -1,5 +1,5 @@
 ## MFFM v11
-## 2024.12.29
+## 2025.02.09
 
 #Debugging mode enabled
 set -xv
@@ -210,7 +210,6 @@ fi
 sleep 0.5
 exit 0
 EOF
-
     # Set executable permission for action.sh
     echo "  [INFO] Setting executable permissions for action.sh"
     chmod +x "$MODPATH/action.sh"
@@ -220,7 +219,8 @@ EOF
     echo "  [INFO] Creating post-fs-data.sh script..."
     cat > "$MODPATH/post-fs-data.sh" << 'EOF'
 #!/system/bin/sh
-
+echo ""
+echo ""
 echo "[INFO] Disabling Google Fonts Provider..."
 pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider
 sleep 0.5
@@ -238,6 +238,11 @@ rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf
 sleep 0.5
 
 echo "[INFO] Font disable operations completed successfully"
+echo ""
+echo "[INFO] Force stopping Gboard and restarting to apply changes"
+am force-stop com.google.android.inputmethod.latin
+sleep 2
+monkey -p com.google.android.inputmethod.latin -c android.intent.category.LAUNCHER 1
 EOF
 
     echo "  [INFO] All scripts created successfully"
