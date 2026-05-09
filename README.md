@@ -82,6 +82,11 @@ Serif-BoldItalic.ttf
 - If your MFFM template powered modules stop working in Google Apps or do not change at all, use the module action button in Magisk, KernelSU/KernelSU Next, or APatch Manager. The action disables the Google Fonts provider, clears Google font caches, and restarts Gboard. No reboot is needed for the action path; force close any Google app if it still has old font cache.
 - If method mentioned above is not working for you then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
+# Release Workflow
+- Push a tag like `v2026.05.10` to build and publish a GitHub Release automatically.
+- You can also run `Build and Release Template` manually from GitHub Actions and provide `version` / `version_code` inputs.
+- If `version_code` is not provided, date versions like `2026.05.10` become `20260510`; semver versions like `11.2.3` become `11002003`.
+
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk) | [Inter Font Pack By kdrag0n](https://github.com/kdrag0n/inter-font-pack)
 # Tributes & Acknowledgements

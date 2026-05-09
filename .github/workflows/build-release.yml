@@ -1,0 +1,120 @@
+name: Build and Release Template
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - "v*"
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version. Defaults to UTC YYYY.MM.DD, or the tag name without v on tag builds."
+        required: false
+        type: string
+      version_code:
+        description: "Numeric module.prop versionCode. Defaults to a value derived from version."
+        required: false
+        type: string
+      create_release:
+        description: "Create or update a GitHub Release for this build."
+        required: false
+        default: true
+        type: boolean
+      prerelease:
+        description: "Mark the GitHub Release as a prerelease."
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Template Zip
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n scripts/build-template.sh
+          bash -n compile.sh
+          sh -n customize.sh
+          sh -n META-INF/com/google/android/update-binary
+          if [ -f "Emoji Fonts Packges/MFFM_UniEmoji_v5.5.sh" ]; then
+            sh -n "Emoji Fonts Packges/MFFM_UniEmoji_v5.5.sh"
+          fi
+
+      - name: Build template zip
+        id: build
+        shell: bash
+        env:
+          VERSION: ${{ github.event.inputs.version }}
+          VERSION_CODE: ${{ github.event.inputs.version_code }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/build-template.sh
+          scripts/build-template.sh
+
+      - name: Upload template artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.zip_name }}
+          path: ${{ steps.build.outputs.zip_path }}
+          if-no-files-found: error
+
+      - name: Prepare release notes
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+        shell: bash
+        run: |
+          cat > release-notes.md <<EOF
+          MFFM template release.
+
+          Version: ${{ steps.build.outputs.version }}
+          VersionCode: ${{ steps.build.outputs.version_code }}
+
+          Compatible with Magisk, KernelSU/KernelSU Next, and APatch.
+          KernelSU/APatch users may need an active mount metamodule for system file mounting.
+          EOF
+
+      - name: Create or update GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ZIP_PATH: ${{ steps.build.outputs.zip_path }}
+          VERSION: ${{ steps.build.outputs.version }}
+          PRERELEASE: ${{ github.event.inputs.prerelease }}
+        run: |
+          set -euo pipefail
+
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+            tag="$GITHUB_REF_NAME"
+          else
+            tag="v$VERSION"
+          fi
+
+          title="MFFM Template $VERSION"
+          prerelease_args=()
+          if [ "$PRERELEASE" = "true" ]; then
+            prerelease_args+=(--prerelease)
+          fi
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$ZIP_PATH" --clobber
+            gh release edit "$tag" --title "$title" --notes-file release-notes.md "${prerelease_args[@]}"
+          else
+            gh release create "$tag" "$ZIP_PATH" \
+              --target "$GITHUB_SHA" \
+              --title "$title" \
+              --notes-file release-notes.md \
+              "${prerelease_args[@]}"
+          fi

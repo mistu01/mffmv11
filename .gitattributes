@@ -6,5 +6,7 @@
 module.prop text eol=lf
 README.md text eol=lf
 .gitattributes text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
 META-INF/com/google/android/update-binary text eol=lf
 META-INF/com/google/android/updater-script text eol=lf
