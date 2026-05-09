@@ -10,9 +10,6 @@ Install like a normal module from Magisk, KernelSU/KernelSU Next, or APatch Mana
 
 KernelSU/APatch users: current mount implementations may require an active mount metamodule before regular modules can mount files under `system/`. If fonts do not apply after reboot, install and reboot with a mount metamodule first, such as `meta-overlayfs`, `magic mount`, or `hybrid mount`, then reinstall this module.
 
-You may still need `Font Loader` / Zygisk-compatible font handling to prevent app crashes on some ROMs.
-- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash it. Magisk users should enable Zygisk; KernelSU/APatch users should use their preferred Zygisk compatibility layer if needed. Also keep in mind that: You need to be logged-in in Github in order to download the action related artifacts**
-
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
 To use it as a module template you can copy the renamed files directly to the template's `Files` folder to make a permanent module.
@@ -80,8 +77,6 @@ Serif-BoldItalic.ttf
 ```
 - After renaming, either copy them direct to `MFFM` folder or make a `zip archive` following this naming pattern, '`Serif-YourFontName.zip`' eg `Serif-SourceSerif.zip` and as usual copy the archive to `MFFM` folder.
 - Lastly, however you place your files in `MFFM` folder, if the naming patterns are followed it will be installed once you flash your original font module. 
-# Magisk Hide / Zygisk Denylist Hidden App Crash
-- **With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group.**
 
 # GApps Font
 - If your MFFM template powered modules stop working in Google Apps or do not change at all, use the module action button in Magisk, KernelSU/KernelSU Next, or APatch Manager. The action disables the Google Fonts provider, clears Google font caches, and restarts Gboard. No reboot is needed for the action path; force close any Google app if it still has old font cache.
@@ -90,6 +85,6 @@ Serif-BoldItalic.ttf
 # Credits
 - [Magisk](https://github.com/topjohnwu/Magisk) | [Inter Font Pack By kdrag0n](https://github.com/kdrag0n/inter-font-pack)
 # Tributes & Acknowledgements
-- [OMF](https://gitlab.com/nongthaihoang/oh_my_font) | [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF) | [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) | [Magifont](https://t.me/Magifonts_Support) | [Fontloader](https://github.com/JingMatrix/FontLoader)
+- [OMF](https://gitlab.com/nongthaihoang/oh_my_font) | [OMF Template](https://gitlab.com/nongthaihoang/omftemplate) | [CFI](https://github.com/nongthaihoang/custom_font_installer) | [Noto Emoji Plus](https://gitlab.com/MrCarb0n/NotoEmojiPlus_OMF) | [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) | [Magifont](https://t.me/Magifonts_Support)
 # Support And Discussions
 - [MFFM Discussion](https://t.me/MFFMDisc) | [MFFM Main](https://t.me/MFFMMain) | [MFFM Blog](https://t.me/mffmex)
