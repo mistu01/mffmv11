@@ -1,2 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Android module installers are parsed by BusyBox ash and must stay LF.
+*.sh text eol=lf
+module.prop text eol=lf
+README.md text eol=lf
+.gitattributes text eol=lf
+META-INF/com/google/android/update-binary text eol=lf
+META-INF/com/google/android/updater-script text eol=lf

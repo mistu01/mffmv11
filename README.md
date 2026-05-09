@@ -1,14 +1,17 @@
-# -= MFFM Template v.X.xx =-
+# -= MFFM Template v11 =-
 - **Can be used as a template or as an installer**
 - **Support for AOSP/LOS/PixelStock and Closest Kin Like ROMS**
 - **Monospace / Bengali font / Emoji / Serif support (user dependent)**
 - **Android 12/13/14/15 ready**
-- **Compatible with Magisk and KSU**
+- **Compatible with Magisk, KernelSU/KernelSU Next, and APatch**
 
 # Important Info Before Installation:
-Install like normal magisk or KSU module. 
-But you must install `Font Loader` zygisk module to stop the app crashes. 
-- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash in your magisk. Make sure zygisk is enabled. Also keep in mind that: You need to be logged-in in Github in order to download the action related artifacts**
+Install like a normal module from Magisk, KernelSU/KernelSU Next, or APatch Manager. KernelSU/APatch installs should be done from their manager apps, not from custom recovery.
+
+KernelSU/APatch users: current mount implementations may require an active mount metamodule before regular modules can mount files under `system/`. If fonts do not apply after reboot, install and reboot with a mount metamodule first, such as `meta-overlayfs`, `magic mount`, or `hybrid mount`, then reinstall this module.
+
+You may still need `Font Loader` / Zygisk-compatible font handling to prevent app crashes on some ROMs.
+- **Go to [Fontloader](https://github.com/JingMatrix/FontLoader) repo by JingMatrix and go to [Action Tab](https://github.com/JingMatrix/FontLoader/actions), then download the latest successful action artifact aka Fontloader module and flash it. Magisk users should enable Zygisk; KernelSU/APatch users should use their preferred Zygisk compatibility layer if needed. Also keep in mind that: You need to be logged-in in Github in order to download the action related artifacts**
 
 # Usages:
 You can use the template as an installer or as a regular Magisk module template, or both at the same time. 
@@ -63,7 +66,8 @@ Beng-Bold.ttf
  
 ## Emoji
  - Add `Emoji-` before the name of your Emoji font and put it in the `MFFM` folder. EG: rename `WhatsappEmoji.ttf`  to `Emoji-WhatsappEmoji.ttf`
- - Download the Emoji Addon from [here](https://github.com/mistu01/mffmv11/raw/refs/heads/main/Emoji%20Fonts%20Packges/MFFM_UniEmoji_v5.5.zip). Put it inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file.
+ - Put `MFFM_UniEmoji_v5.5.sh` inside the `MFFM Folder (/LocalStorage/MFFM)` folder alongside the renamed emoji file. The add-on stages `NotoColorEmoji.ttf`, scans system emoji font targets, repairs app data emoji fonts with backups, and hooks the module action/service/boot/uninstall lifecycle.
+ - UniEmoji writes runtime logs/status under `/sdcard/MFFM/EmojiModule`. KernelSU/APatch without a mount metamodule fall back to data-only emoji repair.
 ## Monospace
 -  To use any `Monospace` font, add  `Mono-` before the name of your font and put it in `MFFM` folder.  EG: rename `Firacode-Regular.ttf` to `Mono-Firacode-Regular.ttf`
 ## Serif
@@ -80,7 +84,7 @@ Serif-BoldItalic.ttf
 - **With the latest changes modules can be used without any major issue, yet if you find any issues, report in the group.**
 
 # GApps Font
-- If your mffm template powered modules stopped working in Google Apps or didn't change at all, you will find an action button in KSUNext or Magisk app, press that it will work again. No need to restart, Force close any Google App if not still showing the font.
+- If your MFFM template powered modules stop working in Google Apps or do not change at all, use the module action button in Magisk, KernelSU/KernelSU Next, or APatch Manager. The action disables the Google Fonts provider, clears Google font caches, and restarts Gboard. No reboot is needed for the action path; force close any Google app if it still has old font cache.
 - If method mentioned above is not working for you then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
 # Credits
