@@ -139,7 +139,7 @@ set_prop "$STAGE_DIR/module.prop" "version" "$VERSION"
 set_prop "$STAGE_DIR/module.prop" "versionCode" "$VERSION_CODE"
 set_prop "$STAGE_DIR/module.prop" "description" "MFFM template release $VERSION. Compatible with Magisk, KernelSU/KernelSU Next, and APatch; KSU/APatch system mounting may require an active mount metamodule."
 
-ZIP_NAME="${ZIP_PREFIX}_v${VERSION}[MFFMv11].zip"
+ZIP_NAME="${ZIP_PREFIX}_v${VERSION}_MFFMv11.zip"
 ZIP_PATH="$OUT_DIR/$ZIP_NAME"
 rm -f "$ZIP_PATH"
 

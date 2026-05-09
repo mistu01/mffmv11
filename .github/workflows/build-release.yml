@@ -73,7 +73,7 @@ jobs:
           if-no-files-found: error
 
       - name: Prepare release notes
-        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+        if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || github.event.inputs.create_release == 'true')
         shell: bash
         run: |
           cat > release-notes.md <<EOF
@@ -81,13 +81,14 @@ jobs:
 
           Version: ${{ steps.build.outputs.version }}
           VersionCode: ${{ steps.build.outputs.version_code }}
+          Commit: ${{ github.sha }}
 
           Compatible with Magisk, KernelSU/KernelSU Next, and APatch.
           KernelSU/APatch users may need an active mount metamodule for system file mounting.
           EOF
 
       - name: Create or update GitHub Release
-        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+        if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || github.event.inputs.create_release == 'true')
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -110,6 +111,10 @@ jobs:
           fi
 
           if gh release view "$tag" >/dev/null 2>&1; then
+            if [ "${GITHUB_REF_TYPE:-}" != "tag" ]; then
+              git tag -f "$tag" "$GITHUB_SHA"
+              git push origin "refs/tags/$tag" --force
+            fi
             gh release upload "$tag" "$ZIP_PATH" --clobber
             gh release edit "$tag" --title "$title" --notes-file release-notes.md "${prerelease_args[@]}"
           else

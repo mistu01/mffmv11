@@ -83,8 +83,10 @@ Serif-BoldItalic.ttf
 - If method mentioned above is not working for you then flash [KillGMSFont](https://github.com/MrCarb0n/killgmsfont) Magisk Module by [MrCarb0n](https://github.com/MrCarb0n/)
 
 # Release Workflow
-- Push a tag like `v2026.05.10` to build and publish a GitHub Release automatically.
+- Push to `main` / `master` to build and publish a GitHub Release automatically.
+- Push a tag like `v2026.05.10` to publish that exact tagged release.
 - You can also run `Build and Release Template` manually from GitHub Actions and provide `version` / `version_code` inputs.
+- Release assets are named like `MFFM_Template_v2026.05.10_MFFMv11.zip`.
 - If `version_code` is not provided, date versions like `2026.05.10` become `20260510`; semver versions like `11.2.3` become `11002003`.
 
 # Credits
