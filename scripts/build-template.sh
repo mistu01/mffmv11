@@ -202,6 +202,13 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
 PY
 fi
 
+[ -f "$ZIP_PATH" ] || {
+  echo "Build completed but zip was not found at: $ZIP_PATH" >&2
+  echo "Contents of output directory:" >&2
+  find "$OUT_DIR" -maxdepth 1 -type f -print >&2
+  exit 1
+}
+
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
   {
     printf 'version=%s\n' "$VERSION"

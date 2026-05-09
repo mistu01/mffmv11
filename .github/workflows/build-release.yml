@@ -63,12 +63,13 @@ jobs:
           set -euo pipefail
           chmod +x scripts/build-template.sh
           scripts/build-template.sh
+          ls -la dist
 
       - name: Upload template artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build.outputs.zip_name }}
-          path: ${{ steps.build.outputs.zip_path }}
+          path: dist/*.zip
           if-no-files-found: error
 
       - name: Prepare release notes
