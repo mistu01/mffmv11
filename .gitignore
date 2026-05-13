@@ -1,0 +1,27 @@
+*.zip
+*.ttf
+*.otf
+*.woff
+*.woff2
+Dist/
+Old Modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv/
+env/
+venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*~
