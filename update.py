@@ -95,6 +95,21 @@ def main():
                 if font_files:
                     detected_name = get_font_name(font_files[0])
             
+            if detected_name:
+                if re.search(r"Roboto", detected_name, re.IGNORECASE):
+                    print(f"  -> Extracted name contains 'Roboto': '{detected_name}'. Using old module name instead.")
+                    detected_name = None
+                else:
+                    if re.search(r"MFFM|Mistu", detected_name, re.IGNORECASE):
+                        cleaned_name = re.sub(r"(?i)mffm|mistu", "", detected_name)
+                        cleaned_name = re.sub(r"\s+", " ", cleaned_name).strip(" -_")
+                        if cleaned_name:
+                            print(f"  -> Extracted name '{detected_name}' contained MFFM/Mistu. Cleaned to: '{cleaned_name}'")
+                            detected_name = cleaned_name
+                        else:
+                            print(f"  -> Extracted name '{detected_name}' contained only MFFM/Mistu. Using old module name instead.")
+                            detected_name = None
+            
             # Prefer extracted font name, otherwise fallback to old prop name
             final_name = detected_name if detected_name else name_input
             if detected_name:

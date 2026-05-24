@@ -1,6 +1,7 @@
 import os
 import sys
 import zipfile
+import re
 import datetime
 import glob
 
@@ -38,6 +39,15 @@ def main():
     if font_files:
         # Try to extract name from the first font found
         detected_name = get_font_name(font_files[0])
+        if detected_name:
+            if re.search(r"MFFM|Mistu", detected_name, re.IGNORECASE):
+                cleaned_name = re.sub(r"(?i)mffm|mistu", "", detected_name)
+                cleaned_name = re.sub(r"\s+", " ", cleaned_name).strip(" -_")
+                if cleaned_name:
+                    print(f"Extracted font name '{detected_name}' contained MFFM/Mistu. Cleaned to: '{cleaned_name}'")
+                    detected_name = cleaned_name
+                else:
+                    detected_name = None
     
     # 2. Ask user for name
     if detected_name:
