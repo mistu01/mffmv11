@@ -73,6 +73,37 @@ ue_write_runtime_helper() {
   cat > "$MODPATH/scripts/mffm-uniemoji.sh" << 'UNIEMOJI_HELPER'
 #!/system/bin/sh
 
+umount() {
+  local path
+  for path in "$@"; do
+    [ -n "$path" ] || continue
+    
+    # Try unmounting globally using nsenter (mount namespace of PID 1)
+    if command -v nsenter >/dev/null 2>&1; then
+      nsenter -t 1 -m -- umount "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- umount -l "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- busybox umount -l "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- toybox umount -l "$path" >/dev/null 2>&1
+    fi
+    if [ -f /system/bin/toybox ]; then
+      /system/bin/toybox nsenter -t 1 -m -- umount "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- umount -l "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- busybox umount -l "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- toybox umount -l "$path" >/dev/null 2>&1
+    fi
+
+    # Try local/current namespace unmounting as fallback
+    command umount "$path" >/dev/null 2>&1 || \
+    command umount -l "$path" >/dev/null 2>&1 || \
+    busybox umount -l "$path" >/dev/null 2>&1 || \
+    toybox umount -l "$path" >/dev/null 2>&1 || \
+    /system/bin/umount "$path" >/dev/null 2>&1 || \
+    /system/bin/umount -l "$path" >/dev/null 2>&1 || \
+    true
+  done
+  return 0
+}
+
 SCRIPT_DIR=${0%/*}
 case "$SCRIPT_DIR" in
   */scripts) MODPATH=${MODPATH:-${SCRIPT_DIR%/scripts}} ;;

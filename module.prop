@@ -1,6 +1,6 @@
 id=mffm11
-name=[MFFMv11] Duplet MFFM Rounded
-version=2026.05.13
-versionCode=20260513
+name=[MFFMv11] Finlandica Text
+version=2026.05.26
+versionCode=20260526
 author=MFFM
-description=Replaces the Android default Roboto font family with "Duplet MFFM Rounded". Compatible with Magisk, KernelSU/KernelSU Next, and APatch; KSU/APatch system mounting may require an active mount metamodule.
+description=Replaces the Android default Roboto font family with "Finlandica Text". Compatible with Magisk, KernelSU/KernelSU Next, and APatch; KSU/APatch system mounting may require an active mount metamodule.

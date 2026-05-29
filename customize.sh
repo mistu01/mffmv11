@@ -9,6 +9,37 @@ if ! command -v ui_print >/dev/null 2>&1; then
   ui_print() { echo "$1"; }
 fi
 
+umount() {
+  local path
+  for path in "$@"; do
+    [ -n "$path" ] || continue
+    
+    # Try unmounting globally using nsenter (mount namespace of PID 1)
+    if command -v nsenter >/dev/null 2>&1; then
+      nsenter -t 1 -m -- umount "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- umount -l "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- busybox umount -l "$path" >/dev/null 2>&1 || \
+      nsenter -t 1 -m -- toybox umount -l "$path" >/dev/null 2>&1
+    fi
+    if [ -f /system/bin/toybox ]; then
+      /system/bin/toybox nsenter -t 1 -m -- umount "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- umount -l "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- busybox umount -l "$path" >/dev/null 2>&1 || \
+      /system/bin/toybox nsenter -t 1 -m -- toybox umount -l "$path" >/dev/null 2>&1
+    fi
+
+    # Try local/current namespace unmounting as fallback
+    command umount "$path" >/dev/null 2>&1 || \
+    command umount -l "$path" >/dev/null 2>&1 || \
+    busybox umount -l "$path" >/dev/null 2>&1 || \
+    toybox umount -l "$path" >/dev/null 2>&1 || \
+    /system/bin/umount "$path" >/dev/null 2>&1 || \
+    /system/bin/umount -l "$path" >/dev/null 2>&1 || \
+    true
+  done
+  return 0
+}
+
 mffm_abort() {
   if command -v abort >/dev/null 2>&1; then
     abort "$1"
@@ -203,12 +234,89 @@ extract_payloads() {
   [ -f "$FONTDIR/data" ] && tar -xf "$FONTDIR/data" -C "$MODPATH" 2>/dev/null
 }
 
+get_pristine_system_file() {
+  local src_rel dest rel_path part_name mount_dir block_dev slot filesystem copied
+  src_rel="$1"   # e.g., "etc/fonts.xml" or "product/etc/fonts_customization.xml"
+  dest="$2"      # where to save
+  copied=false
+
+  case "$src_rel" in
+    product/etc/*)
+      part_name="product"
+      rel_path="${src_rel#product/}"
+      ;;
+    *)
+      part_name="system"
+      rel_path="$src_rel"
+      ;;
+  esac
+
+  # Try raw block device mounting first (guaranteed pristine bypasses OverlayFS/MagicMount)
+  mount_dir="$MODPATH/raw_system"
+  mkdir -p "$mount_dir"
+  
+  # Find partition block device from mount table
+  block_dev="$(awk '$2 == "/'"$part_name"'" {print $1; exit}' /proc/mounts)"
+  if [ -z "$block_dev" ] || [ "$block_dev" = "rootfs" ] || [ "$block_dev" = "none" ]; then
+    block_dev="$(awk '$2 == "/" {print $1; exit}' /proc/mounts)"
+  fi
+  
+  slot="$(getprop ro.boot.slot_suffix 2>/dev/null)"
+  for dev in "/dev/block/mapper/${part_name}$slot" "/dev/block/by-name/${part_name}$slot" "/dev/block/mapper/${part_name}" "/dev/block/by-name/${part_name}" "$block_dev"; do
+    if [ -b "$dev" ] || [ -h "$dev" ]; then
+      block_dev="$dev"
+      break
+    fi
+  done
+
+  if [ -n "$block_dev" ] && [ "$block_dev" != "rootfs" ] && [ "$block_dev" != "none" ]; then
+    for filesystem in erofs ext4 f2fs; do
+      mount -t "$filesystem" -o ro "$block_dev" "$mount_dir" >/dev/null 2>&1 && break
+    done
+    
+    if [ -f "$mount_dir/$part_name/$rel_path" ]; then
+      mkdir -p "${dest%/*}"
+      cp -f "$mount_dir/$part_name/$rel_path" "$dest" 2>/dev/null && copied=true
+    elif [ -f "$mount_dir/$rel_path" ]; then
+      mkdir -p "${dest%/*}"
+      cp -f "$mount_dir/$rel_path" "$dest" 2>/dev/null && copied=true
+    fi
+    
+    busybox umount -l "$mount_dir" >/dev/null 2>&1 || \
+    toybox umount -l "$mount_dir" >/dev/null 2>&1 || \
+    umount "$mount_dir" >/dev/null 2>&1 || \
+    true
+  fi
+
+  rm -rf "$mount_dir" 2>/dev/null
+
+  # Fallback to global namespace unmounting and direct copy if raw block mount failed
+  if [ "$copied" = "false" ]; then
+    local live_path
+    case "$src_rel" in
+      product/etc/*) live_path="/product/${src_rel#product/}" ;;
+      *) live_path="/system/$src_rel" ;;
+    esac
+    
+    umount "$live_path"
+    copy_if_exists "$live_path" "$dest" && copied=true
+  fi
+
+  [ "$copied" = "true" ]
+}
+
 prepare_module_paths() {
   mkdir -p "$PRDFONT" "$PRDETC" "$SYSFONT" "$SYSETC" "$SYSEXTETC"
 
-  copy_if_exists "$ORIPRDXML" "$PRDXML" || true
-  copy_if_exists "$ORISYSXML" "$SYSXML" || true
-  copy_if_exists "$ORISYSXMLNEW" "$SYSXMLNEW" || true
+  # Unmount any existing bind mounts or overlays on XML targets, checking both mirror and live paths
+  umount "$ORIPRDXML" "/product/etc/fonts_customization.xml" "/system/product/etc/fonts_customization.xml"
+  umount "$ORISYSXML" "/system/etc/fonts.xml"
+  umount "$ORISYSXMLNEW" "/system/etc/font_fallback.xml"
+
+  # Try to retrieve pristine files directly from raw block devices, falling back to clean unmount copy
+  get_pristine_system_file "etc/fonts.xml" "$SYSXML" || copy_if_exists "$ORISYSXML" "$SYSXML" || true
+  get_pristine_system_file "etc/font_fallback.xml" "$SYSXMLNEW" || copy_if_exists "$ORISYSXMLNEW" "$SYSXMLNEW" || true
+  get_pristine_system_file "product/etc/fonts_customization.xml" "$PRDXML" || copy_if_exists "$ORIPRDXML" "$PRDXML" || true
 
   [ -f "$SYSXML" ] && FONT_XML_TARGETS="$SYSXML"
   if [ "$APILEVEL" -ge 35 ] && [ -f "$SYSXMLNEW" ]; then
