@@ -773,5 +773,18 @@ def main():
                             continue
                         zf.write(abs_file, rel_file)
 
+    # 6. Sign the module ZIP with ZipSignerust (auto-downloads tool + keypair).
+    print("\n[Signing] Securing module archive...")
+    try:
+        import signing
+
+        if signing.sign_zip(archive_path):
+            print("[Signing] Module signed and ready to flash.")
+        else:
+            print("[Signing] Signing skipped or failed - unsigned archive is at Dist/.")
+    except Exception as exc:
+        print(f"[Signing] Could not sign the archive: {exc}")
+        print("         The unsigned module is still available at Dist/.")
+
 if __name__ == "__main__":
     main()

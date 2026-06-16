@@ -48,6 +48,35 @@ If same category files `(eg. Bengali Fonts)` are present in both the `MFFM` fold
 - And then copy those font files to `Files` folder of the template to make a module. 
 - If you want to use in installer mode, create a folder named `Fonts` inside `MFFM` folder. Put the renamed files in the `MFFM/Fonts` folder. Flash the template/Installer
 
+# Module Signing (ZipSignerust)
+
+Compiled/updated module ZIPs are automatically signed using [ZipSignerust](https://github.com/MrCarb0n/zipsignerust) — a high-performance, memory-safe Rust tool that adds standard JAR signatures (`META-INF/MANIFEST.MF`, `CERT.SF`, `CERT.RSA`) to Android ZIP archives. Both `compile.py` and `update.py` sign every produced module automatically.
+
+- **Auto-download:** the first time a script signs a module, it downloads the correct ZipSignerust binary for your platform into `tools/` and caches it. Supported platforms: Windows x64/arm64, Linux x64/arm64/armv7 (covers native Linux **and** WSL).
+- **Auto key generation:** an RSA-2048 key pair is generated on first run into `keys/` (`mffm_private.pem`, `mffm_public.pem`) and reused for every subsequent signing. Keep `keys/mffm_private.pem` safe — it authenticates your modules.
+- **Cross-environment:** written in pure Python with `urllib`/`subprocess`, so it behaves identically on **PowerShell/Windows** and **WSL/Linux**. No shell-specific commands are used.
+- **Graceful fallback:** if the optional `cryptography` package is missing, or the tool download fails, the script prints a clear notice and leaves an unsigned archive in `Dist/` instead of aborting.
+
+### Requirements
+```
+pip install cryptography
+```
+This is only needed to *generate* the key pair. Once `keys/` exists, signing works without it.
+
+### Signing manually
+```bash
+# Prepare keys + download the tool (no archive required)
+python signing.py
+
+# Sign a zip in place (leaves a .bak backup, then removes it on success)
+python signing.py path/to/module.zip
+
+# Sign to a separate output file
+python signing.py path/to/module.zip path/to/signed.zip
+```
+
+`tools/`, `keys/`, and `*.bak` are gitignored — they are machine-specific and never committed.
+
 # Optional Usage
 - Even though the following tutorial follows the `installer` mode, you can shove the `renamed files` directly to the Template's `Files` folder to use it as a permanent module.
 

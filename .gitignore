@@ -6,6 +6,11 @@
 Dist/
 Old Modules/
 
+# ZipSignerust signing tool cache and generated key pair
+tools/
+keys/
+*.bak
+
 # Python
 __pycache__/
 *.py[cod]

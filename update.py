@@ -203,6 +203,18 @@ def main():
                             continue
                         zf.write(abs_file, rel_file)
 
+            # Sign the rebuilt module ZIP with ZipSignerust.
+            print("  -> Signing module...")
+            try:
+                import signing
+
+                if signing.sign_zip(archive_path):
+                    print("  -> Module signed.")
+                else:
+                    print("  -> Signing skipped or failed (unsigned archive left in Dist/).")
+            except Exception as exc:
+                print(f"  -> Could not sign module: {exc}")
+
     print("\nAll modules updated successfully!")
 
 if __name__ == "__main__":
